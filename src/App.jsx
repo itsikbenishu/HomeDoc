@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { ToastProvider } from "./utils/toast";
 
@@ -26,26 +26,15 @@ const App = () => {
     <ThemeProvider theme={portalTheme}>
       <ToastProvider>
         <div dir="rtl" style={{ backgroundColor: "#130b65", height: "100vh" }}>
-          {            
-            <BrowserRouter>
-              <Navbar />
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route
-                  path="/Results"
-                  element={<SearchResultsPage />}
-                />
-                <Route
-                  path="/Results/Residence/:id/:mode?"
-                  element={<ResidencePage />}
-                />
-                <Route
-                  path="/Results/Chattels/:id/:mode?"
-                  element={<ChattelsPage />}
-                />
-              </Routes>
-            </BrowserRouter>
-          }
+          <HashRouter>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/Results" element={<SearchResultsPage />} />
+              <Route path="/Results/Residence/:id/:mode?" element={<ResidencePage />} />
+              <Route path="/Results/Chattels/:id/:mode?" element={<ChattelsPage />} />
+            </Routes>
+          </HashRouter>
         </div>
       </ToastProvider>
     </ThemeProvider>
