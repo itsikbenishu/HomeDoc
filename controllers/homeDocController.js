@@ -1,15 +1,15 @@
-const {
-  HomeDocs,
-  HomeDocsDimensions,
-  HomeDocsRelations,
-  ResidenceSpecsAttributes,
-  ChattelsSpecsAttributes,
-} = require("../models/homeDocModel");
-const { postgresDB } = require("../server");
-const { eq } = require("drizzle-orm");
-const APISQLFeatures = require("../utils/apiSqlFeatures");
+import { 
+  HomeDocs, 
+  HomeDocsDimensions, 
+  HomeDocsRelations, 
+  ResidenceSpecsAttributes, 
+  ChattelsSpecsAttributes 
+} from "../models/homeDocModel.js";
+import { postgresDB } from "../server.js";
+import { eq } from "drizzle-orm";
+import APISQLFeatures from "../utils/apiSqlFeatures.js";
 
-exports.getAllHomeDocs = async (req, res) => {
+const getAllHomeDocs = async (req, res) => {
   try {
     const features = new APISQLFeatures(postgresDB, "home_docs", req.query)
       .filter()
@@ -35,7 +35,7 @@ exports.getAllHomeDocs = async (req, res) => {
   }
 };
 
-exports.getHomeDoc = async (req, res) => {
+const getHomeDoc = async (req, res) => {
   try {
     let specsAttributes = {};
     let specColumns = "";
@@ -110,7 +110,7 @@ exports.getHomeDoc = async (req, res) => {
   }
 };
 
-exports.createHomeDoc = async (req, res) => {
+const createHomeDoc = async (req, res) => {
   try {
     const newHomeDoc = await postgresDB
       .insert(HomeDocs)
@@ -131,7 +131,7 @@ exports.createHomeDoc = async (req, res) => {
   }
 };
 
-exports.updateHomeDoc = async (req, res) => {
+const updateHomeDoc = async (req, res) => {
   try {
     const updatedHomeDoc = await postgresDB
       .update(HomeDocs)
@@ -206,7 +206,7 @@ exports.updateHomeDoc = async (req, res) => {
   }
 };
 
-exports.createSubHomeDoc = async (req, res) => {
+const createSubHomeDoc = async (req, res) => {
   try {
     let subHomedocsIds = req.body.subHomedocsIds || [];
 
@@ -246,7 +246,7 @@ exports.createSubHomeDoc = async (req, res) => {
   }
 };
 
-exports.deleteHomeDoc = async (req, res) => {
+const deleteHomeDoc = async (req, res) => {
   try {
     await postgresDB.delete(HomeDocs).where(eq(HomeDocs.id, req.params.id));
 
@@ -262,7 +262,7 @@ exports.deleteHomeDoc = async (req, res) => {
   }
 };
 
-exports.getCounts = async (req, res) => {
+const getCounts = async (req, res) => {
   try {
     const interiorEntityKeyQeury = req.query.interiorEntityKey
       ? `AND "interiorEntityKey" = ${req.query.interiorEntityKey}`
@@ -300,4 +300,14 @@ exports.getCounts = async (req, res) => {
       message: err.message || "An error occurred",
     });
   }
+};
+
+export default {
+  getAllHomeDocs,
+  getHomeDoc,
+  createHomeDoc,
+  updateHomeDoc,
+  createSubHomeDoc,
+  deleteHomeDoc,
+  getCounts
 };

@@ -1,4 +1,4 @@
-const {
+import {
   pgTable,
   pgEnum,
   serial,
@@ -6,8 +6,8 @@ const {
   text,
   timestamp,
   json,
-} = require("drizzle-orm/pg-core");
-const { HOME_DOC_CATEGORIES, HOME_DOC_PAGE_TYPE } = require("../src/Constants");
+} from "drizzle-orm/pg-core";
+import { HOME_DOC_CATEGORIES, HOME_DOC_PAGE_TYPE } from "../src/Constants.js";
 
 const CategoriesEnum = pgEnum(
   "home_doc_categories",
@@ -76,7 +76,7 @@ const ChattelsSpecsAttributes = pgTable("chattels_specs_attributes", {
   weight: text(),
 });
 
-module.exports = {
+export {
   HomeDocs,
   HomeDocsDimensions,
   HomeDocsRelations,

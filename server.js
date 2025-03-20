@@ -1,10 +1,11 @@
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
+import pkg from 'pg';
+import { drizzle } from "drizzle-orm/node-postgres";
+import app from "./app.js";  
 
-dotenv.config({ path: "./config.env" });
-const app = require("./app");
+const { Pool } = pkg;
 
-const { Pool } = require("pg");
-const { drizzle } = require("drizzle-orm/node-postgres");
+dotenv.config();
 
 const postgresPool = new Pool({
   host: process.env.POSTGRES_HOST,
@@ -15,7 +16,6 @@ const postgresPool = new Pool({
 });
 
 const postgresDB = drizzle({ client: postgresPool });
-
 
 async function testConnection() {
   const client = await postgresPool.connect();
@@ -36,4 +36,4 @@ app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
 
-module.exports = { postgresDB };
+export { postgresDB };

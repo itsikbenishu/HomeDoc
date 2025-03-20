@@ -1,5 +1,5 @@
-const express = require("express");
-const homeDocController = require("../controllers/homeDocController");
+import express from "express";
+import homeDocController from "../controllers/homeDocController.js";
 
 const router = express.Router();
 
@@ -22,4 +22,4 @@ router
   .get(homeDocController.getHomeDoc)
   .patch(homeDocController.updateHomeDoc);
 
-module.exports = router;
+export default router;
