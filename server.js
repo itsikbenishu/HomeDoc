@@ -6,8 +6,6 @@ import app from "./app.js";
 const { Pool } = pkg;
 
 dotenv.config();
-console.log('console.log(process.env.POSTGRES_PASSWORD)')
-console.log(process.env.POSTGRES_PASSWORD)
 const postgresPool = new Pool({
   host: process.env.POSTGRES_HOST,
   port: process.env.POSTGRES_PORT,
