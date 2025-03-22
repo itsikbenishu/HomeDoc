@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import pkg from 'pg';
 import { drizzle } from "drizzle-orm/node-postgres";
-import app from "./app.js";  
+//import app from "./app.js";  
 
 const { Pool } = pkg;
 
@@ -30,9 +30,9 @@ async function testConnection() {
 
 testConnection();
 
-const port = process.env.PORT || 3000;
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server is running on http://0.0.0.0:${port}`);
-});
+// const port = process.env.PORT || 3000;
+// app.listen(port, '0.0.0.0', () => {
+//   console.log(`Server is running on http://0.0.0.0:${port}`);
+// });
 
 export { postgresDB };
