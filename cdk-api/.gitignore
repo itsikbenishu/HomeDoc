@@ -1,5 +1,5 @@
 node_modules
-cdk-api/cdk.context.json
+cdk-api\cdk.context.json
 
 # CDK asset staging directory
 .cdk.staging
