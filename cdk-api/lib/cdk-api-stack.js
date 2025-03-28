@@ -1,3 +1,4 @@
+
 const { Stack, Duration } = require('aws-cdk-lib');
 const { Vpc, SubnetType } = require('aws-cdk-lib/aws-ec2');
 const { LambdaIntegration, RestApi } = require('aws-cdk-lib/aws-apigateway');
@@ -19,9 +20,9 @@ class CdkApiStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, {
       ...props,
-      env: {
-        account: '303759787046',  
-        region: 'eu-north-1'         
+      env: {    
+        account: props.AWS_ACCOUNT,  
+        region: props.AWS_REGION,        
       }
     });
 
@@ -36,7 +37,7 @@ class CdkApiStack extends Stack {
     //   visibilityTimeout: Duration.seconds(300)
     // });
 
-    const amplifyApp = new AmplifyStack(this, 'HomeDocAmplify');
+    const amplifyApp = new AmplifyStack(this, 'HomeDocAmplify', props.GIT_OAUTH_TOKEN);
 
     const auroraServerless = new AuroraServerless(this, 'ExistingCluster', vpc, 'portfolio', 'portfolio-instance-1.chg6eo2ogcs7.eu-north-1.rds.amazonaws.com', 5432);
 
@@ -45,20 +46,17 @@ class CdkApiStack extends Stack {
 
     const { Function, Runtime, Code } = require('aws-cdk-lib/aws-lambda');
     const { NodejsFunction } = require('aws-cdk-lib/aws-lambda-nodejs');
-    const path = require('path');
-    const dotenv = require('dotenv');
-    
-    dotenv.config({ path: path.join(__dirname, '../../.env') });
     
     const config = {
-      POSTGRES_WRITE_HOST: process.env.POSTGRES_WRITE_HOST,
-      POSTGRES_READ_HOST: process.env.POSTGRES_READ_HOST,
-      POSTGRES_PORT: process.env.POSTGRES_PORT,
-      POSTGRES_DB: process.env.POSTGRES_DB,
-      POSTGRES_USER: process.env.POSTGRES_USER,
-      POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
+      POSTGRES_WRITE_HOST: props.POSTGRES_WRITE_HOST,
+      POSTGRES_READ_HOST: props.POSTGRES_READ_HOST,
+      POSTGRES_PORT: props.POSTGRES_PORT,
+      POSTGRES_DB: props.POSTGRES_DB,
+      POSTGRES_USER: props.POSTGRES_USER,
+      POSTGRES_PASSWORD: props.POSTGRES_PASSWORD,
     };
     
+    const path = require('path');
 
     const getAllHomeDocs = new NodejsFunction(this, 'HomeDocLambda1', {
       runtime: Runtime.NODEJS_20_X, 
