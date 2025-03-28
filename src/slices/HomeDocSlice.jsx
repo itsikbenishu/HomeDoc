@@ -106,7 +106,6 @@ const updateCurrentHomeDoc = createAsyncThunk(
         },
       };
       const pageTypeParam = pageType ? `${pageType}/` : "";
-      console.log(pageTypeParam, pageType);
 
       const response = await axios.patch(
         `${backendURL}/api/HomeDocs/${pageTypeParam}${id}`,

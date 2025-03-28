@@ -1,10 +1,7 @@
-const dotenv = require('dotenv');
 const pkg = require('pg');
 const { drizzle } = require('drizzle-orm/node-postgres');
 
 const { Pool } = pkg;
-
-dotenv.config();
 
 const writePool = new Pool({
   host: process.env.POSTGRES_WRITE_HOST, 

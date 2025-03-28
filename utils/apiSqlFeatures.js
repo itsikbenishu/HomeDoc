@@ -103,4 +103,4 @@ class APISQLFeatures {
   }
 }
 
-export default APISQLFeatures;
+module.exports = APISQLFeatures;
