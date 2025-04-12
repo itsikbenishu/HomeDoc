@@ -1,4 +1,4 @@
-const { DatabaseCluster } = require('aws-cdk-lib/aws-rds');
+const { DatabaseCluster } = require("aws-cdk-lib/aws-rds");
 
 class AuroraServerless {
   constructor(scope, id, vpc, clusterIdentifier, endpoint, port) {
@@ -6,7 +6,7 @@ class AuroraServerless {
       clusterIdentifier: clusterIdentifier,
       instanceEndpointAddress: endpoint,
       port: port,
-      securityGroups: [],  
+      securityGroups: [],
       vpc: vpc,
     });
   }

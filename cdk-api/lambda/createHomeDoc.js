@@ -3,7 +3,7 @@ import { drizzleReader } from "../../postgresDB.js";
 
 export const createHomeDoc = async (event) => {
   try {
-    const body = JSON.parse(event.body); 
+    const body = JSON.parse(event.body);
 
     const newHomeDoc = await drizzleReader
       .insert(HomeDocs)

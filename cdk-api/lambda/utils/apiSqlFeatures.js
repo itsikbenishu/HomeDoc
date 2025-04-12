@@ -12,22 +12,19 @@ class APISQLFeatures {
     }
   
     makeQuery() {
-      const query = `SELECT ${this.fields} 
-                      FROM "${this.table}" 
-                          ${this.where} 
-                          ORDER BY ${this.orderBy} 
-                          ${this.page} ${this.offset}`;
-  
-      this.query = this.DB.execute(query);
-  
+      this.query = `SELECT ${this.fields} 
+                    FROM "${this.table}" 
+                        ${this.where} 
+                        ORDER BY ${this.orderBy} 
+                        ${this.page} ${this.offset}`;
       return this;
     }
-  
+    
     async execute() {
       const result = await this.DB.execute(this.query);
       return result;
     }
-  
+    
     filter() {
       const operators = { gte: ">=", gt: ">", lte: "<=", lt: "<" };
       const queryObject = { ...this.queryString };
@@ -51,7 +48,10 @@ class APISQLFeatures {
       if (this.where.endsWith(" AND")) {
         this.where = this.where.slice(0, -4);
       }
-  
+      if(this.where === ` where `){
+        this.where = "";
+      }
+
       return this;
     }
   

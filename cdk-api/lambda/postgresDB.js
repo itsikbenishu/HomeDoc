@@ -1,10 +1,10 @@
-const pkg = require('pg');
-const { drizzle } = require('drizzle-orm/node-postgres');
+const pkg = require("pg");
+const { drizzle } = require("drizzle-orm/node-postgres");
 
 const { Pool } = pkg;
 
 const writePool = new Pool({
-  host: process.env.POSTGRES_WRITE_HOST, 
+  host: process.env.POSTGRES_WRITE_HOST,
   port: process.env.POSTGRES_PORT,
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
@@ -12,7 +12,7 @@ const writePool = new Pool({
 });
 
 const readPool = new Pool({
-  host: process.env.POSTGRES_READ_HOST, 
+  host: process.env.POSTGRES_READ_HOST,
   port: process.env.POSTGRES_PORT,
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
@@ -21,6 +21,5 @@ const readPool = new Pool({
 
 const drizzleWriter = drizzle({ client: writePool });
 const drizzleReader = drizzle({ client: readPool });
-  
 
-module.exports = { drizzleWriter,drizzleReader };
+module.exports = { drizzleWriter, drizzleReader };

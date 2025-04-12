@@ -28,7 +28,7 @@ const getAllHomeDocs = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(404).json({
+    res.status(500).json({
       status: "fail",
       message: err.message || "An error occurred",
     });
@@ -103,7 +103,7 @@ const getHomeDoc = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(404).json({
+    res.status(500).json({
       status: "fail",
       message: err.message || "An error occurred",
     });
@@ -173,7 +173,6 @@ const updateHomeDoc = async (req, res) => {
         obj[key] = req.body[key];
         return obj;
       }, {});
-    console.log(filteredBody);
 
     const updatedSpecAttributes = await postgresDB
       .insert(specsAttributes)
@@ -199,7 +198,7 @@ const updateHomeDoc = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(404).json({
+    res.status(500).json({
       status: "fail",
       message: err.message || "An error occurred",
     });
