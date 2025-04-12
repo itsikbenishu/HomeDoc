@@ -1,12 +1,12 @@
-const { Stack, Duration } = require("aws-cdk-lib");
-const { Vpc, SubnetType } = require("aws-cdk-lib/aws-ec2");
+const { Stack } = require("aws-cdk-lib");
+const { Vpc } = require("aws-cdk-lib/aws-ec2");
+const { Function, Runtime, Code } = require("aws-cdk-lib/aws-lambda");
 const { LambdaIntegration, RestApi } = require("aws-cdk-lib/aws-apigateway");
+const path = require("path");
 
 // const sqs = require('aws-cdk-lib/aws-sqs');
 const { AmplifyStack } = require("./amplify-stack");
-const { ApiGateway } = require("./api-gateway");
 const { AuroraServerless } = require("./aurora-db");
-const { LambdaFunction } = require("./lambda-function");
 const { ServicePrincipal } = require("aws-cdk-lib/aws-iam");
 
 class CdkApiStack extends Stack {
@@ -51,12 +51,12 @@ class CdkApiStack extends Stack {
       5432
     );
 
-    //  const getAllHomeDocs = new LambdaFunction(this, 'HomeDocLambda1', 'getAllHomeDocs.handler', vpc);
-    //const createHomeDoc = new LambdaFunction(this, 'HomeDocLambda2', 'createHomeDoc.handler', vpc);
+    const api = new RestApi(this, "HomeDocApiGateway", {
+      restApiName: "Homdocs",
+      description: "API for Lambda functions - Homdocs",
+    });
 
-    const { Function, Runtime, Code } = require("aws-cdk-lib/aws-lambda");
-
-    const config = {
+    const postgresConfig = {
       POSTGRES_WRITE_HOST: props.POSTGRES_WRITE_HOST,
       POSTGRES_READ_HOST: props.POSTGRES_READ_HOST,
       POSTGRES_PORT: props.POSTGRES_PORT,
@@ -65,32 +65,30 @@ class CdkApiStack extends Stack {
       POSTGRES_PASSWORD: props.POSTGRES_PASSWORD,
     };
 
-    const path = require("path");
+    const resourceConfig = [
+      {
+        lambdaName: "GetAllHomeDocsFunction",
+        path: "homedocs",
+        httpMethod: "GET",
+      },
+    ];
 
-    const getAllHomeDocs = new Function(this, "HomeDocLambda1", {
-      runtime: Runtime.NODEJS_20_X,
-      handler: "index.handler",
-      code: Code.fromAsset(path.join(__dirname, "..", "lambda-dist")),
-      environment: config,
+    resourceConfig.forEach((lambda) => {
+      const lambdaFunction = new Function(this, lambda.lambdaName, {
+        runtime: Runtime.NODEJS_20_X,
+        handler: "index.handler",
+        code: Code.fromAsset(path.join(__dirname, "..", "lambda-dist")),
+        environment: postgresConfig,
+      });
+
+      lambdaFunction.addPermission("ApiGatewayInvoke", {
+        principal: new ServicePrincipal("apigateway.amazonaws.com"),
+      });
+
+      const lambdaIntegration = new LambdaIntegration(lambdaFunction);
+      const resource = api.root.addResource(lambda.path);
+      resource.addMethod(lambda.httpMethod, lambdaIntegration);
     });
-
-    getAllHomeDocs.addPermission("ApiGatewayInvoke", {
-      principal: new ServicePrincipal("apigateway.amazonaws.com"),
-    });
-
-    const api = new RestApi(this, "HomeDocApiGateway", {
-      restApiName: "Homdocs",
-      description: "API for Lambda functions - Homdocs",
-    });
-
-    const lambdaIntegration = new LambdaIntegration(getAllHomeDocs);
-    const resource = api.root.addResource("getAllHomeDocs");
-    resource.addMethod("GET", lambdaIntegration);
-
-    // const apiGateway = new ApiGateway(this, 'HomeDocApiGateway', {
-    //   getAllHomeDocs: new LambdaIntegration(getAllHomeDocs),
-    //  // createHomeDoc: new LambdaIntegration(createHomeDoc),
-    //     });
   }
 }
 
