@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import { NAVBAR_LINKS } from "../Constants";
+import { NAVBAR_LINKS } from "../../Constants";
 
 const DrawerComponent = () => {
   const [openDrawer, setOpenDrawer] = useState(false);

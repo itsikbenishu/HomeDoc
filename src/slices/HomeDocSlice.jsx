@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { STATUSES } from "../Constants";
+import { STATUSES } from "../../Constants";
 import { toast } from "../utils/toast";
 
 const initialState = {
@@ -54,7 +54,9 @@ const fetchHomeDocStats = createAsyncThunk(
         },
       };
       const response = await axios.get(
-        `${backendURL}/api/HomeDocs/stats?${interiorEntityKey ? `interiorEntityKey=${interiorEntityKey}` : ""}`,
+        `${backendURL}/api/HomeDocs/stats?${
+          interiorEntityKey ? `interiorEntityKey=${interiorEntityKey}` : ""
+        }`,
         config
       );
 
@@ -220,9 +222,9 @@ const homeDocSlice = createSlice({
       })
       .addCase(searchHomeDocs.fulfilled, (state, action) => {
         state.searchEntityResults =
-          action.payload.data.homeDoc == null
+          action.payload.data.homeDocs == null
             ? []
-            : action.payload.data.homeDoc;
+            : action.payload.data.homeDocs;
         state.entity = initialState.entity;
         state.status = STATUSES.FULFILLED;
       })

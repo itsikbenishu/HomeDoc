@@ -1,11 +1,11 @@
-import { HomeDocs } from "../../models/homeDocModel.js";
-import { drizzleReader } from "../../postgresDB.js";
+const { HomeDocs } = require("./models/homeDocModel");
+const { drizzleWriter } = require("./postgresDB");
 
-export const createHomeDoc = async (event) => {
+exports.handler = async (event) => {
   try {
     const body = JSON.parse(event.body);
 
-    const newHomeDoc = await drizzleReader
+    const newHomeDoc = await drizzleWriter
       .insert(HomeDocs)
       .values(body)
       .returning();
@@ -21,7 +21,7 @@ export const createHomeDoc = async (event) => {
     };
   } catch (err) {
     return {
-      statusCode: 400,
+      statusCode: 500,
       body: JSON.stringify({
         status: "fail",
         message: err.message || "An error occurred",

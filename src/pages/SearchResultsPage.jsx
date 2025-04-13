@@ -12,7 +12,7 @@ import {
   selectHomeDocStats,
   fetchHomeDocStats,
 } from "../slices/HomeDocSlice";
-import { HOME_DOC_CATEGORIES } from "../Constants";
+import { HOME_DOC_CATEGORIES } from "../../Constants";
 import HeaderPage from "../componets/HeaderPage";
 
 const useStyles = makeStyles(() => ({
@@ -67,9 +67,9 @@ const SearchResultsPage = () => {
     homeDocsStats === null || homeDocsStats?.categoryStats === null
       ? 0
       : checkCategory && checkMessage
-        ? homeDocsStats.totalCount
-        : homeDocsStats.categoryStats[categoryIndex]?.countHomes ||
-          homeDocsStats.totalCount;
+      ? homeDocsStats.totalCount
+      : homeDocsStats.categoryStats[categoryIndex]?.countHomes ||
+        homeDocsStats.totalCount;
 
   return (
     <>

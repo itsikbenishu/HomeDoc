@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Paper, Card, Typography, Grid, CardContent } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { BASIC_PAGINATION,HOME_DOC_CATEGORIES } from "../Constants";
+import { BASIC_PAGINATION, HOME_DOC_CATEGORIES } from "../../Constants";
 
 const useStyles = makeStyles(() => ({
   header: {

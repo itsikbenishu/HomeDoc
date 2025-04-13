@@ -1,6 +1,6 @@
 import { Paper, Grid, Typography, Card } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { SUB_HOME_DOC_LIST, SUB_HOME_DOC_TYPE } from "../Constants";
+import { SUB_HOME_DOC_LIST, SUB_HOME_DOC_TYPE } from "../../Constants";
 import ExtraDataList from "./ExtraDataList";
 import ExtraDataField from "./ExtraDataField";
 
@@ -145,7 +145,11 @@ const ResidenceExtraDataCard = ({ residence }) => {
                     SUB_HOME_DOC_TYPE[residence.category][residence.type]
                   ]
                     ? `כמות הפריטים:`
-                    : `כמות ה${SUB_HOME_DOC_LIST[SUB_HOME_DOC_TYPE[residence.category][residence.type]]}:`}
+                    : `כמות ה${
+                        SUB_HOME_DOC_LIST[
+                          SUB_HOME_DOC_TYPE[residence.category][residence.type]
+                        ]
+                      }:`}
                 </Typography>
               </Grid>
               <Grid item xs={2} className={classes.textFieldContainer}>
@@ -184,10 +188,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                 </Typography>
               </Grid>
               <Grid item xs={1} className={classes.textFieldContainer}>
-                <ExtraDataField
-                  label="area"
-                  className={classes.textField}
-                />
+                <ExtraDataField label="area" className={classes.textField} />
               </Grid>
             </Grid>
           </Card>
@@ -223,10 +224,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                   </Typography>
                 </Grid>
                 <Grid item xs={2} className={classes.textFieldContainer}>
-                  <ExtraDataField
-                    label="width"
-                    className={classes.textField}
-                  />
+                  <ExtraDataField label="width" className={classes.textField} />
                 </Grid>
                 <Grid
                   item

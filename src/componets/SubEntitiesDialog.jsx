@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import { HOME_DOC_PAGE_TYPE } from "../Constants";
+import { HOME_DOC_PAGE_TYPE } from "../../Constants";
 import CreateSubHomeDialog from "./CreateSubHomeDialog";
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -88,7 +88,9 @@ const SubEntitiesDialog = ({
                   }}
                   onClick={() =>
                     handleItemClick(
-                      `/Results/${HOME_DOC_PAGE_TYPE[subEntity.type]}/${subEntity._id}`
+                      `/Results/${HOME_DOC_PAGE_TYPE[subEntity.type]}/${
+                        subEntity._id
+                      }`
                     )
                   }
                 >

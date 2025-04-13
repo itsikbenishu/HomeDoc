@@ -14,16 +14,15 @@ exports.handler = async (event) => {
 
     const entities = await features.execute();
 
-    const homeDoc = entities.rows || [];
+    const homeDocs = entities.rows || [];
     return {
       statusCode: 200,
       body: JSON.stringify({
         status: "success",
-        data: { homeDoc },
+        data: { homeDocs },
       }),
     };
   } catch (err) {
-    console.error("Error in handler:", err);
     return {
       statusCode: 500,
       body: JSON.stringify({

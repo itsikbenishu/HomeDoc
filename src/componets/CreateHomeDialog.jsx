@@ -15,7 +15,7 @@ import { makeStyles } from "@mui/styles";
 import { useDispatch } from "react-redux";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import { createHomeDoc } from "../slices/HomeDocSlice";
-import { HOME_DOC_CATEGORIES } from "../Constants";
+import { HOME_DOC_CATEGORIES } from "../../Constants";
 import DialogButton from "./DialogButton";
 
 const useStyles = makeStyles(() => ({

@@ -68,15 +68,22 @@ class CdkApiStack extends Stack {
     const resourceConfig = [
       {
         lambdaName: "GetAllHomeDocsFunction",
-        path: "homedocs",
+        route: "homedocs",
         httpMethod: "GET",
+        handlerFile: "getAllHomeDocs",
+      },
+      {
+        lambdaName: "CreateHomeDocFunction",
+        route: "homedoc",
+        httpMethod: "POST",
+        handlerFile: "createHomeDoc",
       },
     ];
 
     resourceConfig.forEach((lambda) => {
       const lambdaFunction = new Function(this, lambda.lambdaName, {
         runtime: Runtime.NODEJS_20_X,
-        handler: "index.handler",
+        handler: `${lambda.handlerFile}.handler`,
         code: Code.fromAsset(path.join(__dirname, "..", "lambda-dist")),
         environment: postgresConfig,
       });
@@ -86,7 +93,7 @@ class CdkApiStack extends Stack {
       });
 
       const lambdaIntegration = new LambdaIntegration(lambdaFunction);
-      const resource = api.root.addResource(lambda.path);
+      const resource = api.root.addResource(lambda.route);
       resource.addMethod(lambda.httpMethod, lambdaIntegration);
     });
   }

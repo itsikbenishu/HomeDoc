@@ -9,7 +9,7 @@ import {
   selectHomeDoc,
   selectHomeDocStatus,
 } from "../slices/HomeDocSlice";
-import { HOME_DOC_PAGES_TYPES, STATUSES } from "../Constants";
+import { HOME_DOC_PAGES_TYPES, STATUSES } from "../../Constants";
 import { useExtraHomeDocFormik } from "../hooks/useExtraHomeDocFormik";
 import ChattelsBasicDataCard from "../componets/ChattelsBasicDataCard";
 import ChattelsExtraDataCard from "../componets/ChattelsExtraDataCard";
@@ -62,59 +62,64 @@ const ChattelsPage = () => {
       {isLoading || !chattels?.id ? (
         <Loader />
       ) : (
-          <Formik
-            initialValues={extraHomeDocFormik.initialValues}
-            validationSchema={extraHomeDocFormik.validationSchema}
-            onSubmit={extraHomeDocFormik.onSubmit}
+        <Formik
+          initialValues={extraHomeDocFormik.initialValues}
+          validationSchema={extraHomeDocFormik.validationSchema}
+          onSubmit={extraHomeDocFormik.onSubmit}
+        >
+          <Card
+            sx={{
+              bgcolor: (theme) => theme.palette.primary.main,
+              height: "90vh",
+            }}
           >
-            <Card sx={{ bgcolor: (theme) => theme.palette.primary.main , height: "90vh" }}>
-              <Grid
-                container
-                spacing={0.5}
-                style={{ height: " 100vh" }}
-                direction="column"
-              >
-                <Grid item xs={6} sm={6} md={3}>
-                  <Paper
-                    elevation={1}
-                    className={classes.paper}
-                    style={{
-                      backgroundColor: "rgb(205 213 225)",
-                      borderColor: "rgb(205 213 225)",
-                      marginBottom: "-0.5rem",
+            <Grid
+              container
+              spacing={0.5}
+              style={{ height: " 100vh" }}
+              direction="column"
+            >
+              <Grid item xs={6} sm={6} md={3}>
+                <Paper
+                  elevation={1}
+                  className={classes.paper}
+                  style={{
+                    backgroundColor: "rgb(205 213 225)",
+                    borderColor: "rgb(205 213 225)",
+                    marginBottom: "-0.5rem",
+                  }}
+                >
+                  <ChattelsBasicDataCard
+                    entityTitle={entityTitle}
+                    entitySubTitle={{
+                      title: entitySubTitle,
+                      fatherId: chattels?.fatherId,
+                      type: chattels?.fatherType,
                     }}
-                  >
-                    <ChattelsBasicDataCard
-                      entityTitle={entityTitle}
-                      entitySubTitle={{
-                        title: entitySubTitle,
-                        fatherId: chattels?.fatherId,
-                        type: chattels?.fatherType,
-                      }}
-                      entityType={chattels.type}
-                    />
-                  </Paper>
-                </Grid>
-                <Grid item xs={6} sm={6} md={9}>
-                  <Paper
-                    elevation={1}
-                    className={classes.paper}
-                    style={{
-                      backgroundColor: "rgb(205 213 225)",
-                      borderColor: "rgb(205 213 225)",
-                    }}
-                  >
-                    <ChattelsExtraDataCard chattels={chattels} />
-                  </Paper>
-                </Grid>
-                <Grid item xs={6} sm={12} style={{ paddingTop: "0.5rem" }}>
-                  <LabeledContainer lableName={"תמונות"}>
-                    <div>בפיתוח</div>
-                  </LabeledContainer>
-                </Grid>
+                    entityType={chattels.type}
+                  />
+                </Paper>
               </Grid>
-            </Card>
-          </Formik>
+              <Grid item xs={6} sm={6} md={9}>
+                <Paper
+                  elevation={1}
+                  className={classes.paper}
+                  style={{
+                    backgroundColor: "rgb(205 213 225)",
+                    borderColor: "rgb(205 213 225)",
+                  }}
+                >
+                  <ChattelsExtraDataCard chattels={chattels} />
+                </Paper>
+              </Grid>
+              <Grid item xs={6} sm={12} style={{ paddingTop: "0.5rem" }}>
+                <LabeledContainer lableName={"תמונות"}>
+                  <div>בפיתוח</div>
+                </LabeledContainer>
+              </Grid>
+            </Grid>
+          </Card>
+        </Formik>
       )}
     </EditModeContext.Provider>
   );

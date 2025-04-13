@@ -1,14 +1,8 @@
 import React from "react";
-import {
-  Box,
-  AppBar,
-  Toolbar,
-  CssBaseline,
-  Typography,
-} from "@mui/material";
+import { Box, AppBar, Toolbar, CssBaseline, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router-dom";
-import { SYS_NAME } from "../Constants";
+import { SYS_NAME } from "../../Constants";
 
 const useStyles = makeStyles(() => ({
   appBar: {
@@ -28,7 +22,7 @@ const Navbar = () => {
     <AppBar position="static">
       <CssBaseline />
       <Toolbar>
-        <Box onClick={()=>navigate('/')}>
+        <Box onClick={() => navigate("/")}>
           <Typography variant="h4" className={classes.logo}>
             {SYS_NAME}
           </Typography>

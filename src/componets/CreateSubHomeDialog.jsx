@@ -19,7 +19,7 @@ import {
 import { makeStyles } from "@mui/styles";
 import AddIcon from "@mui/icons-material/Add";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
-import { SUB_HOME_DOC_KEY, SUB_HOME_DOC_TYPE } from "../Constants";
+import { SUB_HOME_DOC_KEY, SUB_HOME_DOC_TYPE } from "../../Constants";
 import {
   createSubHomeDoc,
   selectHomeDocEntityCategory,
@@ -128,7 +128,9 @@ const CreateSubHomeDialog = ({
         <DialogContent>
           <DialogContentText style={{ marginBottom: 10 }}>
             {dialogContentText === ""
-              ? `לצורך הרחבת התיעוד הביתי, אנא הזן את ${SUB_HOME_DOC_KEY[SUB_HOME_DOC_TYPE[category][homeDocType]]} אשר הוחלט לתעד.`
+              ? `לצורך הרחבת התיעוד הביתי, אנא הזן את ${
+                  SUB_HOME_DOC_KEY[SUB_HOME_DOC_TYPE[category][homeDocType]]
+                } אשר הוחלט לתעד.`
               : dialogContentText}
           </DialogContentText>
           <Stack spacing={1}>

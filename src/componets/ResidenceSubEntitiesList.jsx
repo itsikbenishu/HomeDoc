@@ -8,7 +8,7 @@ import {
   HOME_DOC_PAGE_TYPE,
   SUB_HOME_DOC_LIST,
   SUB_HOME_DOC_TYPE,
-} from "../Constants";
+} from "../../Constants";
 import CreateSubHomeDialog from "./CreateSubHomeDialog";
 import SubEntitiesDialog from "./SubEntitiesDialog";
 
@@ -41,7 +41,9 @@ const ResidenceSubEntitiesList = ({
   const category = useSelector(selectHomeDocEntityCategory);
   const isExpand = subEntitiesList.length <= 5;
   const firstFiveElemnts = subEntitiesList.slice(0, 5);
-  const subEntityName = `${SUB_HOME_DOC_LIST[SUB_HOME_DOC_TYPE[category][subEntityType]]}`;
+  const subEntityName = `${
+    SUB_HOME_DOC_LIST[SUB_HOME_DOC_TYPE[category][subEntityType]]
+  }`;
 
   const subEntityPreName =
     SUB_HOME_DOC_TYPE[category][entityType] === "FLOOR" ||
@@ -86,7 +88,9 @@ const ResidenceSubEntitiesList = ({
             >
               <Typography variant="body1" className={classes.typographyText}>
                 <Link
-                  to={`/Results/${HOME_DOC_PAGE_TYPE[subEntity.type]}/${subEntity.id}`}
+                  to={`/Results/${HOME_DOC_PAGE_TYPE[subEntity.type]}/${
+                    subEntity.id
+                  }`}
                   key={subEntity.id}
                 >
                   {subEntity.interiorEntityKey}

@@ -10,7 +10,7 @@ import {
   Input,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { BASIC_PAGINATION, HOME_DOC_CATEGORIES } from "../Constants";
+import { BASIC_PAGINATION, HOME_DOC_CATEGORIES } from "../../Constants";
 import CreateHomeDialog from "./CreateHomeDialog";
 
 const useStyles = makeStyles(() => ({
@@ -116,8 +116,8 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
         value === ""
           ? paramsForQuery
           : paramsForQuery === "?"
-            ? paramsForQuery + key + "=" + value
-            : paramsForQuery + "&" + key + "=" + value;
+          ? paramsForQuery + key + "=" + value
+          : paramsForQuery + "&" + key + "=" + value;
     });
 
     const isPaginted =

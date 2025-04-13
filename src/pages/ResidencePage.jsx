@@ -15,7 +15,7 @@ import {
   HOME_DOC_PAGES_TYPES,
   HOME_DOC_RESIDENCE_TYPE,
   STATUSES,
-} from "../Constants";
+} from "../../Constants";
 import { useExtraHomeDocFormik } from "../hooks/useExtraHomeDocFormik";
 import ResidenceBasicDataCard from "../componets/ResidenceBasicDataCard";
 import ResidenceExtraDataCard from "../componets/ResidenceExtraDataCard";
@@ -75,78 +75,78 @@ const HomeDocResidencePage = () => {
       {isLoading || !residence?.id ? (
         <Loader />
       ) : (
-          <Formik
-            initialValues={extraHomeDocFormik.initialValues}
-            validationSchema={extraHomeDocFormik.validationSchema}
-            onSubmit={extraHomeDocFormik.onSubmit}
+        <Formik
+          initialValues={extraHomeDocFormik.initialValues}
+          validationSchema={extraHomeDocFormik.validationSchema}
+          onSubmit={extraHomeDocFormik.onSubmit}
+        >
+          <Card
+            sx={{
+              bgcolor: (theme) => theme.palette.primary.main,
+              height: "90vh",
+            }}
           >
-            <Card sx={{ bgcolor: (theme) => theme.palette.primary.main , height: "90vh" }}>
-              <Grid
-                container
-                spacing={0.5}
-                style={{ height: " 100vh" }}
-                direction="column"
-              >
-                <Grid item xs={6} sm={6} md={3}>
-                  <Paper
-                    elevation={1}
-                    className={classes.paper}
-                    style={{
-                      backgroundColor: "rgb(205 213 225)",
-                      borderColor: "rgb(205 213 225)",
-                      marginBottom: "-0.5rem",
-                    }}
-                  >
-                    <ResidenceBasicDataCard
-                      entityTitle={entityTitle}
-                      entitySubTitle={{
-                        title: entitySubTitle,
-                        fatherId: residence?.fatherId,
-                        type: residence?.fatherType,
-                      }}
-                      entityType={residence.type}
-                      subEntities={residence.subEntities}
-                    ></ResidenceBasicDataCard>
-                  </Paper>
-                </Grid>
-                <Grid
-                  item
-                  xs={6}
-                  sm={6}
-                  md={residenceType === "ROOM" ? 7.9 : 9}
+            <Grid
+              container
+              spacing={0.5}
+              style={{ height: " 100vh" }}
+              direction="column"
+            >
+              <Grid item xs={6} sm={6} md={3}>
+                <Paper
+                  elevation={1}
+                  className={classes.paper}
+                  style={{
+                    backgroundColor: "rgb(205 213 225)",
+                    borderColor: "rgb(205 213 225)",
+                    marginBottom: "-0.5rem",
+                  }}
                 >
-                  <Paper
-                    elevation={1}
-                    className={classes.paper}
-                    style={{
-                      backgroundColor: "rgb(205 213 225)",
-                      borderColor: "rgb(205 213 225)",
+                  <ResidenceBasicDataCard
+                    entityTitle={entityTitle}
+                    entitySubTitle={{
+                      title: entitySubTitle,
+                      fatherId: residence?.fatherId,
+                      type: residence?.fatherType,
                     }}
-                  >
-                    <ResidenceExtraDataCard residence={residence} />
-                  </Paper>
-                </Grid>
-                <Grid item xs={6} sm={6} style={{ paddingTop: "0.5rem" }}>
-                  <LabeledContainer lableName={"תמונות"}>
+                    entityType={residence.type}
+                    subEntities={residence.subEntities}
+                  ></ResidenceBasicDataCard>
+                </Paper>
+              </Grid>
+              <Grid item xs={6} sm={6} md={residenceType === "ROOM" ? 7.9 : 9}>
+                <Paper
+                  elevation={1}
+                  className={classes.paper}
+                  style={{
+                    backgroundColor: "rgb(205 213 225)",
+                    borderColor: "rgb(205 213 225)",
+                  }}
+                >
+                  <ResidenceExtraDataCard residence={residence} />
+                </Paper>
+              </Grid>
+              <Grid item xs={6} sm={6} style={{ paddingTop: "0.5rem" }}>
+                <LabeledContainer lableName={"תמונות"}>
+                  <div>בפיתוח</div>
+                </LabeledContainer>
+              </Grid>
+              <Grid item xs={6} sm={6} style={{ paddingTop: "0.5rem" }}>
+                {residenceType === "PROPERTY" ? (
+                  <Paper
+                    elevation={2}
+                    className={classes.paper}
+                    style={{ backgroundColor: "#130b65" }}
+                  ></Paper>
+                ) : (
+                  <LabeledContainer lableName="מבט על">
                     <div>בפיתוח</div>
                   </LabeledContainer>
-                </Grid>
-                <Grid item xs={6} sm={6} style={{ paddingTop: "0.5rem" }}>
-                  {residenceType === "PROPERTY" ? (
-                    <Paper
-                      elevation={2}
-                      className={classes.paper}
-                      style={{ backgroundColor: "#130b65" }}
-                    ></Paper>
-                  ) : (
-                    <LabeledContainer lableName="מבט על">
-                      <div>בפיתוח</div>
-                    </LabeledContainer>
-                  )}
-                </Grid>
+                )}
               </Grid>
-            </Card>
-          </Formik>
+            </Grid>
+          </Card>
+        </Formik>
       )}
     </EditModeContext.Provider>
   );

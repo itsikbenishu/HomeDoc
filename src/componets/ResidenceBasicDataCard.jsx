@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFormikContext } from "formik";
 import { Paper, Grid, Typography, Card } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { HOME_DOC_RESIDENCE_TYPE, SUB_HOME_DOC_TYPE } from "../Constants";
+import { HOME_DOC_RESIDENCE_TYPE, SUB_HOME_DOC_TYPE } from "../../Constants";
 import {
   deleteHomeDoc,
   selectHomeDocEntityCategory,
