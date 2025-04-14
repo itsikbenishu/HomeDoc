@@ -7,14 +7,11 @@ const {
   timestamp,
   json,
 } = require("drizzle-orm/pg-core");
+
 const {
   HOME_DOC_CATEGORIES,
   HOME_DOC_PAGE_TYPE,
 } = require("../../../Constants");
-// const {
-//   HOME_DOC_CATEGORIES,
-//   HOME_DOC_PAGE_TYPE,
-// } = require("../../../src/Constants");
 
 const CategoriesEnum = pgEnum(
   "home_doc_categories",

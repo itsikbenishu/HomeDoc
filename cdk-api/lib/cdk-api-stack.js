@@ -8,6 +8,8 @@ const path = require("path");
 const { AmplifyStack } = require("./amplify-stack");
 const { AuroraServerless } = require("./aurora-db");
 const { ServicePrincipal } = require("aws-cdk-lib/aws-iam");
+const addResources = require("./add-resources");
+const resourceConfig = require("./resource-config");
 
 class CdkApiStack extends Stack {
   /**
@@ -65,22 +67,9 @@ class CdkApiStack extends Stack {
       POSTGRES_PASSWORD: props.POSTGRES_PASSWORD,
     };
 
-    const resourceConfig = [
-      {
-        lambdaName: "GetAllHomeDocsFunction",
-        route: "homedocs",
-        httpMethod: "GET",
-        handlerFile: "getAllHomeDocs",
-      },
-      {
-        lambdaName: "CreateHomeDocFunction",
-        route: "homedoc",
-        httpMethod: "POST",
-        handlerFile: "createHomeDoc",
-      },
-    ];
+    resourceConfig.functions.forEach((lambda) => {
+      const fullPath = `${resourceConfig.baseRoute}${lambda.route}`;
 
-    resourceConfig.forEach((lambda) => {
       const lambdaFunction = new Function(this, lambda.lambdaName, {
         runtime: Runtime.NODEJS_20_X,
         handler: `${lambda.handlerFile}.handler`,
@@ -93,7 +82,7 @@ class CdkApiStack extends Stack {
       });
 
       const lambdaIntegration = new LambdaIntegration(lambdaFunction);
-      const resource = api.root.addResource(lambda.route);
+      const resource = addResources(api.root, fullPath);
       resource.addMethod(lambda.httpMethod, lambdaIntegration);
     });
   }

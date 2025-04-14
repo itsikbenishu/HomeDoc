@@ -22,93 +22,6 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// lambda/utils/apiSqlFeatures.js
-var require_apiSqlFeatures = __commonJS({
-  "lambda/utils/apiSqlFeatures.js"(exports2, module2) {
-    var APISQLFeatures2 = class {
-      constructor(DB, table, queryString) {
-        this.DB = DB;
-        this.table = table;
-        this.queryString = queryString;
-        this.page = "";
-        this.offset = "";
-        this.orderBy = "";
-        this.fields = "*";
-        this.where = "";
-        this.query = "";
-      }
-      makeQuery() {
-        this.query = `SELECT ${this.fields} 
-                    FROM "${this.table}" 
-                        ${this.where} 
-                        ORDER BY ${this.orderBy} 
-                        ${this.page} ${this.offset}`;
-        return this;
-      }
-      async execute() {
-        const result = await this.DB.execute(this.query);
-        return result;
-      }
-      filter() {
-        const operators = { gte: ">=", gt: ">", lte: "<=", lt: "<" };
-        const queryObject = { ...this.queryString };
-        const excludedFields = ["page", "sort", "limit", "fields"];
-        excludedFields.forEach((elem) => delete queryObject[elem]);
-        this.where = ` where ` + Object.entries(queryObject).reduce((acc, [key, value]) => {
-          if (typeof value === "object") {
-            const operatorKey = Object.keys(value)[0];
-            const operator = operators[operatorKey];
-            const fieldValue = value[operatorKey];
-            return acc + `${key}${operator}${fieldValue} AND`;
-          } else {
-            return acc + ` "${key}"=${value} AND`;
-          }
-        }, "");
-        if (this.where.endsWith(" AND")) {
-          this.where = this.where.slice(0, -4);
-        }
-        if (this.where === ` where `) {
-          this.where = "";
-        }
-        return this;
-      }
-      sort() {
-        if (this.queryString.sort) {
-          const sortBy = this.queryString.sort.split(",").map((field) => {
-            if (field.startsWith("-")) {
-              return `"${field.slice(1)}" DESC`;
-            }
-            return `"${field}" ASC`;
-          }).join(", ");
-          this.orderBy = sortBy;
-        } else {
-          this.orderBy = `"createdAt" DESC`;
-        }
-        return this;
-      }
-      limitFields() {
-        if (this.queryString.fields) {
-          const fields = this.queryString.fields.split(",").map((field) => `"${field}"`).join(`, `);
-          this.fields = fields;
-        } else {
-          this.fields = `*`;
-        }
-        return this;
-      }
-      paginate() {
-        const defaultPaginateLimit = 25;
-        const page = this.queryString.page * 1 || 1;
-        const limit = this.queryString.limit * 1 || defaultPaginateLimit;
-        const offset = (page - 1) * limit;
-        this.offset = `OFFSET ${offset}`;
-        this.page = `LIMIT ${limit}`;
-        return this;
-      }
-    };
-    module2.exports = APISQLFeatures2;
-  }
-});
-
 // node_modules/postgres-array/index.js
 var require_postgres_array = __commonJS({
   "node_modules/postgres-array/index.js"(exports2) {
@@ -15645,26 +15558,223 @@ var require_postgresDB = __commonJS({
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB
     });
-    var drizzleWriter = drizzle({ client: writePool });
-    var drizzleReader2 = drizzle({ client: readPool });
-    module2.exports = { drizzleWriter, drizzleReader: drizzleReader2 };
+    var drizzleWriter2 = drizzle({ client: writePool });
+    var drizzleReader = drizzle({ client: readPool });
+    module2.exports = { drizzleWriter: drizzleWriter2, drizzleReader };
   }
 });
 
-// lambda/handlers/getAllHomeDocs.js
-var APISQLFeatures = require_apiSqlFeatures();
-var { drizzleReader } = require_postgresDB();
+// ../Constants.js
+var Constants_exports = {};
+__export(Constants_exports, {
+  BASIC_PAGINATION: () => BASIC_PAGINATION,
+  HOME_DOC_CATEGORIES: () => HOME_DOC_CATEGORIES,
+  HOME_DOC_CHATTELS_TYPE: () => HOME_DOC_CHATTELS_TYPE,
+  HOME_DOC_PAGES_TYPES: () => HOME_DOC_PAGES_TYPES,
+  HOME_DOC_PAGE_TYPE: () => HOME_DOC_PAGE_TYPE,
+  HOME_DOC_RESIDENCE_TYPE: () => HOME_DOC_RESIDENCE_TYPE,
+  NAVBAR_LINKS: () => NAVBAR_LINKS,
+  STATUSES: () => STATUSES,
+  SUB_HOME_DOC_KEY: () => SUB_HOME_DOC_KEY,
+  SUB_HOME_DOC_LIST: () => SUB_HOME_DOC_LIST,
+  SUB_HOME_DOC_TYPE: () => SUB_HOME_DOC_TYPE,
+  SYS_NAME: () => SYS_NAME
+});
+var SYS_NAME, BASIC_PAGINATION, NAVBAR_LINKS, STATUSES, HOME_DOC_CATEGORIES, HOME_DOC_RESIDENCE_TYPE, HOME_DOC_CHATTELS_TYPE, SUB_HOME_DOC_KEY, SUB_HOME_DOC_LIST, HOME_DOC_PAGES_TYPES, HOME_DOC_PAGE_TYPE, SUB_HOME_DOC_TYPE;
+var init_Constants = __esm({
+  "../Constants.js"() {
+    SYS_NAME = "\u05EA\u05D9\u05E2\u05D5\u05D3 \u05D1\u05D9\u05EA\u05D9";
+    BASIC_PAGINATION = `page=1&limit=10`;
+    NAVBAR_LINKS = [
+      // { name: "תיעוד ביתי", loc: "/HomeDoc", key: "2" },
+      // { name: "סנייק", loc: "/Snake", key: "3" },
+      // { name: "צוללות", loc: "/Submarine", key: "4" },
+      // { name: "מסך הבית", loc: "/", key: "1" },
+    ];
+    STATUSES = {
+      IDLE: "idle",
+      PENDING: "pending",
+      FULFILLED: "fulfilled",
+      REJECTED: "rejected"
+    };
+    HOME_DOC_CATEGORIES = {
+      ONE_STORY_HOUSE: "\u05D1\u05D9\u05EA \u05D7\u05D3 \u05E7\u05D5\u05DE\u05EA\u05D9",
+      RESIDENTIAL_BUILDING: "\u05D1\u05E0\u05D9\u05D9\u05DF \u05DE\u05D2\u05D5\u05E8\u05D9\u05DD",
+      MULTI_STORY_HOUSE: "\u05D1\u05D9\u05EA \u05E8\u05D1 \u05E7\u05D5\u05DE\u05EA\u05D9"
+    };
+    HOME_DOC_RESIDENCE_TYPE = {
+      PROPERTY: "\u05D1\u05D9\u05EA",
+      FLOOR: "\u05E7\u05D5\u05DE\u05D4",
+      APARTMENT: "\u05D3\u05D9\u05E8\u05D4",
+      ROOM: "\u05D7\u05D3\u05E8"
+    };
+    HOME_DOC_CHATTELS_TYPE = {
+      FURNITURE: "\u05E8\u05D4\u05D9\u05D8",
+      STUFF: "\u05D7\u05E4\u05E5",
+      INSTRUMENT: "\u05DE\u05DB\u05E9\u05D9\u05E8"
+    };
+    SUB_HOME_DOC_KEY = {
+      FLOOR: "\u05DE\u05E1\u05E4\u05E8 \u05D4\u05E7\u05D5\u05DE\u05D4",
+      APARTMENT: "\u05DE\u05E1\u05E4\u05E8 \u05D4\u05D3\u05D9\u05E8\u05D4",
+      ROOM: "\u05E9\u05DD \u05D4\u05D7\u05D3\u05E8",
+      FURNITURE: "\u05E9\u05DD \u05D4\u05E8\u05D4\u05D9\u05D8",
+      STUFF: "\u05E9\u05DD \u05D4\u05D7\u05E4\u05E5",
+      INSTRUMENT: "\u05E9\u05DD \u05D4\u05DE\u05DB\u05E9\u05D9\u05E8"
+    };
+    SUB_HOME_DOC_LIST = {
+      FLOOR: "\u05E7\u05D5\u05DE\u05D5\u05EA",
+      APARTMENT: "\u05D3\u05D9\u05E8\u05D5\u05EA",
+      ROOM: "\u05D7\u05D3\u05E8\u05D9\u05DD",
+      FURNITURE: "\u05E8\u05D4\u05D9\u05D8\u05D9\u05DD",
+      STUFF: "\u05D7\u05E4\u05E6\u05D9\u05DD",
+      INSTRUMENT: "\u05DE\u05DB\u05E9\u05D9\u05E8\u05D9\u05DD"
+    };
+    HOME_DOC_PAGES_TYPES = {
+      RESIDENCE: "Residence",
+      CHATTELS: "Chattels"
+    };
+    HOME_DOC_PAGE_TYPE = {
+      PROPERTY: "Residence",
+      FLOOR: "Residence",
+      APARTMENT: "Residence",
+      ROOM: "Residence",
+      ROOM_FURNITURE: "Chattels",
+      ROOM_STUFF: "Chattels",
+      ROOM_INSTRUMENT: "Chattels"
+    };
+    SUB_HOME_DOC_TYPE = {
+      ONE_STORY_HOUSE: {
+        PROPERTY: "ROOM",
+        ROOM_FURNITURE: "FURNITURE",
+        ROOM_STUFF: "STUFF",
+        ROOM_INSTRUMENT: "INSTRUMENT"
+      },
+      RESIDENTIAL_BUILDING: {
+        PROPERTY: "FLOOR",
+        FLOOR: "APARTMENT",
+        APARTMENT: "ROOM",
+        ROOM_FURNITURE: "FURNITURE",
+        ROOM_STUFF: "STUFF",
+        ROOM_INSTRUMENT: "INSTRUMENT"
+      },
+      MULTI_STORY_HOUSE: {
+        PROPERTY: "FLOOR",
+        FLOOR: "ROOM",
+        ROOM_FURNITURE: "FURNITURE",
+        ROOM_STUFF: "STUFF",
+        ROOM_INSTRUMENT: "INSTRUMENT"
+      }
+    };
+  }
+});
+
+// lambda/models/homeDocModel.js
+var require_homeDocModel = __commonJS({
+  "lambda/models/homeDocModel.js"(exports2, module2) {
+    var {
+      pgTable,
+      pgEnum,
+      serial,
+      integer,
+      text,
+      timestamp,
+      json
+    } = require_pg_core();
+    var {
+      HOME_DOC_CATEGORIES: HOME_DOC_CATEGORIES2,
+      HOME_DOC_PAGE_TYPE: HOME_DOC_PAGE_TYPE2
+    } = (init_Constants(), __toCommonJS(Constants_exports));
+    var CategoriesEnum = pgEnum(
+      "home_doc_categories",
+      Object.keys(HOME_DOC_CATEGORIES2)
+    );
+    var TypesEnum = pgEnum("home_doc_type", Object.keys(HOME_DOC_PAGE_TYPE2));
+    var HomeDocs2 = pgTable("home_docs", {
+      id: serial().primaryKey(),
+      fatherId: integer().references("home_docs", "id", {
+        onDelete: "cascade"
+      }),
+      fatherInteriorEntityKey: text(),
+      interiorEntityKey: text(),
+      createdAt: timestamp().defaultNow(),
+      updatedAt: timestamp().defaultNow(),
+      category: CategoriesEnum(),
+      type: TypesEnum(),
+      description: text(),
+      extraData: json()
+    });
+    var HomeDocsRelations2 = pgTable("home_docs_relations", {
+      id: serial().primaryKey(),
+      homeDocId: integer().references(() => HomeDocs2.id, {
+        onDelete: "cascade"
+      }),
+      subHomeDocId: integer().references(() => HomeDocs2.id, {
+        onDelete: "cascade"
+      })
+    });
+    var HomeDocsDimensions = pgTable("home_docs_dimensions", {
+      id: serial().primaryKey(),
+      homeDocId: integer().references(() => HomeDocs2.id, {
+        onDelete: "cascade"
+      }).unique(),
+      length: text(),
+      width: text()
+    });
+    var ResidenceSpecsAttributes = pgTable("residence_specs_attributes", {
+      id: serial().primaryKey(),
+      homeDocId: integer().references(() => HomeDocs2.id, {
+        onDelete: "cascade"
+      }).unique(),
+      area: text(),
+      subEntitiesQuantity: text(),
+      constructionYear: text()
+    });
+    var ChattelsSpecsAttributes = pgTable("chattels_specs_attributes", {
+      id: serial().primaryKey(),
+      homeDocId: integer().references(() => HomeDocs2.id, {
+        onDelete: "cascade"
+      }).unique(),
+      colors: text(),
+      quantity: text(),
+      weight: text()
+    });
+    module2.exports = {
+      HomeDocs: HomeDocs2,
+      HomeDocsDimensions,
+      HomeDocsRelations: HomeDocsRelations2,
+      ResidenceSpecsAttributes,
+      ChattelsSpecsAttributes,
+      CategoriesEnum,
+      TypesEnum
+    };
+  }
+});
+
+// lambda/handlers/createSubHomeDoc.js
+var { drizzleWriter } = require_postgresDB();
+var { HomeDocsRelations, HomeDocs } = require_homeDocModel();
 exports.handler = async (event) => {
   try {
-    const query = event.queryStringParameters || {};
-    const features = new APISQLFeatures(drizzleReader, "home_docs", query).filter().sort().limitFields().paginate().makeQuery();
-    const entities = await features.execute();
-    const homeDocs = entities.rows || [];
+    let subHomedocsIds = event.body.subHomedocsIds || [];
+    const newHomeDoc = await drizzleWriter.insert(HomeDocs).values({
+      ...event.body.newHomeDoc,
+      fatherId: event.pathParameters.parentId,
+      fatherInteriorEntityKey: event.body.fatherInteriorEntityKey
+    }).returning();
+    const newSubHomedocIds = {
+      homeDocId: event.pathParameters.parentId,
+      subHomeDocId: newHomeDoc[0].id
+    };
+    const newHomeDocRelation = await drizzleWriter.insert(HomeDocsRelations).values(newSubHomedocIds).returning();
+    subHomedocsIds.push(newSubHomedocIds);
     return {
-      statusCode: 200,
+      statusCode: 201,
       body: JSON.stringify({
         status: "success",
-        data: { homeDocs }
+        data: {
+          newHomeDoc: newHomeDoc[0],
+          newHomeDocRelation: newHomeDocRelation[0]
+        }
       })
     };
   } catch (err) {

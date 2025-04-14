@@ -1,5 +1,5 @@
-const APISQLFeatures = require("./utils/apiSqlFeatures.js");
-const { drizzleReader } = require("./postgresDB.js");
+const APISQLFeatures = require("../utils/apiSqlFeatures.js");
+const { drizzleReader } = require("../postgresDB.js");
 
 exports.handler = async (event) => {
   try {

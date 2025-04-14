@@ -79,8 +79,8 @@ const CreateSubHomeDialog = ({
 
     dispatch(
       createSubHomeDoc({
+        fatherId: fatherId,
         subHomeDocInfo: {
-          fatherId: fatherId,
           fatherInteriorEntityKey: fatherInteriorEntityKey,
           subHomedocsIds: subEntities,
           newHomeDoc: {

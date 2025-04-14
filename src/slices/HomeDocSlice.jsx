@@ -155,7 +155,7 @@ const createHomeDoc = createAsyncThunk(
 
 const createSubHomeDoc = createAsyncThunk(
   `${name}/create/subHomeDoc`,
-  async ({ subHomeDocInfo }, { rejectWithValue }) => {
+  async ({ fatherId, subHomeDocInfo }, { rejectWithValue }) => {
     try {
       const config = {
         headers: {
@@ -163,7 +163,7 @@ const createSubHomeDoc = createAsyncThunk(
         },
       };
       const response = await axios.put(
-        `${backendURL}/api/HomeDocs`,
+        `${backendURL}/api/HomeDocs/${fatherId}/sub`,
         subHomeDocInfo,
         config
       );
