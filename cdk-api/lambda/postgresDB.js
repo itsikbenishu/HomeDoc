@@ -1,7 +1,7 @@
-const pkg = require("pg");
+const pg = require("pg");
 const { drizzle } = require("drizzle-orm/node-postgres");
 
-const { Pool } = pkg;
+const { Pool } = pg;
 
 const writePool = new Pool({
   host: process.env.POSTGRES_WRITE_HOST,

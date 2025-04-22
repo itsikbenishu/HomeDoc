@@ -9,13 +9,13 @@ exports.handler = async (event) => {
       .insert(HomeDocs)
       .values({
         ...event.body.newHomeDoc,
-        fatherId: event.pathParameters.parentId,
+        fatherId: event.pathParameters.fatherId,
         fatherInteriorEntityKey: event.body.fatherInteriorEntityKey,
       })
       .returning();
 
     const newSubHomedocIds = {
-      homeDocId: event.pathParameters.parentId,
+      homeDocId: event.pathParameters.fatherId,
       subHomeDocId: newHomeDoc[0].id,
     };
 

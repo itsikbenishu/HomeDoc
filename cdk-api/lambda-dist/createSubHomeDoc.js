@@ -15541,9 +15541,9 @@ var require_node_postgres = __commonJS({
 // lambda/postgresDB.js
 var require_postgresDB = __commonJS({
   "lambda/postgresDB.js"(exports2, module2) {
-    var pkg = require_lib2();
+    var pg = require_lib2();
     var { drizzle } = require_node_postgres();
-    var { Pool } = pkg;
+    var { Pool } = pg;
     var writePool = new Pool({
       host: process.env.POSTGRES_WRITE_HOST,
       port: process.env.POSTGRES_PORT,
@@ -15758,11 +15758,11 @@ exports.handler = async (event) => {
     let subHomedocsIds = event.body.subHomedocsIds || [];
     const newHomeDoc = await drizzleWriter.insert(HomeDocs).values({
       ...event.body.newHomeDoc,
-      fatherId: event.pathParameters.parentId,
+      fatherId: event.pathParameters.fatherId,
       fatherInteriorEntityKey: event.body.fatherInteriorEntityKey
     }).returning();
     const newSubHomedocIds = {
-      homeDocId: event.pathParameters.parentId,
+      homeDocId: event.pathParameters.fatherId,
       subHomeDocId: newHomeDoc[0].id
     };
     const newHomeDocRelation = await drizzleWriter.insert(HomeDocsRelations).values(newSubHomedocIds).returning();

@@ -15628,9 +15628,9 @@ var require_node_postgres = __commonJS({
 // lambda/postgresDB.js
 var require_postgresDB = __commonJS({
   "lambda/postgresDB.js"(exports2, module2) {
-    var pkg = require_lib2();
+    var pg = require_lib2();
     var { drizzle } = require_node_postgres();
-    var { Pool } = pkg;
+    var { Pool } = pg;
     var writePool = new Pool({
       host: process.env.POSTGRES_WRITE_HOST,
       port: process.env.POSTGRES_PORT,
