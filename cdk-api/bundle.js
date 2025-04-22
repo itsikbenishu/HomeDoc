@@ -5,11 +5,11 @@ const fs = require("fs");
 const lambdaDir = path.resolve(__dirname, "lambda/handlers");
 const outDir = path.join(__dirname, "lambda-dist");
 
-const entrygFiles = fs
+const entryFiles = fs
   .readdirSync(lambdaDir)
   .filter((file) => file.endsWith(".js"));
 
-const entryPoints = entrygFiles.map((entrygFile) =>
+const entryPoints = entryFiles.map((entrygFile) =>
   path.join(lambdaDir, entrygFile)
 );
 

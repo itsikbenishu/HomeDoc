@@ -15,9 +15,15 @@ module.exports = {
     },
     {
       lambdaName: "CreateSubHomeDocFunction",
-      route: "/{fatherId}/HomeDoc",
+      route: "/HomeDoc/{fatherId}/subHomeDoc",
       httpMethod: "PUT",
       handlerFile: "createSubHomeDoc",
+    },
+    {
+      lambdaName: "DeleteHomeDocFunction",
+      route: "/{id}",
+      httpMethod: "DELETE",
+      handlerFile: "deleteHomeDoc",
     },
   ],
 };
