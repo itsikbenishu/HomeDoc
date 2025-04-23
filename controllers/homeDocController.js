@@ -1,9 +1,9 @@
-import { 
-  HomeDocs, 
-  HomeDocsDimensions, 
-  HomeDocsRelations, 
-  ResidenceSpecsAttributes, 
-  ChattelsSpecsAttributes 
+import {
+  HomeDocs,
+  HomeDocsDimensions,
+  HomeDocsRelations,
+  ResidenceSpecsAttributes,
+  ChattelsSpecsAttributes,
 } from "../models/homeDocModel.js";
 import { postgresDB } from "../server.js";
 import { eq } from "drizzle-orm";
@@ -308,5 +308,5 @@ export default {
   updateHomeDoc,
   createSubHomeDoc,
   deleteHomeDoc,
-  getCounts
+  getCounts,
 };

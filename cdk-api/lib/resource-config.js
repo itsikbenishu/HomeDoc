@@ -25,5 +25,11 @@ module.exports = {
       httpMethod: "DELETE",
       handlerFile: "deleteHomeDoc",
     },
+    {
+      lambdaName: "GetHomeDocStatsFunction",
+      route: "/stats",
+      httpMethod: "GET",
+      handlerFile: "getHomeDocStats",
+    },
   ],
 };
