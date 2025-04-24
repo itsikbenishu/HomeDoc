@@ -48,7 +48,7 @@ const getHomeDoc = async (req, res) => {
       specsAttributes = ResidenceSpecsAttributes;
       specJoin = `LEFT JOIN residence_specs_attributes ON home_Docs.id = residence_specs_attributes."homeDocId"`;
     } else if (req.params.pageType) {
-      res.status(400).json({
+      res.status(500).json({
         status: "fail",
         message: `Page type ${req.params.pageType} is not valid`,
       });
@@ -124,7 +124,7 @@ const createHomeDoc = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(400).json({
+    res.status(500).json({
       status: "fail",
       message: err.message || "An error occurred",
     });
@@ -161,7 +161,7 @@ const updateHomeDoc = async (req, res) => {
         specsAttributes = ResidenceSpecsAttributes;
         break;
       default:
-        return res.status(400).json({
+        return res.status(500).json({
           status: "fail",
           message: `Page type ${req.params.pageType} is not valid`,
         });
@@ -238,7 +238,7 @@ const createSubHomeDoc = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(400).json({
+    res.status(500).json({
       status: "fail",
       message: err.message || "An error occurred",
     });
@@ -254,7 +254,7 @@ const deleteHomeDoc = async (req, res) => {
       data: null,
     });
   } catch (err) {
-    res.status(400).json({
+    res.status(500).json({
       status: "fail",
       message: err.message || "An error occurred",
     });
@@ -294,7 +294,7 @@ const getCounts = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(400).json({
+    res.status(500).json({
       status: "fail",
       message: err.message || "An error occurred",
     });

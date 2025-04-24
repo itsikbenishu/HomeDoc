@@ -31,5 +31,23 @@ module.exports = {
       httpMethod: "GET",
       handlerFile: "getHomeDocStats",
     },
+    {
+      lambdaName: "GetHomeDocFunction",
+      route: "/{id}",
+      httpMethod: "GET",
+      handlerFile: "getHomeDoc",
+    },
+    {
+      lambdaName: "GetHomeDocWithPageTypeFunction",
+      route: "/typed/{pageType}/{id}",
+      httpMethod: "GET",
+      handlerFile: "getHomeDoc",
+    },
+    {
+      lambdaName: "UpdateHomeDocFunction",
+      route: "/typed/{pageType}/{id}",
+      httpMethod: "PATCH",
+      handlerFile: "updateHomeDoc",
+    },
   ],
 };

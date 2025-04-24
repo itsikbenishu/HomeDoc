@@ -37,7 +37,7 @@ exports.handler = async (event) => {
     };
   } catch (err) {
     return {
-      statusCode: 400,
+      statusCode: 500,
       body: JSON.stringify({
         status: "fail",
         message: err.message || "An error occurred",

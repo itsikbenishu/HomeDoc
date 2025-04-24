@@ -6,7 +6,7 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
-  font-weight: 400;
+  font-weight: 500;
   font-synthesis: none;
 }
 
@@ -15,7 +15,7 @@ a {
   color: #130b65;
 }
 a:hover {
-  color:  #ffffff;
+  color: #ffffff;
 }
 
 body {
@@ -23,9 +23,4 @@ body {
   display: flex;
   place-items: center;
   background-color: #130b65;
-
 }
-
-
-
-
