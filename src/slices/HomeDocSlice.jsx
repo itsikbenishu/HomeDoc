@@ -1,4 +1,3 @@
-import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { STATUSES } from "../../Constants";
 import { toast } from "../utils/toast";
@@ -12,34 +11,27 @@ const initialState = {
   searchEntityResults: [],
 };
 
-const backendURL = "http://localhost:3000";
+const backendURL = import.meta.env.VITE_API_GATEWAY_URL;
 const name = "home";
 
 const fetchHomeDoc = createAsyncThunk(
   `${name}/fetch/HomeDoc`,
   async ({ id, pageType }, { rejectWithValue }) => {
     try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-
       const pageTypeParam = pageType ? `${pageType}/` : "";
+      const url = `${backendURL}api/HomeDocs/typed/${pageTypeParam}${id}`;
 
-      const response = await axios.get(
-        `${backendURL}/api/HomeDocs/${pageTypeParam}${id}`,
-        config
-      );
+      const response = await fetch(url);
 
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
-      } else {
-        return rejectWithValue(error.message);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Network response was not ok");
       }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -48,26 +40,21 @@ const fetchHomeDocStats = createAsyncThunk(
   `${name}/stats/HomeDoc`,
   async ({ interiorEntityKey }, { rejectWithValue }) => {
     try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      const response = await axios.get(
-        `${backendURL}/api/HomeDocs/stats?${
-          interiorEntityKey ? `interiorEntityKey=${interiorEntityKey}` : ""
-        }`,
-        config
-      );
+      const url = `${backendURL}api/HomeDocs/stats?${
+        interiorEntityKey ? `interiorEntityKey=${interiorEntityKey}` : ""
+      }`;
 
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
-      } else {
-        return rejectWithValue(error.message);
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Network response was not ok");
       }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -76,53 +63,46 @@ const searchHomeDocs = createAsyncThunk(
   `${name}/fetch/HomeDocs`,
   async ({ query }, { rejectWithValue }) => {
     try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      const response = await axios.get(
-        `${backendURL}/api/HomeDocs${query}`,
-        config
-      );
+      const url = `${backendURL}api/HomeDocs${query}`;
 
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
-      } else {
-        return rejectWithValue(error.message);
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Network response was not ok");
       }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   }
 );
 
 const updateCurrentHomeDoc = createAsyncThunk(
   `${name}/update/HomeDoc`,
-  async ({ id, pageType, data }, { rejectWithValue }) => {
+  async ({ id, pageType, HomeDocData }, { rejectWithValue }) => {
     try {
-      const config = {
+      const url = `${backendURL}api/HomeDocs/typed/${pageType}/${id}`;
+
+      const response = await fetch(url, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-      };
-      const pageTypeParam = pageType ? `${pageType}/` : "";
+        body: JSON.stringify(HomeDocData),
+      });
 
-      const response = await axios.patch(
-        `${backendURL}/api/HomeDocs/${pageTypeParam}${id}`,
-        data,
-        config
-      );
-
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
-      } else {
-        return rejectWithValue(error.message);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Network response was not ok");
       }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -131,24 +111,25 @@ const createHomeDoc = createAsyncThunk(
   `${name}/create/HomeDoc`,
   async (newHomeDoc, { rejectWithValue }) => {
     try {
-      const config = {
+      const url = `${backendURL}api/HomeDocs`;
+
+      const response = await fetch(url, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-      };
-      const response = await axios.post(
-        `${backendURL}/api/HomeDocs`,
-        newHomeDoc,
-        config
-      );
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
-      } else {
-        return rejectWithValue(error.message);
+        body: JSON.stringify(newHomeDoc),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Network response was not ok");
       }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -157,24 +138,25 @@ const createSubHomeDoc = createAsyncThunk(
   `${name}/create/subHomeDoc`,
   async ({ fatherId, subHomeDocInfo }, { rejectWithValue }) => {
     try {
-      const config = {
+      const url = `${backendURL}api/HomeDocs/${fatherId}/subHomeDoc`;
+
+      const response = await fetch(url, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-      };
-      const response = await axios.put(
-        `${backendURL}/api/HomeDocs/${fatherId}/sub`,
-        subHomeDocInfo,
-        config
-      );
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
-      } else {
-        return rejectWithValue(error.message);
+        body: JSON.stringify(subHomeDocInfo),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Network response was not ok");
       }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -183,20 +165,23 @@ const deleteHomeDoc = createAsyncThunk(
   `${name}/delete/HomeDoc`,
   async ({ id }, { rejectWithValue }) => {
     try {
-      const config = {
+      const url = `${backendURL}api/HomeDocs/${id}`;
+
+      const response = await fetch(url, {
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-      };
+      });
 
-      const response = await axios.delete(
-        `${backendURL}/api/HomeDocs/${id}`,
-        config
-      );
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Network response was not ok");
+      }
 
-      return response.data;
+      const data = await response.json();
+      return data;
     } catch (error) {
-      console.log(error);
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {

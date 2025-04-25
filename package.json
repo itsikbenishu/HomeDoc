@@ -5,14 +5,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"amplify mock api\"",
+    "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "serve": "serve dist",
     "predeploy": "npm run build",
     "deploy:front": "gh-pages -d dist",
-    "deploy:back": "cdk deploy",
+    "deploy:back": "cd cdk-api && cdk deploy",
     "deploy:all": "npm run deploy:front && npm run deploy:back"
   },
   "dependencies": {

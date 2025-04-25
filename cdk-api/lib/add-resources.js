@@ -11,6 +11,7 @@ const addResources = (root, fullPath) => {
       current = current.addResource(part);
     }
   }
+
   return current;
 };
 

@@ -1,6 +1,7 @@
 const esbuild = require("esbuild");
 const path = require("path");
 const fs = require("fs");
+const wrapWithCorsPlugin = require("./plagins/wrapWithCors");
 
 const lambdaDir = path.resolve(__dirname, "lambda/handlers");
 const outDir = path.join(__dirname, "lambda-dist");
@@ -28,6 +29,7 @@ esbuild
     target: "node20",
     outdir: outDir,
     external: [],
+    plugins: [wrapWithCorsPlugin],
     logLevel: "info",
   })
   .then(() => {

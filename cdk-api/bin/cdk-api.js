@@ -1,24 +1,25 @@
 #!/usr/bin/env node
 
-const cdk = require('aws-cdk-lib');
-const path = require('path');
+const cdk = require("aws-cdk-lib");
+const path = require("path");
 
-const dotenv = require('dotenv');
-const { CdkApiStack } = require('../lib/cdk-api-stack');
+const dotenv = require("dotenv");
+const { CdkApiStack } = require("../lib/cdk-api-stack");
 
-dotenv.config({ path: path.join(__dirname, '../../.env') });
+dotenv.config({ path: path.join(__dirname, "../../.env") });
 
 const app = new cdk.App();
-new CdkApiStack(app, 'CdkApiStack', {
-    AWS_ACCOUNT: process.env.AWS_ACCOUNT,
-    AWS_REGION: process.env.AWS_REGION,
-    GIT_OAUTH_TOKEN: process.env.GIT_OAUTH_TOKEN,
-    POSTGRES_WRITE_HOST: process.env.POSTGRES_WRITE_HOST,
-    POSTGRES_READ_HOST: process.env.POSTGRES_READ_HOST,
-    POSTGRES_PORT: process.env.POSTGRES_PORT,
-    POSTGRES_DB: process.env.POSTGRES_DB,
-    POSTGRES_USER: process.env.POSTGRES_USER,
-    POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
+new CdkApiStack(app, "CdkApiStack", {
+  AWS_ACCOUNT: process.env.AWS_ACCOUNT,
+  AWS_REGION: process.env.AWS_REGION,
+  GIT_OAUTH_TOKEN: process.env.GIT_OAUTH_TOKEN,
+  POSTGRES_WRITE_HOST: process.env.POSTGRES_WRITE_HOST,
+  POSTGRES_READ_HOST: process.env.POSTGRES_READ_HOST,
+  POSTGRES_PORT: process.env.POSTGRES_PORT,
+  POSTGRES_DB: process.env.POSTGRES_DB,
+  POSTGRES_USER: process.env.POSTGRES_USER,
+  POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
+  CORS_DOMAINS: [process.env.LOCAL_DOMAIN],
 
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,

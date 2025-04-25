@@ -1,7 +1,12 @@
 const { Stack } = require("aws-cdk-lib");
 const { Vpc } = require("aws-cdk-lib/aws-ec2");
 const { Function, Runtime, Code } = require("aws-cdk-lib/aws-lambda");
-const { LambdaIntegration, RestApi } = require("aws-cdk-lib/aws-apigateway");
+const {
+  LambdaIntegration,
+  RestApi,
+  Cors,
+} = require("aws-cdk-lib/aws-apigateway");
+
 const path = require("path");
 
 // const sqs = require('aws-cdk-lib/aws-sqs');
@@ -16,7 +21,7 @@ class CdkApiStack extends Stack {
    *
    * @param {Construct} scope
    * @param {string} id
-   * @param {StackProps=} props
+   * @param {StackProps & { AWS_ACCOUNT: string, AWS_REGION: string } & { CORS_DOMAINS: string[] }} props
    */
   constructor(scope, id, props) {
     super(scope, id, {
@@ -25,6 +30,7 @@ class CdkApiStack extends Stack {
         account: props.AWS_ACCOUNT,
         region: props.AWS_REGION,
       },
+      CORS_DOMAINS: props.CORS_DOMAINS,
     });
 
     // The code that defines your stack goes here
@@ -53,9 +59,16 @@ class CdkApiStack extends Stack {
       5432
     );
 
+    const corsOptions = {
+      allowOrigins: props.CORS_DOMAINS,
+      allowMethods: Cors.ALL_METHODS,
+      allowHeaders: ["Content-Type"],
+    };
+
     const api = new RestApi(this, "HomeDocApiGateway", {
       restApiName: "Homdocs",
       description: "API for Lambda functions - Homdocs",
+      defaultCorsPreflightOptions: corsOptions,
     });
 
     const postgresConfig = {
@@ -82,7 +95,7 @@ class CdkApiStack extends Stack {
       });
 
       const lambdaIntegration = new LambdaIntegration(lambdaFunction);
-      const resource = addResources(api.root, fullPath);
+      const resource = addResources(api.root, fullPath, corsOptions);
       resource.addMethod(lambda.httpMethod, lambdaIntegration);
     });
   }

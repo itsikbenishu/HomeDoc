@@ -1,3 +1,7 @@
+
+const withCors = require("../middlewares/withCors");
+
+const withCors = require("../middlewares/withCors");
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
@@ -15678,3 +15682,6 @@ exports.handler = async (event) => {
     };
   }
 };
+
+          
+          
