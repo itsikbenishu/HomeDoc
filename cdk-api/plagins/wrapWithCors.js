@@ -13,7 +13,7 @@ const wrapWithCorsPlugin = {
         locations: true,
       });
 
-      let handlerExportNode = null;
+      let handlerAssignmentNode = null;
 
       walk.simple(ast, {
         AssignmentExpression(node) {
@@ -23,27 +23,26 @@ const wrapWithCorsPlugin = {
             node.left.property.name === "handler" &&
             node.right.type === "ArrowFunctionExpression"
           ) {
-            handlerExportNode = node;
+            handlerAssignmentNode = node;
           }
         },
       });
 
-      if (handlerExportNode) {
-        const { start, end } = handlerExportNode;
-        const before = source.slice(0, start);
-        const after = source.slice(end);
-        const handlerCode = source.slice(start, end);
+      if (handlerAssignmentNode) {
+        const { start, end } = handlerAssignmentNode;
+        const beforeHandlerAssignment = source.slice(0, start);
+        const afterHandlerAssignment = source.slice(end);
 
         const wrapped = `
 const withCors = require("../middlewares/withCors");
 
-${before}exports.handler = withCors(${
-          handlerExportNode.right.raw ||
+${beforeHandlerAssignment}exports.handler = withCors(${
+          handlerAssignmentNode.right.raw ||
           source.slice(
-            handlerExportNode.right.start,
-            handlerExportNode.right.end
+            handlerAssignmentNode.right.start,
+            handlerAssignmentNode.right.end
           )
-        });${after}
+        });${afterHandlerAssignment}
         `;
 
         return {
