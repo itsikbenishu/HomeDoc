@@ -1,7 +1,4 @@
-const dotenv = require("dotenv");
-dotenv.config({ path: "../.env" });
-
-const allowedOrigins = [process.env.LOCAL_DOMAIN];
+const allowedOrigins = process.env.ALLOWED_ORIGINS.split(",");
 
 const withCors = (handler) => {
   return async (event, context) => {

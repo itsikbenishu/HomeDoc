@@ -84,10 +84,14 @@ class CdkApiStack extends Stack {
       const fullPath = `${resourceConfig.baseRoute}${lambda.route}`;
 
       const lambdaFunction = new Function(this, lambda.lambdaName, {
+        functionName: lambda.lambdaName,
         runtime: Runtime.NODEJS_20_X,
         handler: `${lambda.handlerFile}.handler`,
         code: Code.fromAsset(path.join(__dirname, "..", "lambda-dist")),
-        environment: postgresConfig,
+        environment: {
+          ...postgresConfig,
+          ALLOWED_ORIGINS: corsOptions.allowOrigins.join(","),
+        },
       });
 
       lambdaFunction.addPermission("ApiGatewayInvoke", {
