@@ -25,7 +25,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // lambda/middlewares/withCors.js
 var require_withCors = __commonJS({
   "lambda/middlewares/withCors.js"(exports2, module2) {
-    var allowedOrigins = process.env.ALLOWED_ORIGINS;
+    var allowedOrigins = process.env.ALLOWED_ORIGINS.split(",");
     var withCors2 = (handler) => {
       return async (event, context) => {
         const origin = event.headers?.origin || "";

@@ -25,7 +25,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // lambda/middlewares/withCors.js
 var require_withCors = __commonJS({
   "lambda/middlewares/withCors.js"(exports2, module2) {
-    var allowedOrigins = process.env.ALLOWED_ORIGINS;
+    var allowedOrigins = process.env.ALLOWED_ORIGINS.split(",");
     var withCors2 = (handler) => {
       return async (event, context) => {
         const origin = event.headers?.origin || "";
@@ -73,16 +73,28 @@ var require_apiSqlFeatures = __commonJS({
         return result;
       }
       filter() {
-        const operators = { gte: ">=", gt: ">", lte: "<=", lt: "<" };
+        const operators = {
+          gte: ">=",
+          gt: ">",
+          lte: "<=",
+          lt: "<",
+          ILIKE: ` ILIKE `,
+          LIKE: ` LIKE `
+        };
         const queryObject = { ...this.queryString };
         const excludedFields = ["page", "sort", "limit", "fields"];
         excludedFields.forEach((elem) => delete queryObject[elem]);
         this.where = ` where ` + Object.entries(queryObject).reduce((acc, [key, value]) => {
-          if (typeof value === "object") {
-            const operatorKey = Object.keys(value)[0];
+          console.log(key, value);
+          const match = key.match(/^(.+)\[\$(.+)]$/);
+          if (match) {
+            console.log(match);
+            const field = match[1];
+            const operatorKey = match[2];
             const operator = operators[operatorKey];
-            const fieldValue = value[operatorKey];
-            return acc + `${key}${operator}${fieldValue} AND`;
+            console.log(field, operatorKey, operator);
+            const fieldValue = value;
+            return acc + `${field}${operator}${fieldValue} AND`;
           } else {
             return acc + ` "${key}"=${value} AND`;
           }

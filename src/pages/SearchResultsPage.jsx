@@ -64,7 +64,9 @@ const SearchResultsPage = () => {
   const checkMessage = location.search.search("interiorEntityKey") === -1;
 
   const paginationCount =
-    homeDocsStats === null || homeDocsStats?.categoryStats === null
+    homeDocsStats === null ||
+    homeDocsStats?.categoryStats === null ||
+    categoryIndex === -1
       ? 0
       : checkCategory && checkMessage
       ? homeDocsStats.totalCount

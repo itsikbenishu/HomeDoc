@@ -25,7 +25,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // lambda/middlewares/withCors.js
 var require_withCors = __commonJS({
   "lambda/middlewares/withCors.js"(exports2, module2) {
-    var allowedOrigins = process.env.ALLOWED_ORIGINS;
+    var allowedOrigins = process.env.ALLOWED_ORIGINS.split(",");
     var withCors2 = (handler) => {
       return async (event, context) => {
         const origin = event.headers?.origin || "";
@@ -15592,7 +15592,8 @@ var withCors = require_withCors();
 var { drizzleReader } = require_postgresDB();
 exports.handler = withCors(async (event) => {
   try {
-    const interiorEntityKeyQeury = event.queryStringParameters.interiorEntityKey ? `AND "interiorEntityKey" = ${event.queryStringParameters.interiorEntityKey}` : ``;
+    console.log(event.queryStringParameters);
+    const interiorEntityKeyQeury = event.queryStringParameters?.interiorEntityKey ? `AND "interiorEntityKey" = ${event.queryStringParameters.interiorEntityKey}` : ``;
     const categoryStats = await drizzleReader.execute(`
         WITH category_stats AS (
           SELECT category, COUNT(*) AS countHomes
