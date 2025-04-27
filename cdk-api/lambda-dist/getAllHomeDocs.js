@@ -66,7 +66,6 @@ var require_apiSqlFeatures = __commonJS({
                         ${this.where} 
                         ORDER BY ${this.orderBy} 
                         ${this.page} ${this.offset}`;
-        console.log(this.query);
         return this;
       }
       async execute() {
@@ -86,13 +85,11 @@ var require_apiSqlFeatures = __commonJS({
         const excludedFields = ["page", "sort", "limit", "fields"];
         excludedFields.forEach((elem) => delete queryObject[elem]);
         this.where = ` where ` + Object.entries(queryObject).reduce((acc, [key, value]) => {
-          console.log(key, value);
           const match = key.match(/^(.+)\[\$(.+)]$/);
           if (match) {
             const field = match[1];
             const operatorKey = match[2];
             const operator = operators[operatorKey];
-            console.log(field, operatorKey, operator);
             if (operatorKey === "wildcard") {
               return acc + "";
             }

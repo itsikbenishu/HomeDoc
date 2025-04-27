@@ -63,7 +63,7 @@ const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
           <AppBar sx={{ position: "relative" }}>
             <Toolbar>
               <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
-                מידע נוסף:
+                מידע נוסף
               </Typography>
               <IconButton
                 edge="end"

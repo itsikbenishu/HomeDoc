@@ -17,7 +17,6 @@ class APISQLFeatures {
                         ${this.where} 
                         ORDER BY ${this.orderBy} 
                         ${this.page} ${this.offset}`;
-    console.log(this.query);
 
     return this;
   }
@@ -45,13 +44,11 @@ class APISQLFeatures {
     this.where =
       ` where ` +
       Object.entries(queryObject).reduce((acc, [key, value]) => {
-        console.log(key, value);
         const match = key.match(/^(.+)\[\$(.+)]$/); // field[$operatorKey]
         if (match) {
           const field = match[1];
           const operatorKey = match[2];
           const operator = operators[operatorKey];
-          console.log(field, operatorKey, operator);
 
           if (operatorKey === "wildcard") {
             return acc + "";

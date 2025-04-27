@@ -137,7 +137,7 @@ const createSubHomeDoc = createAsyncThunk(
   `${name}/create/subHomeDoc`,
   async ({ fatherId, subHomeDocInfo }, { rejectWithValue }) => {
     try {
-      const url = `${backendURL}api/HomeDocs/${fatherId}/subHomeDoc`;
+      const url = `${backendURL}api/HomeDocs/HomeDoc/${fatherId}/subHomeDoc`;
 
       const response = await fetch(url, {
         method: "PUT",

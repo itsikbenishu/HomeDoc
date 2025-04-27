@@ -3,19 +3,21 @@ const { HomeDocsRelations, HomeDocs } = require("../models/homeDocModel");
 
 exports.handler = async (event) => {
   try {
-    let subHomedocsIds = event.body.subHomedocsIds || [];
+    const body = JSON.parse(event.body);
+    const fatherId = event.pathParameters.fatherId;
+    let subHomedocsIds = body.subHomedocsIds || [];
 
     const newHomeDoc = await drizzleWriter
       .insert(HomeDocs)
       .values({
-        ...event.body.newHomeDoc,
-        fatherId: event.pathParameters.fatherId,
-        fatherInteriorEntityKey: event.body.fatherInteriorEntityKey,
+        ...body.newHomeDoc,
+        fatherId: fatherId,
+        fatherInteriorEntityKey: body.fatherInteriorEntityKey,
       })
       .returning();
 
     const newSubHomedocIds = {
-      homeDocId: event.pathParameters.fatherId,
+      homeDocId: fatherId,
       subHomeDocId: newHomeDoc[0].id,
     };
 

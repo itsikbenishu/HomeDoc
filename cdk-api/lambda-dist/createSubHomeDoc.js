@@ -15779,14 +15779,16 @@ var { drizzleWriter } = require_postgresDB();
 var { HomeDocsRelations, HomeDocs } = require_homeDocModel();
 exports.handler = withCors(async (event) => {
   try {
-    let subHomedocsIds = event.body.subHomedocsIds || [];
+    const body = JSON.parse(event.body);
+    const fatherId = event.pathParameters.fatherId;
+    let subHomedocsIds = body.subHomedocsIds || [];
     const newHomeDoc = await drizzleWriter.insert(HomeDocs).values({
-      ...event.body.newHomeDoc,
-      fatherId: event.pathParameters.fatherId,
-      fatherInteriorEntityKey: event.body.fatherInteriorEntityKey
+      ...body.newHomeDoc,
+      fatherId,
+      fatherInteriorEntityKey: body.fatherInteriorEntityKey
     }).returning();
     const newSubHomedocIds = {
-      homeDocId: event.pathParameters.fatherId,
+      homeDocId: fatherId,
       subHomeDocId: newHomeDoc[0].id
     };
     const newHomeDocRelation = await drizzleWriter.insert(HomeDocsRelations).values(newSubHomedocIds).returning();
