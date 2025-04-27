@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useSearchParams } from "react-router-dom"; // הוספת useSearchParams
 import { useDispatch, useSelector } from "react-redux";
 import { Card } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -28,7 +28,8 @@ const useStyles = makeStyles(() => ({
 const SearchResultsPage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const location = useLocation();
+  const [searchParams] = useSearchParams();
+
   const homeDocs = useSelector(selectHomeDocResults).map((home) => {
     return { ...home, category: HOME_DOC_CATEGORIES[home.category] };
   });
@@ -37,31 +38,40 @@ const SearchResultsPage = () => {
   const homefields = ["#", "category", "interiorEntityKey"];
 
   useEffect(() => {
-    const seachQuery =
-      location.search === ""
-        ? location.search + `type='PROPERTY'`
-        : location.search + `&type='PROPERTY'`;
-    dispatch(searchHomeDocs({ query: seachQuery }));
-    const message = new URLSearchParams(location.search).get(
-      "interiorEntityKey"
-    );
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+
+    const message = newSearchParams.get("interiorEntityKey")?.trim();
+    if (message) {
+      newSearchParams.delete("interiorEntityKey");
+      newSearchParams.set("interiorEntityKey[$ILIKE]", message);
+    }
+
+    if (!newSearchParams.has("type")) {
+      newSearchParams.set("type", "'PROPERTY'");
+    }
+
+    const searchQuery = `?${newSearchParams.toString()}`;
+
+    dispatch(searchHomeDocs({ query: searchQuery }));
+
     dispatch(
       fetchHomeDocStats({
         interiorEntityKey: message,
       })
     );
-  }, [location, dispatch]);
+  }, [searchParams, dispatch]);
 
-  const category = new URLSearchParams(location.search).get("category");
+  const category = searchParams.get("category");
 
   const categoryIndex =
     homeDocsStats?.categoryStats &&
+    category &&
     homeDocsStats?.categoryStats.findIndex(
       (stat) => `'${stat.category}'` === category
     );
 
-  const checkCategory = location.search.search("category") === -1;
-  const checkMessage = location.search.search("interiorEntityKey") === -1;
+  const checkCategory = !searchParams.has("category");
+  const checkMessage = !searchParams.has("interiorEntityKey");
 
   const paginationCount =
     homeDocsStats === null ||

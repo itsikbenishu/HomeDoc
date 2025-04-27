@@ -17,6 +17,8 @@ class APISQLFeatures {
                         ${this.where} 
                         ORDER BY ${this.orderBy} 
                         ${this.page} ${this.offset}`;
+    console.log(this.query);
+
     return this;
   }
 
@@ -31,10 +33,12 @@ class APISQLFeatures {
       gt: ">",
       lte: "<=",
       lt: "<",
-      ILIKE: ` ILIKE `,
-      LIKE: ` LIKE `,
+      ILIKE: `ILIKE`,
+      LIKE: `LIKE`,
     };
+
     const queryObject = { ...this.queryString };
+
     const excludedFields = ["page", "sort", "limit", "fields"];
     excludedFields.forEach((elem) => delete queryObject[elem]);
 
@@ -42,19 +46,37 @@ class APISQLFeatures {
       ` where ` +
       Object.entries(queryObject).reduce((acc, [key, value]) => {
         console.log(key, value);
-        const match = key.match(/^(.+)\[\$(.+)]$/); //field[$operatorKey]
+        const match = key.match(/^(.+)\[\$(.+)]$/); // field[$operatorKey]
         if (match) {
-          console.log(match);
           const field = match[1];
           const operatorKey = match[2];
           const operator = operators[operatorKey];
-          const fieldValue = value;
+          console.log(field, operatorKey, operator);
 
+          if (operatorKey === "wildcard") {
+            return acc + "";
+          }
           if (!operator) {
             throw new Error(`Unknown operator ${operatorKey}`);
           }
 
-          return acc + `"${field}"${operator}${fieldValue} AND`;
+          let fieldValue = value;
+          let wildcardPosition = queryObject[`${field}[$wildcard]`] || "both";
+
+          if (
+            (operator === "ILIKE" || operator === "LIKE") &&
+            !fieldValue.includes("%")
+          ) {
+            if (wildcardPosition === "start") {
+              fieldValue = `%${fieldValue}`;
+            } else if (wildcardPosition === "end") {
+              fieldValue = `${fieldValue}%`;
+            } else if (wildcardPosition === "both") {
+              fieldValue = `%${fieldValue}%`;
+            }
+          }
+
+          return acc + `"${field}" ${operator} '${fieldValue}' AND`;
         } else {
           return acc + ` "${key}"=${value} AND`;
         }

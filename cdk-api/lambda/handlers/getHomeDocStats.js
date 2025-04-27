@@ -2,11 +2,9 @@ const { drizzleReader } = require("../postgresDB");
 
 exports.handler = async (event) => {
   try {
-    console.log(event.queryStringParameters);
-
     const interiorEntityKeyQeury = event.queryStringParameters
       ?.interiorEntityKey
-      ? `AND "interiorEntityKey" = ${event.queryStringParameters.interiorEntityKey}`
+      ? `AND "interiorEntityKey" ILIKE '%${event.queryStringParameters.interiorEntityKey}%'`
       : ``;
 
     const categoryStats = await drizzleReader.execute(`

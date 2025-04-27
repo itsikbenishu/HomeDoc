@@ -66,6 +66,7 @@ var require_apiSqlFeatures = __commonJS({
                         ${this.where} 
                         ORDER BY ${this.orderBy} 
                         ${this.page} ${this.offset}`;
+        console.log(this.query);
         return this;
       }
       async execute() {
@@ -78,8 +79,8 @@ var require_apiSqlFeatures = __commonJS({
           gt: ">",
           lte: "<=",
           lt: "<",
-          ILIKE: ` ILIKE `,
-          LIKE: ` LIKE `
+          ILIKE: `ILIKE`,
+          LIKE: `LIKE`
         };
         const queryObject = { ...this.queryString };
         const excludedFields = ["page", "sort", "limit", "fields"];
@@ -88,13 +89,28 @@ var require_apiSqlFeatures = __commonJS({
           console.log(key, value);
           const match = key.match(/^(.+)\[\$(.+)]$/);
           if (match) {
-            console.log(match);
             const field = match[1];
             const operatorKey = match[2];
             const operator = operators[operatorKey];
             console.log(field, operatorKey, operator);
-            const fieldValue = value;
-            return acc + `${field}${operator}${fieldValue} AND`;
+            if (operatorKey === "wildcard") {
+              return acc + "";
+            }
+            if (!operator) {
+              throw new Error(`Unknown operator ${operatorKey}`);
+            }
+            let fieldValue = value;
+            let wildcardPosition = queryObject[`${field}[$wildcard]`] || "both";
+            if ((operator === "ILIKE" || operator === "LIKE") && !fieldValue.includes("%")) {
+              if (wildcardPosition === "start") {
+                fieldValue = `%${fieldValue}`;
+              } else if (wildcardPosition === "end") {
+                fieldValue = `${fieldValue}%`;
+              } else if (wildcardPosition === "both") {
+                fieldValue = `%${fieldValue}%`;
+              }
+            }
+            return acc + `"${field}" ${operator} '${fieldValue}' AND`;
           } else {
             return acc + ` "${key}"=${value} AND`;
           }

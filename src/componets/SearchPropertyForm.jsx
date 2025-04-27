@@ -102,7 +102,7 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
     setParamsForQueryObj({
       ...paramsForQueryObj,
       interiorEntityKey: event.target.value
-        ? `'${event.target.value}'`
+        ? `${event.target.value}`
         : event.target.value,
     });
   };

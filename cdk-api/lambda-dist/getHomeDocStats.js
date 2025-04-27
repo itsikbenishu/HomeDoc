@@ -15592,8 +15592,7 @@ var withCors = require_withCors();
 var { drizzleReader } = require_postgresDB();
 exports.handler = withCors(async (event) => {
   try {
-    console.log(event.queryStringParameters);
-    const interiorEntityKeyQeury = event.queryStringParameters?.interiorEntityKey ? `AND "interiorEntityKey" = ${event.queryStringParameters.interiorEntityKey}` : ``;
+    const interiorEntityKeyQeury = event.queryStringParameters?.interiorEntityKey ? `AND "interiorEntityKey" ILIKE '%${event.queryStringParameters.interiorEntityKey}%'` : ``;
     const categoryStats = await drizzleReader.execute(`
         WITH category_stats AS (
           SELECT category, COUNT(*) AS countHomes
