@@ -9,6 +9,8 @@ const writePool = new Pool({
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
+  max: 10,
+  idleTimeoutMillis: 30000,
 });
 
 const readPool = new Pool({
@@ -17,6 +19,8 @@ const readPool = new Pool({
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
+  max: 10,
+  idleTimeoutMillis: 30000,
 });
 
 const drizzleWriter = drizzle({ client: writePool });

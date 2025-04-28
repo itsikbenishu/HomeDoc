@@ -15842,14 +15842,18 @@ var require_postgresDB = __commonJS({
       port: process.env.POSTGRES_PORT,
       user: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB
+      database: process.env.POSTGRES_DB,
+      max: 10,
+      idleTimeoutMillis: 3e4
     });
     var readPool = new Pool({
       host: process.env.POSTGRES_READ_HOST,
       port: process.env.POSTGRES_PORT,
       user: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB
+      database: process.env.POSTGRES_DB,
+      max: 10,
+      idleTimeoutMillis: 3e4
     });
     var drizzleWriter2 = drizzle({ client: writePool });
     var drizzleReader = drizzle({ client: readPool });

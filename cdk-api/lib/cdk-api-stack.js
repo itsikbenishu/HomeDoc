@@ -1,4 +1,4 @@
-const { Stack } = require("aws-cdk-lib");
+const { Stack, Duration } = require("aws-cdk-lib");
 const { Vpc } = require("aws-cdk-lib/aws-ec2");
 const { Function, Runtime, Code } = require("aws-cdk-lib/aws-lambda");
 const {
@@ -56,7 +56,9 @@ class CdkApiStack extends Stack {
       vpc,
       "portfolio",
       "portfolio-instance-1.chg6eo2ogcs7.eu-north-1.rds.amazonaws.com",
-      5432
+      5432,
+      props.POSTGRES_DB,
+      props.POSTGRES_USER
     );
 
     const corsOptions = {
@@ -92,6 +94,9 @@ class CdkApiStack extends Stack {
           ...postgresConfig,
           ALLOWED_ORIGINS: corsOptions.allowOrigins.join(","),
         },
+        memorySize: 1024,
+        timeout: Duration.seconds(30),
+        provisionedConcurrentExecutions: 10,
       });
 
       lambdaFunction.addPermission("ApiGatewayInvoke", {
