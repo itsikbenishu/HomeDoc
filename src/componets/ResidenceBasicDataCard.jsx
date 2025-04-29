@@ -116,7 +116,7 @@ const ResidenceBasicDataCard = ({
             }}
           >
             <Grid container spacing={0.5}>
-              <Grid item xs={1}>
+              <Grid item xs={0.5}>
                 <Paper
                   elevation={0}
                   style={{
@@ -131,7 +131,7 @@ const ResidenceBasicDataCard = ({
                   </Typography>
                 </Paper>
               </Grid>
-              <Grid item xs={11}>
+              <Grid item xs={11.5}>
                 <Paper
                   elevation={0}
                   style={{
