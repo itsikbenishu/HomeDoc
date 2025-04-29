@@ -79,14 +79,14 @@ const ChattelsExtraDataCard = ({ chattels }) => {
         <Paper
           elevation={0}
           className={classes.paper}
-          style={{
+          sx={{
             backgroundColor: "transparent",
             borderColor: "grey",
           }}
         >
           <Card
             className={classes.card}
-            style={{
+            sx={{
               backgroundColor: "transparent",
               borderColor: "grey",
               marginTop: "3px",
@@ -99,7 +99,7 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                style={{ paddingLeft: "0.5rem" }}
+                sx={{ paddingLeft: "0.5rem" }}
               >
                 <Typography variant="h7" className={classes.typographyText}>
                   תיאור:
@@ -134,7 +134,7 @@ const ChattelsExtraDataCard = ({ chattels }) => {
         <Paper
           elevation={0}
           className={classes.paper}
-          style={{
+          sx={{
             backgroundColor: "transparent",
             borderColor: "grey",
             marginRight: "4px",
@@ -142,7 +142,7 @@ const ChattelsExtraDataCard = ({ chattels }) => {
         >
           <Card
             className={classes.card}
-            style={{ backgroundColor: "transparent", borderColor: "grey" }}
+            sx={{ backgroundColor: "transparent", borderColor: "grey" }}
           >
             <Grid container spacing={0.25}>
               <Grid
@@ -150,7 +150,7 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                style={{ paddingLeft: "0.5rem" }}
+                sx={{ paddingLeft: "0.5rem" }}
               >
                 <Typography variant="h7" className={classes.typographyText}>
                   כמות הפריטים:
@@ -167,17 +167,14 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                style={{ paddingLeft: "0.5rem" }}
+                sx={{ paddingLeft: "0.5rem" }}
               >
                 <Typography variant="h7" className={classes.typographyText}>
                   משקל (ק"ג):
                 </Typography>
               </Grid>
               <Grid item xs={1} className={classes.textFieldContainer}>
-                <ExtraDataField
-                  label="weight"
-                  className={classes.textField}
-                />
+                <ExtraDataField label="weight" className={classes.textField} />
               </Grid>
             </Grid>
           </Card>
@@ -188,7 +185,7 @@ const ChattelsExtraDataCard = ({ chattels }) => {
         <Paper
           elevation={0}
           className={classes.paper}
-          style={{
+          sx={{
             marginRight: "4px",
             backgroundColor: "transparent",
             borderColor: "grey",
@@ -196,7 +193,7 @@ const ChattelsExtraDataCard = ({ chattels }) => {
         >
           <Card
             className={classes.card}
-            style={{ backgroundColor: "transparent", borderColor: "grey" }}
+            sx={{ backgroundColor: "transparent", borderColor: "grey" }}
           >
             <Grid container spacing={0.25}>
               <Grid
@@ -204,34 +201,28 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                style={{ paddingLeft: "0.5rem" }}
+                sx={{ paddingLeft: "0.5rem" }}
               >
                 <Typography variant="h7" className={classes.typographyText}>
                   רוחב (מטרים):
                 </Typography>
               </Grid>
               <Grid item xs={2} className={classes.textFieldContainer}>
-                <ExtraDataField
-                  label="width"
-                  className={classes.textField}
-                />
+                <ExtraDataField label="width" className={classes.textField} />
               </Grid>
               <Grid
                 item
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                style={{ paddingLeft: "0.5rem" }}
+                sx={{ paddingLeft: "0.5rem" }}
               >
                 <Typography variant="h7" className={classes.typographyText}>
                   אורך (מטרים):
                 </Typography>
               </Grid>
               <Grid item xs={1} className={classes.textFieldContainer}>
-                <ExtraDataField
-                  label="length"
-                  className={classes.textField}
-                />
+                <ExtraDataField label="length" className={classes.textField} />
               </Grid>
             </Grid>
           </Card>
@@ -242,14 +233,14 @@ const ChattelsExtraDataCard = ({ chattels }) => {
         <Paper
           elevation={0}
           className={classes.paper}
-          style={{
+          sx={{
             backgroundColor: "transparent",
             borderColor: "grey",
           }}
         >
           <Card
             className={classes.card}
-            style={{
+            sx={{
               backgroundColor: "transparent",
               borderColor: "grey",
               marginTop: "3px",
@@ -262,7 +253,7 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                style={{ paddingLeft: "0.5rem" }}
+                sx={{ paddingLeft: "0.5rem" }}
               >
                 <Typography variant="h7" className={classes.typographyText}>
                   צבעים:
@@ -302,7 +293,7 @@ const ChattelsExtraDataCard = ({ chattels }) => {
         <Paper
           elevation={0}
           className={classes.paper}
-          style={{
+          sx={{
             marginRight: "4px",
             backgroundColor: "transparent",
             borderColor: "grey",
@@ -310,7 +301,7 @@ const ChattelsExtraDataCard = ({ chattels }) => {
         >
           <Card
             className={classes.card}
-            style={{
+            sx={{
               backgroundColor: "transparent",
               borderColor: "grey",
             }}

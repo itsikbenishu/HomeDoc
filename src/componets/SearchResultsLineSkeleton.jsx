@@ -1,6 +1,5 @@
-import { Card, Stack, IconButton, Box } from "@mui/material";
+import { Card, Stack, Skeleton, Box, IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
@@ -20,51 +19,36 @@ const useStyles = makeStyles({
   },
 });
 
-const SearchResultsLine = ({
-  item,
-  idName = "id",
-  fields = [],
-  columnRatios = [],
-  rowIndex,
-  isLinkable = false,
-  linkPath = "",
-}) => {
-  const navigate = useNavigate();
+const SearchResultsLineSkeleton = ({ columns = 3, columnRatios = [] }) => {
   const classes = useStyles();
 
   return (
     <Card
       className={classes.card}
       sx={{
-        paddingLeft: (theme) => theme.spacing(1),
-        paddingRight: (theme) => theme.spacing(1),
+        padding: (theme) => theme.spacing(0.5),
         marginTop: (theme) => theme.spacing(0.5),
         marginBottom: (theme) => theme.spacing(0.5),
       }}
     >
       <Stack direction="row" alignItems="center" spacing={1}>
-        {fields.map((field, index) => (
+        {Array.from({ length: columns }).map((_, index) => (
           <Box
-            key={`${item[idName]}-${field}`}
+            key={`skeleton-${index}`}
             className={classes.box}
             sx={{
               flexGrow: columnRatios[index] ?? 1,
             }}
           >
-            {field === "#" ? rowIndex : item[field]}
+            <Skeleton width="100%" height={24} />
           </Box>
         ))}
-        {isLinkable && (
-          <IconButton
-            onClick={() => navigate(`${linkPath}/${item[idName]}`)}
-            sx={{ flexShrink: 0 }}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-        )}
+        <Box sx={{ flexShrink: 0 }}>
+          <Skeleton variant="circular" width={32} height={32} />
+        </Box>
       </Stack>
     </Card>
   );
 };
 
-export default SearchResultsLine;
+export default SearchResultsLineSkeleton;

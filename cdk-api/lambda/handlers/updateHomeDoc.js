@@ -1,10 +1,15 @@
 import { eq } from "drizzle-orm";
-import { HomeDocs } from "../models/homeDocModel";
+import {
+  ChattelsSpecsAttributes,
+  HomeDocs,
+  HomeDocsDimensions,
+  ResidenceSpecsAttributes,
+} from "../models/homeDocModel";
 import { drizzleWriter } from "../postgresDB";
 
 exports.handler = async (event) => {
   const { id, pageType } = event.pathParameters || {};
-  const body = event.body || {};
+  const body = JSON.parse(event.body || {});
 
   try {
     const updatedHomeDoc = await drizzleWriter

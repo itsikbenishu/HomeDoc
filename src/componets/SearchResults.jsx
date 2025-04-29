@@ -6,14 +6,21 @@ import {
   Typography,
   createTheme,
   ThemeProvider,
+  Stack,
+  TablePagination,
+  Box,
 } from "@mui/material";
-import { Stack, TablePagination } from "@mui/material";
 import SearchResultsLine from "./SearchResultsLine";
+import SearchResultsLineSkeleton from "./SearchResultsLineSkeleton";
+import { selectHomeDocStatus } from "../slices/HomeDocSlice";
+import { useSelector } from "react-redux";
+import { STATUSES } from "../../Constants";
 
 const SearchResults = ({
   headers,
   results,
   fields,
+  columnRatios,
   idName = "id",
   paginationCount = 0,
   isLinkable = false,
@@ -21,11 +28,13 @@ const SearchResults = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const resultsTilte = " תוצאות: ";
+  const resultsTitle = "תוצאות:";
   let paramsForQueryObj = location.search;
-  const theme = createTheme({
-    direction: "rtl",
-  });
+  const paginationTheme = createTheme({ direction: "rtl" });
+  const homeDocStatus = useSelector(selectHomeDocStatus);
+
+  const isLoading =
+    homeDocStatus === STATUSES.IDLE || homeDocStatus === STATUSES.PENDING;
 
   const urlPage = new URLSearchParams(paramsForQueryObj).get("page") || 1;
   const urlLimit = new URLSearchParams(paramsForQueryObj).get("limit") || 10;
@@ -35,129 +44,120 @@ const SearchResults = ({
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-    paramsForQueryObj = paramsForQueryObj.replace(
-      `page=${page + 1}`,
-      `page=${newPage + 1}`
-    );
-    navigate(paramsForQueryObj);
+    const params = new URLSearchParams(location.search);
+    params.set("page", newPage + 1);
+    navigate(`?${params.toString()}`);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(1 * event.target.value);
-    paramsForQueryObj = paramsForQueryObj.replace(
-      `limit=${rowsPerPage}`,
-      `limit=${event.target.value}`
-    );
+    const newLimit = parseInt(event.target.value);
+    setRowsPerPage(newLimit);
     setPage(0);
-    paramsForQueryObj = paramsForQueryObj.replace(`page=${page + 1}`, `page=1`);
-
-    navigate(paramsForQueryObj);
+    const params = new URLSearchParams(location.search);
+    params.set("limit", newLimit);
+    params.set("page", 1);
+    navigate(`?${params.toString()}`);
   };
 
   return (
-    <>
-      <Paper
-        elevation={12}
-        style={{
-          alignItems: "center",
-          backgroundColor: "rgb(205 213 225)",
-          marginLeft: "1.5rem",
-          marginRight: "1.5rem",
-          paddingTop: "1.5rem",
-          paddingBottom: "1rem",
-        }}
-      >
-        <Stack
-          spacing={2}
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
+    <Paper
+      elevation={12}
+      sx={(theme) => ({
+        backgroundColor: (theme) => theme.palette.secondary.main,
+        marginLeft: theme.spacing(3),
+        marginRight: theme.spacing(3),
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+      })}
+    >
+      <Stack spacing={2} alignItems="center">
+        <Card
+          elevation={0}
+          sx={{
+            backgroundColor: (theme) => theme.palette.secondary.main,
+            width: "100%",
+            maxWidth: "85rem",
           }}
         >
-          <Card
-            elevation={0}
-            style={{
-              backgroundColor: "rgb(205 213 225)",
-              borderColor: "rgb(205 213 225)",
-              width: "85rem",
-              height: "2.5rem",
+          <Typography
+            variant="h4"
+            sx={{
+              color: (theme) => theme.palette.primary.main,
             }}
           >
-            <Typography variant="h4" id="resultsTilte">
-              {resultsTilte}
-            </Typography>
-          </Card>
-          <Card
-            variant="elevation"
-            elevation={24}
-            style={{
-              backgroundColor: "burlywood",
-              width: "85rem",
-              height: "2.5rem",
-            }}
-            square
-          >
-            <Stack direction="row">
-              <>
-                {headers.map((header, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      width: `${85 / fields.length}rem`,
-                      height: "2.5rem",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      color: "#430494",
-                      fontSize: "1.2rem",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {header}
-                  </div>
-                ))}
-                {!isLinkable && (
-                  <div
-                    sx={{
-                      width: `2.5rem`,
-                    }}
-                  ></div>
-                )}
-              </>
-            </Stack>
-          </Card>
-          <>
-            {results.map((item, index) => (
-              <SearchResultsLine
-                key={item[idName]}
-                item={item}
-                fields={fields}
-                idName={idName}
-                rowIndex={index + 1}
-                isLinkable={isLinkable}
-                linkPath={linkPath}
-              />
+            {resultsTitle}
+          </Typography>
+        </Card>
+
+        <Card
+          elevation={24}
+          square
+          sx={{
+            backgroundColor: "burlywood",
+            width: "100%",
+            minHeight: "2.5rem",
+            overflowX: "auto",
+          }}
+        >
+          <Stack direction="row" alignItems="center">
+            {headers.map((header, index) => (
+              <Box
+                key={`header-${index}`}
+                sx={{
+                  paddingTop: (theme) => theme.spacing(0.5),
+                  flexGrow: columnRatios[index],
+                  flexBasis: 0,
+                  textAlign: "center",
+                  fontSize: "1.2rem",
+                  color: "#430494",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {header}
+              </Box>
             ))}
-          </>
-          <>
-            <ThemeProvider theme={theme}>
-              <TablePagination
-                component="div"
-                count={parseInt(paginationCount)}
-                page={page}
-                onPageChange={handleChangePage}
-                rowsPerPage={rowsPerPage}
-                labelRowsPerPage={""}
-                labelDisplayedRows={({ from, to, count }) =>
-                  `${from}-${to} מתוך ${count !== -1 ? count : `יותר מ ${to}`}`
-                }
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </ThemeProvider>
-          </>
-        </Stack>
-      </Paper>
-    </>
+            {isLinkable && <Box sx={{ flexShrink: 0, width: "2.5rem" }} />}
+          </Stack>
+        </Card>
+
+        {results.map((item, index) => (
+          <SearchResultsLine
+            key={item[idName]}
+            item={item}
+            fields={fields}
+            columnRatios={columnRatios}
+            idName={idName}
+            rowIndex={index + 1}
+            isLinkable={isLinkable}
+            linkPath={linkPath}
+          />
+        ))}
+
+        {isLoading &&
+          Array.from({ length: rowsPerPage }).map((_, index) => (
+            <SearchResultsLineSkeleton
+              key={`Skeleton-line-${index}`}
+              columns={3}
+              columnRatios={columnRatios}
+            />
+          ))}
+
+        <ThemeProvider theme={paginationTheme}>
+          <TablePagination
+            component="div"
+            count={parseInt(paginationCount)}
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            labelRowsPerPage=""
+            labelDisplayedRows={({ from, to, count }) =>
+              `${from}-${to} מתוך ${count !== -1 ? count : `יותר מ-${to}`}`
+            }
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </ThemeProvider>
+      </Stack>
+    </Paper>
   );
 };
 

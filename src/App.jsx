@@ -21,18 +21,27 @@ const portalTheme = createTheme({
   },
 });
 
-const App = () => {  
+const App = () => {
   return (
     <ThemeProvider theme={portalTheme}>
       <ToastProvider>
-        <div dir="rtl" style={{ backgroundColor: "#130b65", height: "100vh" }}>
+        <div
+          dir="rtl"
+          style={{ backgroundColor: "#130b65", minHeight: "100vh" }}
+        >
           <HashRouter>
             <Navbar />
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/Results" element={<SearchResultsPage />} />
-              <Route path="/Results/Residence/:id/:mode?" element={<ResidencePage />} />
-              <Route path="/Results/Chattels/:id/:mode?" element={<ChattelsPage />} />
+              <Route
+                path="/Results/Residence/:id/:mode?"
+                element={<ResidencePage />}
+              />
+              <Route
+                path="/Results/Chattels/:id/:mode?"
+                element={<ChattelsPage />}
+              />
             </Routes>
           </HashRouter>
         </div>

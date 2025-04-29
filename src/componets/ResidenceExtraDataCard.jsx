@@ -67,14 +67,14 @@ const ResidenceExtraDataCard = ({ residence }) => {
         <Paper
           elevation={0}
           className={classes.paper}
-          style={{
+          sx={{
             backgroundColor: "transparent",
             borderColor: "grey",
           }}
         >
           <Card
             className={classes.card}
-            style={{
+            sx={{
               backgroundColor: "transparent",
               borderColor: "grey",
               marginTop: "3px",
@@ -87,7 +87,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                style={{ paddingLeft: "0.5rem" }}
+                sx={{ paddingLeft: "0.5rem" }}
               >
                 <Typography variant="h7" className={classes.typographyText}>
                   תיאור:
@@ -122,7 +122,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
         <Paper
           elevation={0}
           className={classes.paper}
-          style={{
+          sx={{
             backgroundColor: "transparent",
             borderColor: "grey",
             marginRight: "4px",
@@ -130,7 +130,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
         >
           <Card
             className={classes.card}
-            style={{ backgroundColor: "transparent", borderColor: "grey" }}
+            sx={{ backgroundColor: "transparent", borderColor: "grey" }}
           >
             <Grid container spacing={0.25}>
               <Grid
@@ -138,7 +138,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                style={{ paddingLeft: "0.5rem" }}
+                sx={{ paddingLeft: "0.5rem" }}
               >
                 <Typography variant="h7" className={classes.typographyText}>
                   {!SUB_HOME_DOC_LIST[
@@ -164,7 +164,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                 container
                 justifyContent="flex-start"
                 alignItems="center"
-                style={{ paddingLeft: "0.5rem" }}
+                sx={{ paddingLeft: "0.5rem" }}
               >
                 <Typography variant="h7" className={classes.typographyText}>
                   שנת בנייה:
@@ -181,7 +181,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                style={{ paddingLeft: "0.5rem" }}
+                sx={{ paddingLeft: "0.5rem" }}
               >
                 <Typography variant="h7" className={classes.typographyText}>
                   שטח (קמ"ר):
@@ -200,7 +200,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
           <Paper
             elevation={0}
             className={classes.paper}
-            style={{
+            sx={{
               marginRight: "4px",
               backgroundColor: "transparent",
               borderColor: "grey",
@@ -208,7 +208,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
           >
             <Card
               className={classes.card}
-              style={{ backgroundColor: "transparent", borderColor: "grey" }}
+              sx={{ backgroundColor: "transparent", borderColor: "grey" }}
             >
               <Grid container spacing={0.25}>
                 <Grid
@@ -217,7 +217,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                   container
                   justifyContent="flex-start"
                   alignItems="center"
-                  style={{ paddingLeft: "0.5rem" }}
+                  sx={{ paddingLeft: "0.5rem" }}
                 >
                   <Typography variant="h7" className={classes.typographyText}>
                     רוחב (מטרים):
@@ -232,7 +232,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                   container
                   justifyContent="flex-start"
                   alignItems="center"
-                  style={{ paddingLeft: "0.5rem" }}
+                  sx={{ paddingLeft: "0.5rem" }}
                 >
                   <Typography variant="h7" className={classes.typographyText}>
                     אורך (מטרים):
@@ -253,7 +253,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
         <Paper
           elevation={0}
           className={classes.paper}
-          style={{
+          sx={{
             marginRight: "4px",
             backgroundColor: "transparent",
             borderColor: "grey",
@@ -261,7 +261,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
         >
           <Card
             className={classes.card}
-            style={{
+            sx={{
               backgroundColor: "transparent",
               borderColor: "grey",
             }}

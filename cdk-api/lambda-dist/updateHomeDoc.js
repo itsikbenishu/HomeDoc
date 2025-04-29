@@ -16878,21 +16878,21 @@ var import_postgresDB = __toESM(require_postgresDB());
 var withCors = require_withCors();
 exports.handler = withCors(async (event) => {
   const { id, pageType } = event.pathParameters || {};
-  const body = event.body || {};
+  const body = JSON.parse(event.body || {});
   try {
     const updatedHomeDoc = await import_postgresDB.drizzleWriter.update(import_homeDocModel.HomeDocs).set(body).where(eq(import_homeDocModel.HomeDocs.id, id)).returning().then((rows) => rows[0]);
-    const updatedHomeDocsDimensions = await import_postgresDB.drizzleWriter.insert(HomeDocsDimensions).values({ ...body, homeDocId: id }).onConflictDoUpdate({
-      target: HomeDocsDimensions.homeDocId,
+    const updatedHomeDocsDimensions = await import_postgresDB.drizzleWriter.insert(import_homeDocModel.HomeDocsDimensions).values({ ...body, homeDocId: id }).onConflictDoUpdate({
+      target: import_homeDocModel.HomeDocsDimensions.homeDocId,
       set: body
     }).returning().then((rows) => rows[0]);
     const { id: dimId, homeDocId, ...dimensions } = updatedHomeDocsDimensions;
     let specsAttributes;
     switch (pageType) {
       case "Chattels":
-        specsAttributes = ChattelsSpecsAttributes;
+        specsAttributes = import_homeDocModel.ChattelsSpecsAttributes;
         break;
       case "Residence":
-        specsAttributes = ResidenceSpecsAttributes;
+        specsAttributes = import_homeDocModel.ResidenceSpecsAttributes;
         break;
       default:
         return {

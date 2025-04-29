@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-scroll";
 import { makeStyles } from "@mui/styles";
 import {
   IconButton,
@@ -166,11 +165,9 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
         />
       </FormControl>
       <FormControl sx={{ mt: 3, ml: 1, bgcolor: "white" }} variant="standard">
-        <Link to="resultsTilte" spy={true} smooth={true}>
-          <IconButton onClick={handleSearch} className={classes.iconButton}>
-            <SearchIcon></SearchIcon>
-          </IconButton>
-        </Link>
+        <IconButton onClick={handleSearch} className={classes.iconButton}>
+          <SearchIcon></SearchIcon>
+        </IconButton>
       </FormControl>
       <CreateHomeDialog />
     </div>

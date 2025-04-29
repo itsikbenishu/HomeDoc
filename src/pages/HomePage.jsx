@@ -48,7 +48,7 @@ const HomePage = () => {
             <Typography
               elevation={0}
               variant="h4"
-              style={{ background: "#130b65", color: "white" }}
+              sx={{ background: "#130b65", color: "white" }}
               className={classes.header}
             >
               בחר סוג נכס
@@ -56,11 +56,11 @@ const HomePage = () => {
           </Card>
         </Grid>
         <Grid item xs={12}>
-          <Paper elevation={0} style={{ background: "#130b65" }}>
+          <Paper elevation={0} sx={{ background: "#130b65" }}>
             <Grid
               container
               spacing={2}
-              style={{
+              sx={{
                 alignItems: "center",
                 justifyContent: "center",
               }}

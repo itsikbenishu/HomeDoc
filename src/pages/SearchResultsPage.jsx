@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom"; // הוספת useSearchParams
 import { useDispatch, useSelector } from "react-redux";
-import { Card } from "@mui/material";
+import { Box, Card } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Stack } from "@mui/material";
 import SearchResults from "../componets/SearchResults";
@@ -20,7 +20,6 @@ const useStyles = makeStyles(() => ({
     margin: 4,
   },
   resultsCard: {
-    background: "#130b65",
     margin: 4,
   },
 }));
@@ -36,6 +35,7 @@ const SearchResultsPage = () => {
   const homeDocsStats = useSelector(selectHomeDocStats);
   const headers = ["#", "סוג נכס", "כתובת"];
   const homefields = ["#", "category", "interiorEntityKey"];
+  const divfields = [1, 1, 8];
 
   useEffect(() => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
@@ -85,21 +85,27 @@ const SearchResultsPage = () => {
 
   return (
     <>
-      <Stack spacing={1} style={{ borderStyle: "none" }}>
+      <Stack
+        spacing={1}
+        sx={{
+          borderStyle: "none",
+        }}
+      >
         <HeaderPage headerName="חיפוש נכס" cardClass={classes.header} />
-        <Card>
+        <Box>
           <SearchPropertyForm initialCategory={category}></SearchPropertyForm>
-        </Card>
-        <Card className={classes.resultsCard}>
+        </Box>
+        <Box>
           <SearchResults
             headers={headers}
             results={homeDocs}
             fields={homefields}
+            columnRatios={divfields}
             paginationCount={paginationCount}
             isLinkable={true}
             linkPath={"Residence"}
-          ></SearchResults>
-        </Card>
+          />
+        </Box>
       </Stack>
     </>
   );

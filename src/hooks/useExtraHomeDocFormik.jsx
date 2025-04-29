@@ -57,7 +57,7 @@ export const useExtraHomeDocFormik = (homeDoc, dispatch, pageType) => {
         updateCurrentHomeDoc({
           id: homeDoc.id,
           pageType: pageType,
-          data: {
+          HomeDocData: {
             ...values,
             colors: values.colors.join("|"),
             extraData: values.extraData.map((elem) => {

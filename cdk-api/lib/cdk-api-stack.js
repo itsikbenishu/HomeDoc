@@ -96,7 +96,6 @@ class CdkApiStack extends Stack {
         },
         memorySize: 1024,
         timeout: Duration.seconds(30),
-        provisionedConcurrentExecutions: 10,
       });
 
       lambdaFunction.addPermission("ApiGatewayInvoke", {

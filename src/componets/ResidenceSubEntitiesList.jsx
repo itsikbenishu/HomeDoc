@@ -60,7 +60,7 @@ const ResidenceSubEntitiesList = ({
       }}
     >
       <Grid container spacing={0.5}>
-        <Grid item xs={2}>
+        <Grid item xs={1}>
           <Paper
             elevation={0}
             style={{

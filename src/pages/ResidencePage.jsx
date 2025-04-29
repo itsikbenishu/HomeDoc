@@ -58,7 +58,7 @@ const HomeDocResidencePage = () => {
     dispatch(fetchHomeDoc({ id: residenceEntityId, pageType: pageType }));
   }, [residenceEntityId, pageType, dispatch]);
 
-  let isLoading =
+  const isLoading =
     homeDocStatus === STATUSES.IDLE || homeDocStatus === STATUSES.PENDING;
 
   const entityTitle =
@@ -89,14 +89,14 @@ const HomeDocResidencePage = () => {
             <Grid
               container
               spacing={0.5}
-              style={{ height: " 100vh" }}
+              sx={{ height: " 100vh" }}
               direction="column"
             >
               <Grid item xs={6} sm={6} md={3}>
                 <Paper
                   elevation={1}
                   className={classes.paper}
-                  style={{
+                  sx={{
                     backgroundColor: "rgb(205 213 225)",
                     borderColor: "rgb(205 213 225)",
                     marginBottom: "-0.5rem",
@@ -118,7 +118,7 @@ const HomeDocResidencePage = () => {
                 <Paper
                   elevation={1}
                   className={classes.paper}
-                  style={{
+                  sx={{
                     backgroundColor: "rgb(205 213 225)",
                     borderColor: "rgb(205 213 225)",
                   }}
@@ -126,17 +126,17 @@ const HomeDocResidencePage = () => {
                   <ResidenceExtraDataCard residence={residence} />
                 </Paper>
               </Grid>
-              <Grid item xs={6} sm={6} style={{ paddingTop: "0.5rem" }}>
+              <Grid item xs={6} sm={6} sx={{ paddingTop: "0.5rem" }}>
                 <LabeledContainer lableName={"תמונות"}>
                   <div>בפיתוח</div>
                 </LabeledContainer>
               </Grid>
-              <Grid item xs={6} sm={6} style={{ paddingTop: "0.5rem" }}>
+              <Grid item xs={6} sm={6} sx={{ paddingTop: "0.5rem" }}>
                 {residenceType === "PROPERTY" ? (
                   <Paper
                     elevation={2}
                     className={classes.paper}
-                    style={{ backgroundColor: "#130b65" }}
+                    sx={{ backgroundColor: "#130b65" }}
                   ></Paper>
                 ) : (
                   <LabeledContainer lableName="מבט על">
