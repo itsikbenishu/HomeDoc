@@ -19,7 +19,7 @@ new CdkApiStack(app, "CdkApiStack", {
   POSTGRES_DB: process.env.POSTGRES_DB,
   POSTGRES_USER: process.env.POSTGRES_USER,
   POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
-  CORS_DOMAINS: [process.env.LOCAL_DOMAIN],
+  CORS_DOMAINS: [process.env.LOCAL_DOMAIN, process.env.PROD_DOMAIN],
 
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
