@@ -20,6 +20,7 @@
     "@aws-cdk/aws-ec2": "^1.203.0",
     "@aws-cdk/aws-lambda": "^1.203.0",
     "@aws-cdk/aws-rds": "^1.203.0",
+    "@aws-sdk/client-lambda": "^3.799.0",
     "acorn": "^8.14.1",
     "acorn-walk": "^8.3.4",
     "aws-cdk-lib": "^2.186.0",

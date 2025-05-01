@@ -6,6 +6,7 @@ const wrapWithCorsPlugin = require("./plagins/wrapWithCors");
 const lambdaDir = path.resolve(__dirname, "lambda/handlers");
 const outDir = path.join(__dirname, "lambda-dist");
 
+const notApis = new Set(["keepWarm.js"]);
 const entryFiles = fs
   .readdirSync(lambdaDir)
   .filter((file) => file.endsWith(".js"));
@@ -29,7 +30,7 @@ esbuild
     target: "node20",
     outdir: outDir,
     external: [],
-    plugins: [wrapWithCorsPlugin],
+    plugins: [wrapWithCorsPlugin(notApis)],
     logLevel: "info",
   })
   .then(() => {

@@ -253,7 +253,23 @@ const homeDocSlice = createSlice({
         state.status = STATUSES.PENDING;
       })
       .addCase(createHomeDoc.fulfilled, (state, action) => {
-        state.entity = action.payload.data.HomeDoc;
+        const newTotalCount = 1 * state.stats.totalCount + 1;
+        const newStats = {
+          ...state.stats,
+          totalCount: newTotalCount,
+          categoryStats: state.stats.categoryStats.map((item) => {
+            if (item.category === action.payload.data.HomeDoc.category) {
+              return { ...item, countHomes: item.countHomes + 1 };
+            }
+            return item;
+          }),
+        };
+
+        state.searchEntityResults = [
+          ...action.payload.data.HomeDoc,
+          ...state.searchEntityResults,
+        ];
+        state.stats = newStats;
         state.success = true;
         state.status = STATUSES.FULFILLED;
         toast(" נוצר בהצלחה! ", "success");
@@ -291,11 +307,15 @@ const homeDocSlice = createSlice({
         state.status = STATUSES.PENDING;
       })
       .addCase(createSubHomeDoc.fulfilled, (state, action) => {
-        state.entity.subEntities.push({
-          id: action.payload.data.newHomeDocRelation.subHomeDocId,
-          interiorEntityKey: action.payload.data.newHomeDoc.interiorEntityKey,
-          type: action.payload.data.newHomeDoc.type,
-        });
+        state.entity.subEntities = [
+          ...state.entity.subEntities,
+          {
+            id: action.payload.data.newHomeDocRelation.subHomeDocId,
+            interiorEntityKey: action.payload.data.newHomeDoc.interiorEntityKey,
+            type: action.payload.data.newHomeDoc.type,
+          },
+        ];
+
         state.success = true;
         state.status = STATUSES.FULFILLED;
         toast(" נוצר בהצלחה! ", "success");

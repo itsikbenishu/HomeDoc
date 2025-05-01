@@ -1,11 +1,19 @@
+const path = require("path");
 const fs = require("fs").promises;
 const acorn = require("acorn");
 const walk = require("acorn-walk");
 
-const wrapWithCorsPlugin = {
+const wrapWithCorsPlugin = (excludedFiles = new Set()) => ({
   name: "wrap-with-cors",
   setup(build) {
     build.onLoad({ filter: /\.js$/ }, async (args) => {
+      const filename = path.basename(args.path);
+
+      if (excludedFiles.has(filename)) {
+        const source = await fs.readFile(args.path, "utf8");
+        return { contents: source, loader: "js" };
+      }
+
       const source = await fs.readFile(args.path, "utf8");
       const ast = acorn.parse(source, {
         ecmaVersion: "latest",
@@ -54,6 +62,6 @@ ${beforeHandlerAssignment}exports.handler = withCors(${
       return { contents: source, loader: "js" };
     });
   },
-};
+});
 
 module.exports = wrapWithCorsPlugin;

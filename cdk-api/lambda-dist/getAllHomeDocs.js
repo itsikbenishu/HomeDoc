@@ -15710,6 +15710,15 @@ var { drizzleReader } = require_postgresDB();
 exports.handler = withCors(async (event) => {
   try {
     const query = event.queryStringParameters || {};
+    if (query.source === "warm-up") {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          status: "success",
+          message: "Lambda is warm!"
+        })
+      };
+    }
     const features = new APISQLFeatures(drizzleReader, "home_docs", query).filter().sort().limitFields().paginate().makeQuery();
     const entities = await features.execute();
     const homeDocs = entities.rows || [];

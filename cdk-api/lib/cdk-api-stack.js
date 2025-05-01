@@ -6,6 +6,8 @@ const {
   RestApi,
   Cors,
 } = require("aws-cdk-lib/aws-apigateway");
+const { Rule, Schedule } = require("aws-cdk-lib/aws-events");
+const { LambdaFunction } = require("aws-cdk-lib/aws-events-targets");
 
 const path = require("path");
 
@@ -82,6 +84,8 @@ class CdkApiStack extends Stack {
       POSTGRES_PASSWORD: props.POSTGRES_PASSWORD,
     };
 
+    let getAllHomeDocslambda;
+
     resourceConfig.functions.forEach((lambda) => {
       const fullPath = `${resourceConfig.baseRoute}${lambda.route}`;
 
@@ -98,6 +102,10 @@ class CdkApiStack extends Stack {
         timeout: Duration.seconds(30),
       });
 
+      if (lambda.lambdaName === "GetAllHomeDocsFunction") {
+        getAllHomeDocslambda = lambdaFunction;
+      }
+
       lambdaFunction.addPermission("ApiGatewayInvoke", {
         principal: new ServicePrincipal("apigateway.amazonaws.com"),
       });
@@ -105,6 +113,29 @@ class CdkApiStack extends Stack {
       const lambdaIntegration = new LambdaIntegration(lambdaFunction);
       const resource = addResources(api.root, fullPath, corsOptions);
       resource.addMethod(lambda.httpMethod, lambdaIntegration);
+    });
+
+    const lambdaKeepWarm = new Function(this, "KeepLambdaWarmFunction", {
+      functionName: "KeepLambdaWarmFunction",
+      runtime: Runtime.NODEJS_20_X,
+      handler: `keepWarm.handler`,
+      code: Code.fromAsset(path.join(__dirname, "..", "lambda", "handlers")),
+      memorySize: 1024,
+      timeout: Duration.seconds(30),
+    });
+
+    getAllHomeDocslambda.grantInvoke(lambdaKeepWarm);
+
+    const lambdaKeepWarmTarget = new LambdaFunction(lambdaKeepWarm);
+
+    new Rule(this, "KeepWarmRule", {
+      ruleName: "KeepLambdaWarmSchedule",
+      schedule: Schedule.cron({
+        minute: "0/5",
+        hour: "6-17", // 9-20 Israel time (UTC+3)
+        weekDay: "MON-FRI",
+      }),
+      targets: [lambdaKeepWarmTarget],
     });
   }
 }

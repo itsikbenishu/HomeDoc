@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Paper,
@@ -10,11 +11,10 @@ import {
   TablePagination,
   Box,
 } from "@mui/material";
+import { STATUSES } from "../../Constants";
+import { selectHomeDocStatus } from "../slices/HomeDocSlice";
 import SearchResultsLine from "./SearchResultsLine";
 import SearchResultsLineSkeleton from "./SearchResultsLineSkeleton";
-import { selectHomeDocStatus } from "../slices/HomeDocSlice";
-import { useSelector } from "react-redux";
-import { STATUSES } from "../../Constants";
 
 const SearchResults = ({
   headers,
@@ -120,27 +120,28 @@ const SearchResults = ({
           </Stack>
         </Card>
 
-        {results.map((item, index) => (
-          <SearchResultsLine
-            key={item[idName]}
-            item={item}
-            fields={fields}
-            columnRatios={columnRatios}
-            idName={idName}
-            rowIndex={index + 1}
-            isLinkable={isLinkable}
-            linkPath={linkPath}
-          />
-        ))}
-
-        {isLoading &&
-          Array.from({ length: rowsPerPage }).map((_, index) => (
-            <SearchResultsLineSkeleton
-              key={`Skeleton-line-${index}`}
-              columns={3}
-              columnRatios={columnRatios}
-            />
-          ))}
+        {isLoading
+          ? Array.from({ length: rowsPerPage }).map((_, index) => (
+              <SearchResultsLineSkeleton
+                key={`Skeleton-line-${index}`}
+                columns={3}
+                columnRatios={columnRatios}
+              />
+            ))
+          : results
+              .slice(0, rowsPerPage)
+              .map((item, index) => (
+                <SearchResultsLine
+                  key={item[idName]}
+                  item={item}
+                  fields={fields}
+                  columnRatios={columnRatios}
+                  idName={idName}
+                  rowIndex={index + 1}
+                  isLinkable={isLinkable}
+                  linkPath={linkPath}
+                />
+              ))}
 
         <ThemeProvider theme={paginationTheme}>
           <TablePagination
