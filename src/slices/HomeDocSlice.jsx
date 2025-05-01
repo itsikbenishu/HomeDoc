@@ -12,6 +12,7 @@ const initialState = {
 };
 
 const backendURL = import.meta.env.VITE_API_GATEWAY_URL;
+console.log(import.meta.env);
 const name = "home";
 
 const fetchHomeDoc = createAsyncThunk(
