@@ -64,7 +64,10 @@ const searchHomeDocs = createAsyncThunk(
   `${name}/fetch/HomeDocs`,
   async ({ query }, { rejectWithValue }) => {
     try {
-      const url = `${backendURL}api/HomeDocs${query}`;
+      // const url = `${backendURL}api/HomeDocs${query}`;
+      const url = new URL(`api/HomeDocs${query}`, backendURL).toString();
+      console.log("Final API URL:", url);
+
       const response = await fetch(url);
 
       if (!response.ok) {
