@@ -21,7 +21,7 @@ const fetchHomeDoc = createAsyncThunk(
   async ({ id, pageType }, { rejectWithValue }) => {
     try {
       const pageTypeParam = pageType ? `${pageType}/` : "";
-      const url = `${backendURL}api/HomeDocs/typed/${pageTypeParam}${id}`;
+      const url = getURL(`api/HomeDocs/typed/${pageTypeParam}${id}`);
 
       const response = await fetch(url);
 
@@ -42,9 +42,11 @@ const fetchHomeDocStats = createAsyncThunk(
   `${name}/stats/HomeDoc`,
   async ({ interiorEntityKey }, { rejectWithValue }) => {
     try {
-      const url = `${backendURL}api/HomeDocs/stats?${
-        interiorEntityKey ? `interiorEntityKey=${interiorEntityKey}` : ""
-      }`;
+      const url = getURL(
+        `api/HomeDocs/stats?${
+          interiorEntityKey ? `interiorEntityKey=${interiorEntityKey}` : ""
+        }`
+      );
 
       const response = await fetch(url);
 
@@ -65,8 +67,6 @@ const searchHomeDocs = createAsyncThunk(
   `${name}/fetch/HomeDocs`,
   async ({ query }, { rejectWithValue }) => {
     try {
-      // const url = `${backendURL}api/HomeDocs${query}`;
-      //const url = new URL(`api/HomeDocs${query}`, backendURL).toString();
       const url = getURL(`api/HomeDocs${query}`);
       const response = await fetch(url);
 
@@ -87,7 +87,7 @@ const updateCurrentHomeDoc = createAsyncThunk(
   `${name}/update/HomeDoc`,
   async ({ id, pageType, HomeDocData }, { rejectWithValue }) => {
     try {
-      const url = `${backendURL}api/HomeDocs/typed/${pageType}/${id}`;
+      const url = getURL(`api/HomeDocs/typed/${pageType}/${id}`);
 
       const response = await fetch(url, {
         method: "PATCH",
@@ -114,7 +114,7 @@ const createHomeDoc = createAsyncThunk(
   `${name}/create/HomeDoc`,
   async (newHomeDoc, { rejectWithValue }) => {
     try {
-      const url = `${backendURL}api/HomeDocs`;
+      const url = getURL(`api/HomeDocs`);
 
       const response = await fetch(url, {
         method: "POST",
@@ -141,7 +141,7 @@ const createSubHomeDoc = createAsyncThunk(
   `${name}/create/subHomeDoc`,
   async ({ fatherId, subHomeDocInfo }, { rejectWithValue }) => {
     try {
-      const url = `${backendURL}api/HomeDocs/HomeDoc/${fatherId}/subHomeDoc`;
+      const url = getURL(`api/HomeDocs/HomeDoc/${fatherId}/subHomeDoc`);
 
       const response = await fetch(url, {
         method: "PUT",
@@ -168,7 +168,7 @@ const deleteHomeDoc = createAsyncThunk(
   `${name}/delete/HomeDoc`,
   async ({ id }, { rejectWithValue }) => {
     try {
-      const url = `${backendURL}api/HomeDocs/${id}`;
+      const url = getURL(`api/HomeDocs/${id}`);
 
       const response = await fetch(url, {
         method: "DELETE",
