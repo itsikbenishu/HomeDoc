@@ -12,7 +12,8 @@ const initialState = {
 };
 
 const backendURL = import.meta.env.VITE_API_GATEWAY_URL;
-console.log(import.meta.env);
+const getURL = (route) => new URL(route, backendURL).toString();
+
 const name = "home";
 
 const fetchHomeDoc = createAsyncThunk(
@@ -65,9 +66,8 @@ const searchHomeDocs = createAsyncThunk(
   async ({ query }, { rejectWithValue }) => {
     try {
       // const url = `${backendURL}api/HomeDocs${query}`;
-      const url = new URL(`api/HomeDocs${query}`, backendURL).toString();
-      console.log("Final API URL:", url);
-
+      //const url = new URL(`api/HomeDocs${query}`, backendURL).toString();
+      const url = getURL(`api/HomeDocs${query}`);
       const response = await fetch(url);
 
       if (!response.ok) {

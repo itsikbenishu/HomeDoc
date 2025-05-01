@@ -29,6 +29,7 @@ var require_withCors = __commonJS({
     var withCors2 = (handler) => {
       return async (event, context) => {
         const origin = event.headers?.origin || "";
+        console.log(event.headers?.origin);
         const isAllowed = allowedOrigins.includes(origin);
         const result = await handler(event, context);
         return {
