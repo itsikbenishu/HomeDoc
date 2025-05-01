@@ -11,9 +11,7 @@
     "preview": "vite preview",
     "serve": "serve dist",
     "predeploy": "npm run build",
-    "deploy:front": "gh-pages -d dist",
-    "deploy:back": "cd cdk-api && cdk deploy",
-    "deploy:all": "npm run deploy:front && npm run deploy:back"
+    "deploy:aws": "cd cdk-api && cdk deploy"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
