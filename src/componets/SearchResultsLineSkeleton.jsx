@@ -1,5 +1,4 @@
 import { Card, Stack, Skeleton, Box, IconButton } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
