@@ -4,7 +4,7 @@ import { SUB_HOME_DOC_LIST, SUB_HOME_DOC_TYPE } from "../../Constants";
 import ExtraDataList from "./ExtraDataList";
 import ExtraDataField from "./ExtraDataField";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   gridItem: {
     alignItems: "stretch",
     width: "100%",
@@ -27,19 +27,11 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     padding: 0.5,
     marginBottom: 2,
+    width: "8rem",
     height: "1.5rem",
     "& .MuiInputBase-root": {
       padding: 0,
       height: "1.9rem",
-    },
-    "@media (max-width: 600px)": {
-      width: "8rem",
-    },
-    "@media (min-width: 600px) and (max-width: 960px)": {
-      width: "8rem", // רוחב בינוני למסכים בגודל בינוני
-    },
-    "@media (min-width: 960px)": {
-      width: "12rem", // רוחב גדול למסכים גדולים
     },
   },
   textFieldContainer: {
@@ -93,7 +85,6 @@ const ResidenceExtraDataCard = ({ residence }) => {
               <Grid
                 item
                 xs={2}
-                sm={2}
                 justifyContent="flex-start"
                 alignItems="center"
                 sx={{ paddingLeft: "0.5rem" }}
@@ -108,7 +99,6 @@ const ResidenceExtraDataCard = ({ residence }) => {
               <Grid
                 item
                 xs={10}
-                sm={10}
                 className={classes.multilineTextFieldContainer}
               >
                 <ExtraDataField
@@ -149,7 +139,6 @@ const ResidenceExtraDataCard = ({ residence }) => {
               <Grid
                 item
                 xs={2}
-                sm={2}
                 justifyContent="flex-start"
                 alignItems="center"
                 sx={{ paddingLeft: "0.5rem" }}
@@ -169,7 +158,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                       }:`}
                 </Typography>
               </Grid>
-              <Grid item xs={2} sm={2} className={classes.textFieldContainer}>
+              <Grid item xs={2} className={classes.textFieldContainer}>
                 <ExtraDataField
                   label="subEntitiesQuantity"
                   className={classes.textField}
@@ -178,7 +167,6 @@ const ResidenceExtraDataCard = ({ residence }) => {
               <Grid
                 item
                 xs={1}
-                sm={1}
                 container
                 justifyContent="flex-start"
                 alignItems="center"
@@ -191,7 +179,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                   שנת בנייה:
                 </Typography>
               </Grid>
-              <Grid item xs={2} sm={2} className={classes.textFieldContainer}>
+              <Grid item xs={2} className={classes.textFieldContainer}>
                 <ExtraDataField
                   label="constructionYear"
                   className={classes.textField}
@@ -200,7 +188,6 @@ const ResidenceExtraDataCard = ({ residence }) => {
               <Grid
                 item
                 xs={2}
-                sm={2}
                 justifyContent="flex-start"
                 alignItems="center"
                 sx={{ paddingLeft: "0.5rem" }}
@@ -212,7 +199,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                   שטח (קמ"ר):
                 </Typography>
               </Grid>
-              <Grid item xs={1} sm={2} className={classes.textFieldContainer}>
+              <Grid item xs={1} className={classes.textFieldContainer}>
                 <ExtraDataField label="area" className={classes.textField} />
               </Grid>
             </Grid>
@@ -239,7 +226,6 @@ const ResidenceExtraDataCard = ({ residence }) => {
                 <Grid
                   item
                   xs={2}
-                  sm={2}
                   container
                   justifyContent="flex-start"
                   alignItems="center"
@@ -252,13 +238,12 @@ const ResidenceExtraDataCard = ({ residence }) => {
                     רוחב (מטרים):
                   </Typography>
                 </Grid>
-                <Grid item xs={2} sm={2} className={classes.textFieldContainer}>
+                <Grid item xs={2} className={classes.textFieldContainer}>
                   <ExtraDataField label="width" className={classes.textField} />
                 </Grid>
                 <Grid
                   item
                   xs={2}
-                  sm={2}
                   container
                   justifyContent="flex-start"
                   alignItems="center"
@@ -271,7 +256,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                     אורך (מטרים):
                   </Typography>
                 </Grid>
-                <Grid item xs={1} sm={1} className={classes.textFieldContainer}>
+                <Grid item xs={1} className={classes.textFieldContainer}>
                   <ExtraDataField
                     label="length"
                     className={classes.textField}
@@ -300,7 +285,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
             }}
           >
             <ExtraDataList
-              count={residence.type !== "PROPERTY" ? 3 : 5}
+              count={residence.type !== "PROPERTY" ? 3 : 5} //זה טוב עם בניין, מה עושים עם קרקע?
               addMessage="?האם אתה בטוח שהינך מעוניין להוסיף את התכונה הזו"
             />
           </Card>
