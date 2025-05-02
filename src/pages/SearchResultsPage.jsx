@@ -71,7 +71,7 @@ const SearchResultsPage = () => {
     homeDocsStats?.categoryStats &&
     category &&
     homeDocsStats?.categoryStats.findIndex(
-      (stat) => `'${stat.category}'` === category
+      (stat) => `${stat.category}` === category
     );
 
   const checkCategory = !searchParams.has("category");
