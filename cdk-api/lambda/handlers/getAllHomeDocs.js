@@ -1,7 +1,5 @@
 exports.handler = async (event) => {
   try {
-    console.log(`BDIKA: ` + event);
-
     if (event?.source === "warm-up") {
       return {
         statusCode: 200,

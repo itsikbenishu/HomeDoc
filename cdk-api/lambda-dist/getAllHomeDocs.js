@@ -15719,7 +15719,6 @@ var require_postgresDB = __commonJS({
 var withCors = require_withCors();
 exports.handler = withCors(async (event) => {
   try {
-    console.log(`BDIKA: ` + event);
     if (event?.source === "warm-up") {
       return {
         statusCode: 200,
