@@ -15599,13 +15599,18 @@ var require_postgresDB = __commonJS({
       }
       return drizzleReader2;
     };
-    module2.exports = { getDrizzleWriter, getDrizzleReader: getDrizzleReader2 };
+    var closePool2 = (pool) => {
+      if (pool) {
+        pool.end();
+      }
+    };
+    module2.exports = { getDrizzleWriter, getDrizzleReader: getDrizzleReader2, closePool: closePool2 };
   }
 });
 
 // lambda/handlers/getHomeDocStats.js
 var withCors = require_withCors();
-var { getDrizzleReader } = require_postgresDB();
+var { getDrizzleReader, closePool } = require_postgresDB();
 var drizzleReader = getDrizzleReader();
 exports.handler = withCors(async (event) => {
   try {
@@ -15628,6 +15633,8 @@ exports.handler = withCors(async (event) => {
         FROM category_stats
       `);
     const stats = categoryStats.rows[0];
+    const pool = drizzleReader.client;
+    closePool(pool);
     return {
       statusCode: 200,
       body: JSON.stringify({

@@ -1,6 +1,6 @@
 const { eq } = require("drizzle-orm");
 const { HomeDocs } = require("../models/homeDocModel");
-const { getDrizzleWriter } = require("../postgresDB");
+const { getDrizzleWriter, closePool } = require("../postgresDB");
 const drizzleWriter = getDrizzleWriter();
 
 exports.handler = async (event) => {
@@ -8,6 +8,9 @@ exports.handler = async (event) => {
     await drizzleWriter
       .delete(HomeDocs)
       .where(eq(HomeDocs.id, event.pathParameters.id));
+
+    const pool = drizzleWriter.client;
+    closePool(pool);
 
     return {
       statusCode: 201,

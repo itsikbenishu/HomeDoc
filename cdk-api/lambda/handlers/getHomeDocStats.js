@@ -1,4 +1,4 @@
-const { getDrizzleReader } = require("../postgresDB");
+const { getDrizzleReader, closePool } = require("../postgresDB");
 const drizzleReader = getDrizzleReader();
 
 exports.handler = async (event) => {
@@ -27,6 +27,9 @@ exports.handler = async (event) => {
       `);
 
     const stats = categoryStats.rows[0];
+
+    const pool = drizzleReader.client;
+    closePool(pool);
 
     return {
       statusCode: 200,

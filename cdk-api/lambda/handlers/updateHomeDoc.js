@@ -5,7 +5,7 @@ const {
   HomeDocsDimensions,
   ResidenceSpecsAttributes,
 } = require("../models/homeDocModel");
-const { getDrizzleWriter } = require("../postgresDB");
+const { getDrizzleWriter, closePool } = require("../postgresDB");
 const drizzleWriter = getDrizzleWriter();
 
 exports.handler = async (event) => {
@@ -42,6 +42,8 @@ exports.handler = async (event) => {
         specsAttributes = ResidenceSpecsAttributes;
         break;
       default:
+        const pool = drizzleWriter.client;
+        closePool(pool);
         return {
           statusCode: 400,
           body: JSON.stringify({
@@ -71,6 +73,9 @@ exports.handler = async (event) => {
       homeDocId: specAttrHomeDocId,
       ...specificAttributes
     } = updatedSpecAttributes;
+
+    const pool = drizzleWriter.client;
+    closePool(pool);
 
     return {
       statusCode: 200,

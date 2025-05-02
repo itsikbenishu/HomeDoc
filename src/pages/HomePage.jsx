@@ -39,24 +39,33 @@ const HomePage = () => {
         container
         direction="column"
         spacing={5}
-        style={{ background: "#130b65" }}
-        sx={{ ml: "4rem", mr: "4rem", mt: "1rem", p: "1rem" }}
+        sx={{
+          bgcolor: (theme) => theme.palette.primary.main,
+          ml: "4rem",
+          mr: "4rem",
+          mt: "1rem",
+          p: "1rem",
+        }}
         alignItems="center"
       >
-        <Grid item xs={12} elevation={0}>
-          <Card elevation={0}>
-            <Typography
-              elevation={0}
-              variant="h4"
-              sx={{ background: "#130b65", color: "white" }}
-              className={classes.header}
-            >
-              בחר סוג נכס
-            </Typography>
-          </Card>
+        <Grid item xs={12}>
+          <Typography
+            elevation={0}
+            variant="h4"
+            sx={{
+              bgcolor: (theme) => theme.palette.primary.main,
+              color: (theme) => theme.palette.primary.contrastText,
+            }}
+            className={classes.header}
+          >
+            בחר סוג נכס
+          </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Paper elevation={0} sx={{ background: "#130b65" }}>
+          <Paper
+            elevation={0}
+            sx={{ bgcolor: (theme) => theme.palette.primary.main }}
+          >
             <Grid
               container
               spacing={2}

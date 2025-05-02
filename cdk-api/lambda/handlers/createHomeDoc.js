@@ -1,4 +1,4 @@
-const { getDrizzleWriter } = require("../postgresDB");
+const { getDrizzleWriter, closePool } = require("../postgresDB");
 const drizzleWriter = getDrizzleWriter();
 const { HomeDocs } = require("../models/homeDocModel");
 
@@ -10,6 +10,9 @@ exports.handler = async (event) => {
       .insert(HomeDocs)
       .values(body)
       .returning();
+
+    const pool = drizzleWriter.client;
+    closePool(pool);
 
     return {
       statusCode: 201,

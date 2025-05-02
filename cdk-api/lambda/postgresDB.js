@@ -39,4 +39,10 @@ const getDrizzleReader = () => {
   return drizzleReader;
 };
 
-module.exports = { getDrizzleWriter, getDrizzleReader };
+const closePool = (pool) => {
+  if (pool) {
+    pool.end();
+  }
+};
+
+module.exports = { getDrizzleWriter, getDrizzleReader, closePool };

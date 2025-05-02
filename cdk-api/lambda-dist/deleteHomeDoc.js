@@ -15869,7 +15869,12 @@ var require_postgresDB = __commonJS({
       }
       return drizzleReader;
     };
-    module2.exports = { getDrizzleWriter: getDrizzleWriter2, getDrizzleReader };
+    var closePool2 = (pool) => {
+      if (pool) {
+        pool.end();
+      }
+    };
+    module2.exports = { getDrizzleWriter: getDrizzleWriter2, getDrizzleReader, closePool: closePool2 };
   }
 });
 
@@ -15877,11 +15882,13 @@ var require_postgresDB = __commonJS({
 var withCors = require_withCors();
 var { eq } = require_drizzle_orm();
 var { HomeDocs } = require_homeDocModel();
-var { getDrizzleWriter } = require_postgresDB();
+var { getDrizzleWriter, closePool } = require_postgresDB();
 var drizzleWriter = getDrizzleWriter();
 exports.handler = withCors(async (event) => {
   try {
     await drizzleWriter.delete(HomeDocs).where(eq(HomeDocs.id, event.pathParameters.id));
+    const pool = drizzleWriter.client;
+    closePool(pool);
     return {
       statusCode: 201,
       body: JSON.stringify({

@@ -15869,7 +15869,12 @@ var require_postgresDB = __commonJS({
       }
       return drizzleReader;
     };
-    module2.exports = { getDrizzleWriter: getDrizzleWriter2, getDrizzleReader };
+    var closePool2 = (pool) => {
+      if (pool) {
+        pool.end();
+      }
+    };
+    module2.exports = { getDrizzleWriter: getDrizzleWriter2, getDrizzleReader, closePool: closePool2 };
   }
 });
 
@@ -15882,7 +15887,7 @@ var {
   HomeDocsDimensions,
   ResidenceSpecsAttributes
 } = require_homeDocModel();
-var { getDrizzleWriter } = require_postgresDB();
+var { getDrizzleWriter, closePool } = require_postgresDB();
 var drizzleWriter = getDrizzleWriter();
 exports.handler = withCors(async (event) => {
   const { id, pageType } = event.pathParameters || {};
@@ -15903,6 +15908,8 @@ exports.handler = withCors(async (event) => {
         specsAttributes = ResidenceSpecsAttributes;
         break;
       default:
+        const pool2 = drizzleWriter.client;
+        closePool(pool2);
         return {
           statusCode: 400,
           body: JSON.stringify({
@@ -15922,6 +15929,8 @@ exports.handler = withCors(async (event) => {
       homeDocId: specAttrHomeDocId,
       ...specificAttributes
     } = updatedSpecAttributes;
+    const pool = drizzleWriter.client;
+    closePool(pool);
     return {
       statusCode: 200,
       body: JSON.stringify({

@@ -15599,7 +15599,12 @@ var require_postgresDB = __commonJS({
       }
       return drizzleReader;
     };
-    module2.exports = { getDrizzleWriter: getDrizzleWriter2, getDrizzleReader };
+    var closePool2 = (pool) => {
+      if (pool) {
+        pool.end();
+      }
+    };
+    module2.exports = { getDrizzleWriter: getDrizzleWriter2, getDrizzleReader, closePool: closePool2 };
   }
 });
 
@@ -15791,7 +15796,7 @@ var require_homeDocModel = __commonJS({
 
 // lambda/handlers/createSubHomeDoc.js
 var withCors = require_withCors();
-var { getDrizzleWriter } = require_postgresDB();
+var { getDrizzleWriter, closePool } = require_postgresDB();
 var drizzleWriter = getDrizzleWriter();
 var { HomeDocsRelations, HomeDocs } = require_homeDocModel();
 exports.handler = withCors(async (event) => {
@@ -15810,6 +15815,8 @@ exports.handler = withCors(async (event) => {
     };
     const newHomeDocRelation = await drizzleWriter.insert(HomeDocsRelations).values(newSubHomedocIds).returning();
     subHomedocsIds.push(newSubHomedocIds);
+    const pool = drizzleWriter.client;
+    closePool(pool);
     return {
       statusCode: 201,
       body: JSON.stringify({

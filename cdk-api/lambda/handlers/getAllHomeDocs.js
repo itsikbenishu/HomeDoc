@@ -11,7 +11,7 @@ exports.handler = async (event) => {
     }
 
     const APISQLFeatures = require("../utils/apiSqlFeatures.js");
-    const { getDrizzleReader } = require("../postgresDB");
+    const { getDrizzleReader, closePool } = require("../postgresDB");
     const drizzleReader = getDrizzleReader();
 
     const query = event.queryStringParameters || {};
@@ -26,6 +26,9 @@ exports.handler = async (event) => {
     const entities = await features.execute();
 
     const homeDocs = entities.rows || [];
+    const pool = drizzleReader.client;
+    closePool(pool);
+
     return {
       statusCode: 200,
       body: JSON.stringify({

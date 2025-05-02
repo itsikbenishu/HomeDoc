@@ -15785,7 +15785,12 @@ var require_postgresDB = __commonJS({
       }
       return drizzleReader2;
     };
-    module2.exports = { getDrizzleWriter, getDrizzleReader: getDrizzleReader2 };
+    var closePool2 = (pool) => {
+      if (pool) {
+        pool.end();
+      }
+    };
+    module2.exports = { getDrizzleWriter, getDrizzleReader: getDrizzleReader2, closePool: closePool2 };
   }
 });
 
@@ -15795,7 +15800,7 @@ var {
   ChattelsSpecsAttributes,
   ResidenceSpecsAttributes
 } = require_homeDocModel();
-var { getDrizzleReader } = require_postgresDB();
+var { getDrizzleReader, closePool } = require_postgresDB();
 var drizzleReader = getDrizzleReader();
 exports.handler = withCors(async (event) => {
   try {
@@ -15862,6 +15867,8 @@ exports.handler = withCors(async (event) => {
       ...entity.rows[0],
       subEntities: subEntities.rowCount !== 0 ? subEntities.rows : []
     };
+    const pool = drizzleReader.client;
+    closePool(pool);
     return {
       statusCode: 200,
       body: JSON.stringify({

@@ -15711,7 +15711,12 @@ var require_postgresDB = __commonJS({
       }
       return drizzleReader;
     };
-    module2.exports = { getDrizzleWriter, getDrizzleReader };
+    var closePool = (pool) => {
+      if (pool) {
+        pool.end();
+      }
+    };
+    module2.exports = { getDrizzleWriter, getDrizzleReader, closePool };
   }
 });
 
@@ -15729,12 +15734,14 @@ exports.handler = withCors(async (event) => {
       };
     }
     const APISQLFeatures = require_apiSqlFeatures();
-    const { getDrizzleReader } = require_postgresDB();
+    const { getDrizzleReader, closePool } = require_postgresDB();
     const drizzleReader = getDrizzleReader();
     const query = event.queryStringParameters || {};
     const features = new APISQLFeatures(drizzleReader, "home_docs", query).filter().sort().limitFields().paginate().makeQuery();
     const entities = await features.execute();
     const homeDocs = entities.rows || [];
+    const pool = drizzleReader.client;
+    closePool(pool);
     return {
       statusCode: 200,
       body: JSON.stringify({

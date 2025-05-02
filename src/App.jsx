@@ -27,7 +27,10 @@ const App = () => {
       <ToastProvider>
         <div
           dir="rtl"
-          style={{ backgroundColor: "#130b65", minHeight: "100vh" }}
+          style={{
+            backgroundColor: "#130b65",
+            minHeight: "100vh",
+          }}
         >
           <HashRouter>
             <Navbar />

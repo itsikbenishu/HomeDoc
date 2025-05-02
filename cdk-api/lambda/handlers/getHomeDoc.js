@@ -2,7 +2,7 @@ const {
   ChattelsSpecsAttributes,
   ResidenceSpecsAttributes,
 } = require("../models/homeDocModel");
-const { getDrizzleReader } = require("../postgresDB");
+const { getDrizzleReader, closePool } = require("../postgresDB");
 const drizzleReader = getDrizzleReader();
 
 exports.handler = async (event) => {
@@ -82,6 +82,9 @@ exports.handler = async (event) => {
       ...entity.rows[0],
       subEntities: subEntities.rowCount !== 0 ? subEntities.rows : [],
     };
+
+    const pool = drizzleReader.client;
+    closePool(pool);
 
     return {
       statusCode: 200,
