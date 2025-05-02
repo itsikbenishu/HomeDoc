@@ -109,7 +109,10 @@ const CreateSubHomeDialog = ({
                 <ListItemText
                   primary="הוסף"
                   secondary={<span style={{ color: "white" }}></span>}
-                  sx={{ textAlign: "right", color: "white" }}
+                  sx={{
+                    textAlign: "right",
+                    color: (theme) => theme.palette.primary.contrastText,
+                  }}
                 />
               </ListItemButton>
             </>

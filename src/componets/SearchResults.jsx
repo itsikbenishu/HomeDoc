@@ -28,6 +28,7 @@ const SearchResults = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const resultsTitle = "תוצאות:";
   let paramsForQueryObj = location.search;
   const paginationTheme = createTheme({ direction: "rtl" });
@@ -89,36 +90,42 @@ const SearchResults = ({
           </Typography>
         </Card>
 
-        <Card
-          elevation={24}
-          square
-          sx={{
-            backgroundColor: "burlywood",
-            width: "100%",
-            minHeight: "2.5rem",
-            overflowX: "auto",
-          }}
-        >
-          <Stack direction="row" alignItems="center">
-            {headers.map((header, index) => (
-              <Box
-                key={`header-${index}`}
-                sx={{
-                  paddingTop: (theme) => theme.spacing(0.5),
-                  flexGrow: columnRatios[index],
-                  flexBasis: 0,
-                  textAlign: "center",
-                  fontSize: "1.2rem",
-                  color: "#430494",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {header}
-              </Box>
-            ))}
-            {isLinkable && <Box sx={{ flexShrink: 0, width: "2.5rem" }} />}
-          </Stack>
-        </Card>
+        {headers.length > 0 && (
+          <Card
+            elevation={24}
+            square
+            sx={{
+              backgroundColor: "burlywood",
+              width: "100%",
+              minHeight: "2.5rem",
+              overflowX: "auto",
+            }}
+          >
+            <Stack direction="row" alignItems="center">
+              {headers.map((header, index) => (
+                <Box
+                  key={`header-${index}`}
+                  sx={{
+                    paddingTop: (theme) => theme.spacing(0.5),
+                    flexGrow: columnRatios[index],
+                    flexBasis: 0,
+                    textAlign: "center",
+                    fontSize: "1.2rem",
+                    color: "#430494",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {header}
+                </Box>
+              ))}
+              {isLinkable && (
+                <Box
+                  sx={{ flexShrink: 0, width: (theme) => theme.spacing(2.5) }}
+                />
+              )}
+            </Stack>
+          </Card>
+        )}
 
         {isLoading
           ? Array.from({ length: rowsPerPage }).map((_, index) => (
@@ -142,7 +149,6 @@ const SearchResults = ({
                   linkPath={linkPath}
                 />
               ))}
-
         <ThemeProvider theme={paginationTheme}>
           <TablePagination
             component="div"

@@ -33,9 +33,9 @@ const useStyles = makeStyles(() => ({
       backgroundColor: "white",
       border: "1px solid #ced4da",
       fontSize: 16,
-      "&:focus": {
+      "&:active": {
         borderRadius: 4,
-        borderColor: "#80bdff",
+        border: "1px solid #80bdff",
         boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
       },
     },
@@ -98,7 +98,14 @@ const CreateHomeDialog = () => {
 
   return (
     <>
-      <FormControl sx={{ mt: 3, ml: 1, bgcolor: "white" }} variant="standard">
+      <FormControl
+        sx={{
+          mt: 3,
+          ml: 1,
+          bgcolor: (theme) => theme.palette.primary.contrastText,
+        }}
+        variant="standard"
+      >
         <IconButton onClick={handleClickOpen} className={classes.iconButton}>
           <AddBusinessIcon />
         </IconButton>
@@ -109,13 +116,16 @@ const CreateHomeDialog = () => {
         aria-labelledby="create-dialog-title"
         aria-describedby="create-dialog-description"
       >
-        <DialogTitle>צור תיעוד מבנה</DialogTitle>
+        <DialogTitle>צור תיעוד נכס</DialogTitle>
         <DialogContent>
           <DialogContentText
-            style={{ marginBottom: "0.5rem", marginTop: "-0.25rem" }}
+            sx={{
+              mb: (theme) => theme.spacing(0.5),
+              mt: (theme) => theme.spacing(-0.25),
+            }}
           >
-            כדי לצור תיעוד ביתי, אנא הזן את הכתובת של המבנה ואת סוג המבנה אותו
-            אתה מתעד.
+            כדי לצור תיעוד ביתי, אנא הזן את הכתובת של הנכס ואת סוג הנכס אותו אתה
+            מתעד.
           </DialogContentText>
           <Stack spacing={1}>
             <FormControl variant="standard">

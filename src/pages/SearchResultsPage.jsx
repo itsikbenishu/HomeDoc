@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom"; // הוספת useSearchParams
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Card } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Stack } from "@mui/material";
 import SearchResults from "../componets/SearchResults";
@@ -28,14 +28,18 @@ const SearchResultsPage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const homeDocs = useSelector(selectHomeDocResults).map((home) => {
     return { ...home, category: HOME_DOC_CATEGORIES[home.category] };
   });
   const homeDocsStats = useSelector(selectHomeDocStats);
-  const headers = ["#", "סוג נכס", "כתובת"];
-  const homefields = ["#", "category", "interiorEntityKey"];
-  const divfields = [1, 1, 8];
+  const headers = isMobile ? [] : ["#", "סוג נכס", "כתובת"];
+  const homefields = isMobile
+    ? ["interiorEntityKey"]
+    : ["#", "category", "interiorEntityKey"];
+  const divfields = isMobile ? [10] : [1, 1, 8];
 
   useEffect(() => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
@@ -47,7 +51,7 @@ const SearchResultsPage = () => {
     }
 
     if (!newSearchParams.has("type")) {
-      newSearchParams.set("type", "'PROPERTY'");
+      newSearchParams.set("type", "PROPERTY");
     }
 
     const searchQuery = `?${newSearchParams.toString()}`;

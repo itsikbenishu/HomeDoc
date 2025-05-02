@@ -72,12 +72,17 @@ var require_apiSqlFeatures = __commonJS({
         const result = await this.DB.execute(this.query);
         return result;
       }
+      #formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toISOString();
+      }
       filter() {
         const operators = {
           gte: ">=",
           gt: ">",
           lte: "<=",
           lt: "<",
+          eq: "=",
           ILIKE: `ILIKE`,
           LIKE: `LIKE`
         };
@@ -90,14 +95,18 @@ var require_apiSqlFeatures = __commonJS({
             const field = match[1];
             const operatorKey = match[2];
             const operator = operators[operatorKey];
-            if (operatorKey === "wildcard") {
+            if (operatorKey === "date" || operatorKey === "wildcard") {
               return acc + "";
             }
             if (!operator) {
               throw new Error(`Unknown operator ${operatorKey}`);
             }
             let fieldValue = value;
+            let datePosition = queryObject[`${field}[$date]`] || "";
             let wildcardPosition = queryObject[`${field}[$wildcard]`] || "both";
+            if (datePosition === "true") {
+              fieldValue = formatDate(fieldValue);
+            }
             if ((operator === "ILIKE" || operator === "LIKE") && !fieldValue.includes("%")) {
               if (wildcardPosition === "start") {
                 fieldValue = `%${fieldValue}`;
@@ -106,10 +115,11 @@ var require_apiSqlFeatures = __commonJS({
               } else if (wildcardPosition === "both") {
                 fieldValue = `%${fieldValue}%`;
               }
+              fieldValue = `'${fieldValue}'`;
             }
-            return acc + `"${field}" ${operator} '${fieldValue}' AND`;
+            return acc + `"${field}" ${operator} ${fieldValue} AND`;
           } else {
-            return acc + ` "${key}"=${value} AND`;
+            return acc + ` "${key}"='${value}' AND`;
           }
         }, "");
         if (this.where.endsWith(" AND")) {

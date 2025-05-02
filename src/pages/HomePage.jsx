@@ -1,5 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { Paper, Card, Typography, Grid, CardContent } from "@mui/material";
+import {
+  Paper,
+  Card,
+  Typography,
+  Stack,
+  Grid,
+  CardContent,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { BASIC_PAGINATION, HOME_DOC_CATEGORIES } from "../../Constants";
 
@@ -17,7 +24,6 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    overflow: "hidden",
     border: "none",
   },
   categoryCardContent: {
@@ -34,70 +40,61 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   return (
-    <>
-      <Grid
-        container
-        direction="column"
-        spacing={5}
+    <Stack
+      spacing={5}
+      sx={{
+        bgcolor: (theme) => theme.palette.primary.main,
+        ml: "4rem",
+        mr: "4rem",
+        mt: "1rem",
+        p: "1rem",
+        alignItems: "center",
+      }}
+    >
+      <Typography
+        variant="h4"
         sx={{
           bgcolor: (theme) => theme.palette.primary.main,
-          ml: "4rem",
-          mr: "4rem",
-          mt: "1rem",
-          p: "1rem",
+          color: (theme) => theme.palette.primary.contrastText,
         }}
-        alignItems="center"
+        className={classes.header}
       >
-        <Grid item xs={12}>
-          <Typography
-            elevation={0}
-            variant="h4"
-            sx={{
-              bgcolor: (theme) => theme.palette.primary.main,
-              color: (theme) => theme.palette.primary.contrastText,
-            }}
-            className={classes.header}
-          >
-            בחר סוג נכס
-          </Typography>
+        בחר סוג נכס
+      </Typography>
+
+      <Paper
+        elevation={0}
+        sx={{ bgcolor: (theme) => theme.palette.primary.main }}
+      >
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {Object.entries(HOME_DOC_CATEGORIES).map(
+            ([category, categoryText]) => (
+              <Grid item xs={12} sm={6} md={4} key={category}>
+                <Card
+                  className={classes.categoryCard}
+                  onClick={() =>
+                    navigate(
+                      `/Results?category=${category}&${BASIC_PAGINATION}`
+                    )
+                  }
+                >
+                  <CardContent className={classes.categoryCardContent}>
+                    {categoryText}
+                  </CardContent>
+                </Card>
+              </Grid>
+            )
+          )}
         </Grid>
-        <Grid item xs={12}>
-          <Paper
-            elevation={0}
-            sx={{ bgcolor: (theme) => theme.palette.primary.main }}
-          >
-            <Grid
-              container
-              spacing={2}
-              sx={{
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              {Object.entries(HOME_DOC_CATEGORIES).map(
-                ([category, categoryText]) => (
-                  <Grid item xs={4} key={category}>
-                    <Card
-                      className={classes.categoryCard}
-                      key={category}
-                      onClick={() =>
-                        navigate(
-                          `/Results?category='${category}'&${BASIC_PAGINATION}`
-                        )
-                      }
-                    >
-                      <CardContent className={classes.categoryCardContent}>
-                        {categoryText}
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                )
-              )}
-            </Grid>
-          </Paper>
-        </Grid>
-      </Grid>
-    </>
+      </Paper>
+    </Stack>
   );
 };
 

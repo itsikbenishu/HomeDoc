@@ -26,12 +26,18 @@ class APISQLFeatures {
     return result;
   }
 
+  #formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toISOString();
+  }
+
   filter() {
     const operators = {
       gte: ">=",
       gt: ">",
       lte: "<=",
       lt: "<",
+      eq: "=",
       ILIKE: `ILIKE`,
       LIKE: `LIKE`,
     };
@@ -50,7 +56,7 @@ class APISQLFeatures {
           const operatorKey = match[2];
           const operator = operators[operatorKey];
 
-          if (operatorKey === "wildcard") {
+          if (operatorKey === "date" || operatorKey === "wildcard") {
             return acc + "";
           }
           if (!operator) {
@@ -58,7 +64,12 @@ class APISQLFeatures {
           }
 
           let fieldValue = value;
+          let datePosition = queryObject[`${field}[$date]`] || "";
           let wildcardPosition = queryObject[`${field}[$wildcard]`] || "both";
+
+          if (datePosition === "true") {
+            fieldValue = formatDate(fieldValue);
+          }
 
           if (
             (operator === "ILIKE" || operator === "LIKE") &&
@@ -71,11 +82,12 @@ class APISQLFeatures {
             } else if (wildcardPosition === "both") {
               fieldValue = `%${fieldValue}%`;
             }
+            fieldValue = `'${fieldValue}'`;
           }
 
-          return acc + `"${field}" ${operator} '${fieldValue}' AND`;
+          return acc + `"${field}" ${operator} ${fieldValue} AND`;
         } else {
-          return acc + ` "${key}"=${value} AND`;
+          return acc + ` "${key}"='${value}' AND`;
         }
       }, "");
 

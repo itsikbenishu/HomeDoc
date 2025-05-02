@@ -7,6 +7,7 @@ import {
   InputLabel,
   NativeSelect,
   Input,
+  Box,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { BASIC_PAGINATION, HOME_DOC_CATEGORIES } from "../../Constants";
@@ -27,21 +28,15 @@ const useStyles = makeStyles(() => ({
       backgroundColor: "white",
       border: "1px solid #ced4da",
       fontSize: 16,
-      "&:focus": {
+      "&:active": {
         borderRadius: 4,
-        borderColor: "#80bdff",
+        border: "1px solid #80bdff",
         boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
       },
     },
   },
   inputAddress: {
-    width: `77rem`,
     height: "2.7rem",
-    display: "flex",
-    marginRight: 2,
-    "label + &": {
-      marginTop: 3,
-    },
     "& .MuiInputBase-input": {
       borderRadius: 4,
       position: "relative",
@@ -57,10 +52,8 @@ const useStyles = makeStyles(() => ({
     },
   },
   inputCategory: {
-    width: `8rem`,
     height: "2.7rem",
     display: "flex",
-    marginRight: 2,
     "label + &": {
       marginTop: 3,
     },
@@ -92,7 +85,7 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
     setParamsForQueryObj({
       ...paramsForQueryObj,
       category: event.target.value
-        ? `'${event.target.value}'`
+        ? `${event.target.value}`
         : event.target.value,
     });
   };
@@ -134,43 +127,71 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
   };
 
   return (
-    <div style={{ background: "rgb(205 213 225)" }}>
-      <FormControl sx={{ m: 1 }} variant="standard">
-        <InputLabel>סוג</InputLabel>
-        <NativeSelect
-          value={category}
-          onChange={handleCategoryChange}
-          className={classes.inputCategory}
+    <Box
+      sx={{
+        bgcolor: (theme) => theme.palette.secondary.main,
+        display: "flex",
+        alignItems: "center",
+        gap: 1,
+      }}
+    >
+      <Box
+        sx={{
+          pr: (theme) => theme.spacing(0.5),
+          flexShrink: 0,
+        }}
+      >
+        <FormControl variant="standard">
+          <InputLabel>סוג</InputLabel>
+          <NativeSelect
+            value={category}
+            onChange={handleCategoryChange}
+            className={classes.inputCategory}
+          >
+            <option aria-label="None" value="">
+              סוג
+            </option>
+            {Object.entries(HOME_DOC_CATEGORIES).map(
+              ([category, categoryText]) => (
+                <option key={category} value={category}>
+                  {categoryText}
+                </option>
+              )
+            )}
+          </NativeSelect>
+        </FormControl>
+      </Box>
+      <Box
+        sx={{
+          flexGrow: 1,
+        }}
+      >
+        <FormControl sx={{ width: "100%" }} variant="standard">
+          <InputLabel htmlFor="addressInput">כתובת</InputLabel>
+          <Input
+            id="addressInput"
+            value={address}
+            onChange={handleAddressChange}
+            className={classes.inputAddress}
+            placeholder="כתובת"
+          />
+        </FormControl>
+      </Box>
+
+      <Box sx={{ pt: (theme) => theme.spacing(2) }}>
+        <FormControl
+          sx={{ bgcolor: (theme) => theme.palette.primary.contrastText }}
+          variant="standard"
         >
-          <option aria-label="None" value="">
-            סוג
-          </option>
-          {Object.entries(HOME_DOC_CATEGORIES).map(
-            ([category, categoryText]) => (
-              <option key={category} value={category}>
-                {categoryText}
-              </option>
-            )
-          )}
-        </NativeSelect>
-      </FormControl>
-      <FormControl sx={{ m: 1 }} variant="standard">
-        <InputLabel htmlFor="addressInput">כתובת</InputLabel>
-        <Input
-          id="addressInput"
-          value={address}
-          onChange={handleAddressChange}
-          className={classes.inputAddress}
-          placeholder="כתובת"
-        />
-      </FormControl>
-      <FormControl sx={{ mt: 3, ml: 1, bgcolor: "white" }} variant="standard">
-        <IconButton onClick={handleSearch} className={classes.iconButton}>
-          <SearchIcon></SearchIcon>
-        </IconButton>
-      </FormControl>
-      <CreateHomeDialog />
-    </div>
+          <IconButton onClick={handleSearch} className={classes.iconButton}>
+            <SearchIcon />
+          </IconButton>
+        </FormControl>
+      </Box>
+      <Box sx={{ pb: (theme) => theme.spacing(1) }}>
+        <CreateHomeDialog />
+      </Box>
+    </Box>
   );
 };
 
