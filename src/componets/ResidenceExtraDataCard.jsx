@@ -1,11 +1,4 @@
-import {
-  Paper,
-  Grid,
-  Typography,
-  Card,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Paper, Grid, Typography, Card } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { SUB_HOME_DOC_LIST, SUB_HOME_DOC_TYPE } from "../../Constants";
 import ExtraDataList from "./ExtraDataList";
@@ -75,14 +68,9 @@ const useStyles = makeStyles((theme) => ({
 
 const ResidenceExtraDataCard = ({ residence }) => {
   const classes = useStyles();
-  const theme = useTheme();
-  console.log(theme.breakpoints);
 
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); // עד גודל מסך קטן
-
-  useMediaQuery;
   return (
-    <Grid container spacing={1} sx={{ marginBottom: -10 }}>
+    <Grid container spacing={1} direction="column" sx={{ marginBottom: -10 }}>
       <Grid item xs={12} sm={3} className={classes.gridItem}>
         <Paper
           elevation={0}
@@ -157,11 +145,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
             className={classes.card}
             sx={{ backgroundColor: "transparent", borderColor: "grey" }}
           >
-            <Grid
-              container
-              spacing={0.25}
-              direction={!isSmallScreen ? "row" : "column"}
-            >
+            <Grid container spacing={0.25}>
               <Grid
                 item
                 xs={2}
