@@ -101,7 +101,10 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 alignItems="center"
                 sx={{ paddingLeft: "0.5rem" }}
               >
-                <Typography variant="h7" className={classes.typographyText}>
+                <Typography
+                  variant="subtitle1"
+                  className={classes.typographyText}
+                >
                   תיאור:
                 </Typography>
               </Grid>
@@ -152,7 +155,10 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 alignItems="center"
                 sx={{ paddingLeft: "0.5rem" }}
               >
-                <Typography variant="h7" className={classes.typographyText}>
+                <Typography
+                  variant="subtitle1"
+                  className={classes.typographyText}
+                >
                   כמות הפריטים:
                 </Typography>
               </Grid>
@@ -169,7 +175,10 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 alignItems="center"
                 sx={{ paddingLeft: "0.5rem" }}
               >
-                <Typography variant="h7" className={classes.typographyText}>
+                <Typography
+                  variant="subtitle1"
+                  className={classes.typographyText}
+                >
                   משקל (ק"ג):
                 </Typography>
               </Grid>
@@ -203,7 +212,10 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 alignItems="center"
                 sx={{ paddingLeft: "0.5rem" }}
               >
-                <Typography variant="h7" className={classes.typographyText}>
+                <Typography
+                  variant="subtitle1"
+                  className={classes.typographyText}
+                >
                   רוחב (מטרים):
                 </Typography>
               </Grid>
@@ -217,7 +229,10 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 alignItems="center"
                 sx={{ paddingLeft: "0.5rem" }}
               >
-                <Typography variant="h7" className={classes.typographyText}>
+                <Typography
+                  variant="subtitle1"
+                  className={classes.typographyText}
+                >
                   אורך (מטרים):
                 </Typography>
               </Grid>
@@ -255,7 +270,10 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 alignItems="center"
                 sx={{ paddingLeft: "0.5rem" }}
               >
-                <Typography variant="h7" className={classes.typographyText}>
+                <Typography
+                  variant="subtitle1"
+                  className={classes.typographyText}
+                >
                   צבעים:
                 </Typography>
               </Grid>

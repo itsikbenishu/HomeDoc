@@ -1,10 +1,17 @@
-import { Paper, Grid, Typography, Card } from "@mui/material";
+import {
+  Paper,
+  Grid,
+  Typography,
+  Card,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { SUB_HOME_DOC_LIST, SUB_HOME_DOC_TYPE } from "../../Constants";
 import ExtraDataList from "./ExtraDataList";
 import ExtraDataField from "./ExtraDataField";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   gridItem: {
     alignItems: "stretch",
     width: "100%",
@@ -27,11 +34,19 @@ const useStyles = makeStyles(() => ({
   textField: {
     padding: 0.5,
     marginBottom: 2,
-    width: "8rem",
     height: "1.5rem",
     "& .MuiInputBase-root": {
       padding: 0,
       height: "1.9rem",
+    },
+    "@media (max-width: 600px)": {
+      width: "8rem",
+    },
+    "@media (min-width: 600px) and (max-width: 960px)": {
+      width: "8rem", // רוחב בינוני למסכים בגודל בינוני
+    },
+    "@media (min-width: 960px)": {
+      width: "12rem", // רוחב גדול למסכים גדולים
     },
   },
   textFieldContainer: {
@@ -60,9 +75,14 @@ const useStyles = makeStyles(() => ({
 
 const ResidenceExtraDataCard = ({ residence }) => {
   const classes = useStyles();
+  const theme = useTheme();
+  console.log(theme.breakpoints);
 
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); // עד גודל מסך קטן
+
+  useMediaQuery;
   return (
-    <Grid container spacing={1} direction="column" sx={{ marginBottom: -10 }}>
+    <Grid container spacing={1} sx={{ marginBottom: -10 }}>
       <Grid item xs={12} sm={3} className={classes.gridItem}>
         <Paper
           elevation={0}
@@ -85,17 +105,22 @@ const ResidenceExtraDataCard = ({ residence }) => {
               <Grid
                 item
                 xs={2}
+                sm={2}
                 justifyContent="flex-start"
                 alignItems="center"
                 sx={{ paddingLeft: "0.5rem" }}
               >
-                <Typography variant="h7" className={classes.typographyText}>
+                <Typography
+                  variant="subtitle1"
+                  className={classes.typographyText}
+                >
                   תיאור:
                 </Typography>
               </Grid>
               <Grid
                 item
                 xs={10}
+                sm={10}
                 className={classes.multilineTextFieldContainer}
               >
                 <ExtraDataField
@@ -132,15 +157,23 @@ const ResidenceExtraDataCard = ({ residence }) => {
             className={classes.card}
             sx={{ backgroundColor: "transparent", borderColor: "grey" }}
           >
-            <Grid container spacing={0.25}>
+            <Grid
+              container
+              spacing={0.25}
+              direction={!isSmallScreen ? "row" : "column"}
+            >
               <Grid
                 item
                 xs={2}
+                sm={2}
                 justifyContent="flex-start"
                 alignItems="center"
                 sx={{ paddingLeft: "0.5rem" }}
               >
-                <Typography variant="h7" className={classes.typographyText}>
+                <Typography
+                  variant="subtitle1"
+                  className={classes.typographyText}
+                >
                   {!SUB_HOME_DOC_LIST[
                     SUB_HOME_DOC_TYPE[residence.category][residence.type]
                   ]
@@ -152,7 +185,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                       }:`}
                 </Typography>
               </Grid>
-              <Grid item xs={2} className={classes.textFieldContainer}>
+              <Grid item xs={2} sm={2} className={classes.textFieldContainer}>
                 <ExtraDataField
                   label="subEntitiesQuantity"
                   className={classes.textField}
@@ -161,16 +194,20 @@ const ResidenceExtraDataCard = ({ residence }) => {
               <Grid
                 item
                 xs={1}
+                sm={1}
                 container
                 justifyContent="flex-start"
                 alignItems="center"
                 sx={{ paddingLeft: "0.5rem" }}
               >
-                <Typography variant="h7" className={classes.typographyText}>
+                <Typography
+                  variant="subtitle1"
+                  className={classes.typographyText}
+                >
                   שנת בנייה:
                 </Typography>
               </Grid>
-              <Grid item xs={2} className={classes.textFieldContainer}>
+              <Grid item xs={2} sm={2} className={classes.textFieldContainer}>
                 <ExtraDataField
                   label="constructionYear"
                   className={classes.textField}
@@ -179,15 +216,19 @@ const ResidenceExtraDataCard = ({ residence }) => {
               <Grid
                 item
                 xs={2}
+                sm={2}
                 justifyContent="flex-start"
                 alignItems="center"
                 sx={{ paddingLeft: "0.5rem" }}
               >
-                <Typography variant="h7" className={classes.typographyText}>
+                <Typography
+                  variant="subtitle1"
+                  className={classes.typographyText}
+                >
                   שטח (קמ"ר):
                 </Typography>
               </Grid>
-              <Grid item xs={1} className={classes.textFieldContainer}>
+              <Grid item xs={1} sm={2} className={classes.textFieldContainer}>
                 <ExtraDataField label="area" className={classes.textField} />
               </Grid>
             </Grid>
@@ -214,31 +255,39 @@ const ResidenceExtraDataCard = ({ residence }) => {
                 <Grid
                   item
                   xs={2}
+                  sm={2}
                   container
                   justifyContent="flex-start"
                   alignItems="center"
                   sx={{ paddingLeft: "0.5rem" }}
                 >
-                  <Typography variant="h7" className={classes.typographyText}>
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.typographyText}
+                  >
                     רוחב (מטרים):
                   </Typography>
                 </Grid>
-                <Grid item xs={2} className={classes.textFieldContainer}>
+                <Grid item xs={2} sm={2} className={classes.textFieldContainer}>
                   <ExtraDataField label="width" className={classes.textField} />
                 </Grid>
                 <Grid
                   item
                   xs={2}
+                  sm={2}
                   container
                   justifyContent="flex-start"
                   alignItems="center"
                   sx={{ paddingLeft: "0.5rem" }}
                 >
-                  <Typography variant="h7" className={classes.typographyText}>
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.typographyText}
+                  >
                     אורך (מטרים):
                   </Typography>
                 </Grid>
-                <Grid item xs={1} className={classes.textFieldContainer}>
+                <Grid item xs={1} sm={1} className={classes.textFieldContainer}>
                   <ExtraDataField
                     label="length"
                     className={classes.textField}
@@ -267,7 +316,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
             }}
           >
             <ExtraDataList
-              count={residence.type !== "PROPERTY" ? 3 : 5} //זה טוב עם בניין, מה עושים עם קרקע?
+              count={residence.type !== "PROPERTY" ? 3 : 5}
               addMessage="?האם אתה בטוח שהינך מעוניין להוסיף את התכונה הזו"
             />
           </Card>

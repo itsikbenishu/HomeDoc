@@ -138,7 +138,7 @@ const ExtraDataList = ({ count = 0 }) => {
           justifyContent="flex-start"
           alignItems="center"
         >
-          <Typography variant="h7" className={classes.typographyText}>
+          <Typography variant="subtitle1" className={classes.typographyText}>
             מידע נוסף:
           </Typography>
         </Grid>

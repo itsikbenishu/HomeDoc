@@ -118,7 +118,10 @@ const ChattelsBasicDataCard = ({ entityTitle, entitySubTitle, entityType }) => {
                     marginLeft: "4px",
                   }}
                 >
-                  <Typography variant="h7" className={classes.typographyText}>
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.typographyText}
+                  >
                     סוג:
                   </Typography>
                 </Paper>
@@ -131,7 +134,10 @@ const ChattelsBasicDataCard = ({ entityTitle, entitySubTitle, entityType }) => {
                     marginRight: "20px",
                   }}
                 >
-                  <Typography variant="h7" className={classes.typographyText}>
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.typographyText}
+                  >
                     {
                       HOME_DOC_CHATTELS_TYPE[
                         SUB_HOME_DOC_TYPE[category][entityType]
@@ -171,7 +177,10 @@ const ChattelsBasicDataCard = ({ entityTitle, entitySubTitle, entityType }) => {
                     marginLeft: "4px",
                   }}
                 >
-                  <Typography variant="h7" className={classes.typographyText}>
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.typographyText}
+                  >
                     חדר:
                   </Typography>
                 </Paper>
@@ -184,7 +193,10 @@ const ChattelsBasicDataCard = ({ entityTitle, entitySubTitle, entityType }) => {
                     marginRight: "20px",
                   }}
                 >
-                  <Typography variant="h7" className={classes.typographyText}>
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.typographyText}
+                  >
                     <Link to={`/Results/Residence/${entitySubTitle.fatherId}`}>
                       {entitySubTitle.title}
                     </Link>

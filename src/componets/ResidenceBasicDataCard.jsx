@@ -124,7 +124,10 @@ const ResidenceBasicDataCard = ({
                     marginLeft: "4px",
                   }}
                 >
-                  <Typography variant="h7" className={classes.typographyText}>
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.typographyText}
+                  >
                     {!entitySubTitle.type || entitySubTitle.type === "PROPERTY"
                       ? " כתובת:"
                       : HOME_DOC_RESIDENCE_TYPE[entitySubTitle.type]}
@@ -140,7 +143,10 @@ const ResidenceBasicDataCard = ({
                   }}
                 >
                   {entitySubTitle.fatherId ? (
-                    <Typography variant="h7" className={classes.typographyText}>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.typographyText}
+                    >
                       <Link
                         to={`/Results/Residence/${entitySubTitle.fatherId}`}
                       >
@@ -148,7 +154,10 @@ const ResidenceBasicDataCard = ({
                       </Link>
                     </Typography>
                   ) : (
-                    <Typography variant="h7" className={classes.typographyText}>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.typographyText}
+                    >
                       {entitySubTitle.title}
                     </Typography>
                   )}
