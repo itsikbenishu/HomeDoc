@@ -1,11 +1,12 @@
-import { eq } from "drizzle-orm";
-import {
+const { eq } = require("drizzle-orm");
+const {
   ChattelsSpecsAttributes,
   HomeDocs,
   HomeDocsDimensions,
   ResidenceSpecsAttributes,
-} from "../models/homeDocModel";
-import { drizzleWriter } from "../postgresDB";
+} = require("../models/homeDocModel");
+const { getDrizzleWriter } = require("../postgresDB");
+const drizzleWriter = getDrizzleWriter();
 
 exports.handler = async (event) => {
   const { id, pageType } = event.pathParameters || {};

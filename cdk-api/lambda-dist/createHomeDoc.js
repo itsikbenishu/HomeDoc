@@ -29,7 +29,6 @@ var require_withCors = __commonJS({
     var withCors2 = (handler) => {
       return async (event, context) => {
         const origin = event.headers?.origin || "";
-        console.log(event.headers?.origin);
         const isAllowed = allowedOrigins.includes(origin);
         const result = await handler(event, context);
         return {
@@ -15568,27 +15567,39 @@ var require_postgresDB = __commonJS({
     var pg = require_lib2();
     var { drizzle } = require_node_postgres();
     var { Pool } = pg;
-    var writePool = new Pool({
-      host: process.env.POSTGRES_WRITE_HOST,
-      port: process.env.POSTGRES_PORT,
-      user: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      max: 10,
-      idleTimeoutMillis: 3e4
-    });
-    var readPool = new Pool({
-      host: process.env.POSTGRES_READ_HOST,
-      port: process.env.POSTGRES_PORT,
-      user: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      max: 10,
-      idleTimeoutMillis: 3e4
-    });
-    var drizzleWriter2 = drizzle({ client: writePool });
-    var drizzleReader = drizzle({ client: readPool });
-    module2.exports = { drizzleWriter: drizzleWriter2, drizzleReader };
+    var drizzleWriter2;
+    var drizzleReader;
+    var getDrizzleWriter2 = () => {
+      if (!drizzleWriter2) {
+        const writePool = new Pool({
+          host: process.env.POSTGRES_WRITE_HOST,
+          port: process.env.POSTGRES_PORT,
+          user: process.env.POSTGRES_USER,
+          password: process.env.POSTGRES_PASSWORD,
+          database: process.env.POSTGRES_DB,
+          max: 10,
+          idleTimeoutMillis: 3e4
+        });
+        drizzleWriter2 = drizzle({ client: writePool });
+      }
+      return drizzleWriter2;
+    };
+    var getDrizzleReader = () => {
+      if (!drizzleReader) {
+        const readPool = new Pool({
+          host: process.env.POSTGRES_READ_HOST,
+          port: process.env.POSTGRES_PORT,
+          user: process.env.POSTGRES_USER,
+          password: process.env.POSTGRES_PASSWORD,
+          database: process.env.POSTGRES_DB,
+          max: 10,
+          idleTimeoutMillis: 3e4
+        });
+        drizzleReader = drizzle({ client: readPool });
+      }
+      return drizzleReader;
+    };
+    module2.exports = { getDrizzleWriter: getDrizzleWriter2, getDrizzleReader };
   }
 });
 
@@ -15780,7 +15791,8 @@ var require_homeDocModel = __commonJS({
 
 // lambda/handlers/createHomeDoc.js
 var withCors = require_withCors();
-var { drizzleWriter } = require_postgresDB();
+var { getDrizzleWriter } = require_postgresDB();
+var drizzleWriter = getDrizzleWriter();
 var { HomeDocs } = require_homeDocModel();
 exports.handler = withCors(async (event) => {
   try {

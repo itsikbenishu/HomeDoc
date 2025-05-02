@@ -1,8 +1,6 @@
-var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __esm = (fn, res) => function __init() {
   return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
@@ -22,15 +20,30 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+// lambda/middlewares/withCors.js
+var require_withCors = __commonJS({
+  "lambda/middlewares/withCors.js"(exports2, module2) {
+    var allowedOrigins = process.env.ALLOWED_ORIGINS.split(",");
+    var withCors2 = (handler) => {
+      return async (event, context) => {
+        const origin = event.headers?.origin || "";
+        const isAllowed = allowedOrigins.includes(origin);
+        const result = await handler(event, context);
+        return {
+          ...result,
+          headers: {
+            ...result.headers || {},
+            "Access-Control-Allow-Origin": isAllowed ? origin : "",
+            "Access-Control-Allow-Credentials": true
+          }
+        };
+      };
+    };
+    module2.exports = withCors2;
+  }
+});
 
 // node_modules/drizzle-orm/entity.cjs
 var require_entity = __commonJS({
@@ -55,21 +68,21 @@ var require_entity = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var entity_exports = {};
     __export2(entity_exports, {
-      entityKind: () => entityKind2,
-      hasOwnEntityKind: () => hasOwnEntityKind2,
-      is: () => is2
+      entityKind: () => entityKind,
+      hasOwnEntityKind: () => hasOwnEntityKind,
+      is: () => is
     });
     module2.exports = __toCommonJS2(entity_exports);
-    var entityKind2 = Symbol.for("drizzle:entityKind");
-    var hasOwnEntityKind2 = Symbol.for("drizzle:hasOwnEntityKind");
-    function is2(value, type) {
+    var entityKind = Symbol.for("drizzle:entityKind");
+    var hasOwnEntityKind = Symbol.for("drizzle:hasOwnEntityKind");
+    function is(value, type) {
       if (!value || typeof value !== "object") {
         return false;
       }
       if (value instanceof type) {
         return true;
       }
-      if (!Object.prototype.hasOwnProperty.call(type, entityKind2)) {
+      if (!Object.prototype.hasOwnProperty.call(type, entityKind)) {
         throw new Error(
           `Class "${type.name ?? "<unknown>"}" doesn't look like a Drizzle entity. If this is incorrect and the class is provided by Drizzle, please report this as a bug.`
         );
@@ -77,7 +90,7 @@ var require_entity = __commonJS({
       let cls = Object.getPrototypeOf(value).constructor;
       if (cls) {
         while (cls) {
-          if (entityKind2 in cls && cls[entityKind2] === type[entityKind2]) {
+          if (entityKind in cls && cls[entityKind] === type[entityKind]) {
             return true;
           }
           cls = Object.getPrototypeOf(cls);
@@ -111,11 +124,11 @@ var require_column = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var column_exports = {};
     __export2(column_exports, {
-      Column: () => Column2
+      Column: () => Column
     });
     module2.exports = __toCommonJS2(column_exports);
-    var import_entity11 = require_entity();
-    var Column2 = class {
+    var import_entity = require_entity();
+    var Column = class {
       constructor(table, config) {
         this.table = table;
         this.config = config;
@@ -135,7 +148,7 @@ var require_column = __commonJS({
         this.generated = config.generated;
         this.generatedIdentity = config.generatedIdentity;
       }
-      static [import_entity11.entityKind] = "Column";
+      static [import_entity.entityKind] = "Column";
       name;
       keyAsName;
       primary;
@@ -190,12 +203,12 @@ var require_column_builder = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var column_builder_exports = {};
     __export2(column_builder_exports, {
-      ColumnBuilder: () => ColumnBuilder2
+      ColumnBuilder: () => ColumnBuilder
     });
     module2.exports = __toCommonJS2(column_builder_exports);
-    var import_entity11 = require_entity();
-    var ColumnBuilder2 = class {
-      static [import_entity11.entityKind] = "ColumnBuilder";
+    var import_entity = require_entity();
+    var ColumnBuilder = class {
+      static [import_entity.entityKind] = "ColumnBuilder";
       config;
       constructor(name, dataType, columnType) {
         this.config = {
@@ -322,10 +335,10 @@ var require_table_utils = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var table_utils_exports = {};
     __export2(table_utils_exports, {
-      TableName: () => TableName2
+      TableName: () => TableName
     });
     module2.exports = __toCommonJS2(table_utils_exports);
-    var TableName2 = Symbol.for("drizzle:Name");
+    var TableName = Symbol.for("drizzle:Name");
   }
 });
 
@@ -352,15 +365,15 @@ var require_foreign_keys = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var foreign_keys_exports = {};
     __export2(foreign_keys_exports, {
-      ForeignKey: () => ForeignKey2,
-      ForeignKeyBuilder: () => ForeignKeyBuilder2,
+      ForeignKey: () => ForeignKey,
+      ForeignKeyBuilder: () => ForeignKeyBuilder,
       foreignKey: () => foreignKey
     });
     module2.exports = __toCommonJS2(foreign_keys_exports);
-    var import_entity11 = require_entity();
-    var import_table_utils4 = require_table_utils();
-    var ForeignKeyBuilder2 = class {
-      static [import_entity11.entityKind] = "PgForeignKeyBuilder";
+    var import_entity = require_entity();
+    var import_table_utils = require_table_utils();
+    var ForeignKeyBuilder = class {
+      static [import_entity.entityKind] = "PgForeignKeyBuilder";
       /** @internal */
       reference;
       /** @internal */
@@ -387,17 +400,17 @@ var require_foreign_keys = __commonJS({
       }
       /** @internal */
       build(table) {
-        return new ForeignKey2(table, this);
+        return new ForeignKey(table, this);
       }
     };
-    var ForeignKey2 = class {
+    var ForeignKey = class {
       constructor(table, builder) {
         this.table = table;
         this.reference = builder.reference;
         this.onUpdate = builder._onUpdate;
         this.onDelete = builder._onDelete;
       }
-      static [import_entity11.entityKind] = "PgForeignKey";
+      static [import_entity.entityKind] = "PgForeignKey";
       reference;
       onUpdate;
       onDelete;
@@ -406,9 +419,9 @@ var require_foreign_keys = __commonJS({
         const columnNames = columns.map((column) => column.name);
         const foreignColumnNames = foreignColumns.map((column) => column.name);
         const chunks = [
-          this.table[import_table_utils4.TableName],
+          this.table[import_table_utils.TableName],
           ...columnNames,
-          foreignColumns[0].table[import_table_utils4.TableName],
+          foreignColumns[0].table[import_table_utils.TableName],
           ...foreignColumnNames
         ];
         return name ?? `${chunks.join("_")}_fk`;
@@ -423,7 +436,7 @@ var require_foreign_keys = __commonJS({
           foreignColumns
         };
       }
-      return new ForeignKeyBuilder2(mappedConfig);
+      return new ForeignKeyBuilder(mappedConfig);
     }
   }
 });
@@ -451,10 +464,10 @@ var require_tracing_utils = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var tracing_utils_exports = {};
     __export2(tracing_utils_exports, {
-      iife: () => iife2
+      iife: () => iife
     });
     module2.exports = __toCommonJS2(tracing_utils_exports);
-    function iife2(fn, ...args) {
+    function iife(fn, ...args) {
       return fn(...args);
     }
   }
@@ -483,27 +496,27 @@ var require_unique_constraint = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var unique_constraint_exports = {};
     __export2(unique_constraint_exports, {
-      UniqueConstraint: () => UniqueConstraint2,
-      UniqueConstraintBuilder: () => UniqueConstraintBuilder2,
-      UniqueOnConstraintBuilder: () => UniqueOnConstraintBuilder2,
+      UniqueConstraint: () => UniqueConstraint,
+      UniqueConstraintBuilder: () => UniqueConstraintBuilder,
+      UniqueOnConstraintBuilder: () => UniqueOnConstraintBuilder,
       unique: () => unique,
-      uniqueKeyName: () => uniqueKeyName2
+      uniqueKeyName: () => uniqueKeyName
     });
     module2.exports = __toCommonJS2(unique_constraint_exports);
-    var import_entity11 = require_entity();
-    var import_table_utils4 = require_table_utils();
+    var import_entity = require_entity();
+    var import_table_utils = require_table_utils();
     function unique(name) {
-      return new UniqueOnConstraintBuilder2(name);
+      return new UniqueOnConstraintBuilder(name);
     }
-    function uniqueKeyName2(table, columns) {
-      return `${table[import_table_utils4.TableName]}_${columns.join("_")}_unique`;
+    function uniqueKeyName(table, columns) {
+      return `${table[import_table_utils.TableName]}_${columns.join("_")}_unique`;
     }
-    var UniqueConstraintBuilder2 = class {
+    var UniqueConstraintBuilder = class {
       constructor(columns, name) {
         this.name = name;
         this.columns = columns;
       }
-      static [import_entity11.entityKind] = "PgUniqueConstraintBuilder";
+      static [import_entity.entityKind] = "PgUniqueConstraintBuilder";
       /** @internal */
       columns;
       /** @internal */
@@ -514,28 +527,28 @@ var require_unique_constraint = __commonJS({
       }
       /** @internal */
       build(table) {
-        return new UniqueConstraint2(table, this.columns, this.nullsNotDistinctConfig, this.name);
+        return new UniqueConstraint(table, this.columns, this.nullsNotDistinctConfig, this.name);
       }
     };
-    var UniqueOnConstraintBuilder2 = class {
-      static [import_entity11.entityKind] = "PgUniqueOnConstraintBuilder";
+    var UniqueOnConstraintBuilder = class {
+      static [import_entity.entityKind] = "PgUniqueOnConstraintBuilder";
       /** @internal */
       name;
       constructor(name) {
         this.name = name;
       }
       on(...columns) {
-        return new UniqueConstraintBuilder2(columns, this.name);
+        return new UniqueConstraintBuilder(columns, this.name);
       }
     };
-    var UniqueConstraint2 = class {
+    var UniqueConstraint = class {
       constructor(table, columns, nullsNotDistinct, name) {
         this.table = table;
         this.columns = columns;
-        this.name = name ?? uniqueKeyName2(this.table, this.columns.map((column) => column.name));
+        this.name = name ?? uniqueKeyName(this.table, this.columns.map((column) => column.name));
         this.nullsNotDistinct = nullsNotDistinct;
       }
-      static [import_entity11.entityKind] = "PgUniqueConstraint";
+      static [import_entity.entityKind] = "PgUniqueConstraint";
       columns;
       name;
       nullsNotDistinct = false;
@@ -569,12 +582,12 @@ var require_array = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var array_exports = {};
     __export2(array_exports, {
-      makePgArray: () => makePgArray2,
-      parsePgArray: () => parsePgArray2,
-      parsePgNestedArray: () => parsePgNestedArray2
+      makePgArray: () => makePgArray,
+      parsePgArray: () => parsePgArray,
+      parsePgNestedArray: () => parsePgNestedArray
     });
     module2.exports = __toCommonJS2(array_exports);
-    function parsePgArrayValue2(arrayString, startFrom, inQuotes) {
+    function parsePgArrayValue(arrayString, startFrom, inQuotes) {
       for (let i = startFrom; i < arrayString.length; i++) {
         const char = arrayString[i];
         if (char === "\\") {
@@ -593,7 +606,7 @@ var require_array = __commonJS({
       }
       return [arrayString.slice(startFrom).replace(/\\/g, ""), arrayString.length];
     }
-    function parsePgNestedArray2(arrayString, startFrom = 0) {
+    function parsePgNestedArray(arrayString, startFrom = 0) {
       const result = [];
       let i = startFrom;
       let lastCharIsComma = false;
@@ -613,7 +626,7 @@ var require_array = __commonJS({
           continue;
         }
         if (char === '"') {
-          const [value2, startFrom2] = parsePgArrayValue2(arrayString, i + 1, true);
+          const [value2, startFrom2] = parsePgArrayValue(arrayString, i + 1, true);
           result.push(value2);
           i = startFrom2;
           continue;
@@ -622,25 +635,25 @@ var require_array = __commonJS({
           return [result, i + 1];
         }
         if (char === "{") {
-          const [value2, startFrom2] = parsePgNestedArray2(arrayString, i + 1);
+          const [value2, startFrom2] = parsePgNestedArray(arrayString, i + 1);
           result.push(value2);
           i = startFrom2;
           continue;
         }
-        const [value, newStartFrom] = parsePgArrayValue2(arrayString, i, false);
+        const [value, newStartFrom] = parsePgArrayValue(arrayString, i, false);
         result.push(value);
         i = newStartFrom;
       }
       return [result, i];
     }
-    function parsePgArray2(arrayString) {
-      const [result] = parsePgNestedArray2(arrayString, 1);
+    function parsePgArray(arrayString) {
+      const [result] = parsePgNestedArray(arrayString, 1);
       return result;
     }
-    function makePgArray2(array) {
+    function makePgArray(array) {
       return `{${array.map((item) => {
         if (Array.isArray(item)) {
-          return makePgArray2(item);
+          return makePgArray(item);
         }
         if (typeof item === "string") {
           return `"${item.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
@@ -674,26 +687,26 @@ var require_common = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var common_exports = {};
     __export2(common_exports, {
-      ExtraConfigColumn: () => ExtraConfigColumn2,
-      IndexedColumn: () => IndexedColumn2,
-      PgArray: () => PgArray2,
-      PgArrayBuilder: () => PgArrayBuilder2,
-      PgColumn: () => PgColumn2,
-      PgColumnBuilder: () => PgColumnBuilder2
+      ExtraConfigColumn: () => ExtraConfigColumn,
+      IndexedColumn: () => IndexedColumn,
+      PgArray: () => PgArray,
+      PgArrayBuilder: () => PgArrayBuilder,
+      PgColumn: () => PgColumn,
+      PgColumnBuilder: () => PgColumnBuilder
     });
     module2.exports = __toCommonJS2(common_exports);
-    var import_column_builder2 = require_column_builder();
-    var import_column4 = require_column();
-    var import_entity11 = require_entity();
-    var import_foreign_keys2 = require_foreign_keys();
-    var import_tracing_utils3 = require_tracing_utils();
-    var import_unique_constraint2 = require_unique_constraint();
-    var import_array2 = require_array();
-    var PgColumnBuilder2 = class extends import_column_builder2.ColumnBuilder {
+    var import_column_builder = require_column_builder();
+    var import_column = require_column();
+    var import_entity = require_entity();
+    var import_foreign_keys = require_foreign_keys();
+    var import_tracing_utils = require_tracing_utils();
+    var import_unique_constraint = require_unique_constraint();
+    var import_array = require_array();
+    var PgColumnBuilder = class extends import_column_builder.ColumnBuilder {
       foreignKeyConfigs = [];
-      static [import_entity11.entityKind] = "PgColumnBuilder";
+      static [import_entity.entityKind] = "PgColumnBuilder";
       array(size) {
-        return new PgArrayBuilder2(this.config.name, this, size);
+        return new PgArrayBuilder(this.config.name, this, size);
       }
       references(ref, actions = {}) {
         this.foreignKeyConfigs.push({ ref, actions });
@@ -716,9 +729,9 @@ var require_common = __commonJS({
       /** @internal */
       buildForeignKeys(column, table) {
         return this.foreignKeyConfigs.map(({ ref, actions }) => {
-          return (0, import_tracing_utils3.iife)(
+          return (0, import_tracing_utils.iife)(
             (ref2, actions2) => {
-              const builder = new import_foreign_keys2.ForeignKeyBuilder(() => {
+              const builder = new import_foreign_keys.ForeignKeyBuilder(() => {
                 const foreignColumn = ref2();
                 return { columns: [column], foreignColumns: [foreignColumn] };
               });
@@ -737,21 +750,21 @@ var require_common = __commonJS({
       }
       /** @internal */
       buildExtraConfigColumn(table) {
-        return new ExtraConfigColumn2(table, this.config);
+        return new ExtraConfigColumn(table, this.config);
       }
     };
-    var PgColumn2 = class extends import_column4.Column {
+    var PgColumn = class extends import_column.Column {
       constructor(table, config) {
         if (!config.uniqueName) {
-          config.uniqueName = (0, import_unique_constraint2.uniqueKeyName)(table, [config.name]);
+          config.uniqueName = (0, import_unique_constraint.uniqueKeyName)(table, [config.name]);
         }
         super(table, config);
         this.table = table;
       }
-      static [import_entity11.entityKind] = "PgColumn";
+      static [import_entity.entityKind] = "PgColumn";
     };
-    var ExtraConfigColumn2 = class extends PgColumn2 {
-      static [import_entity11.entityKind] = "ExtraConfigColumn";
+    var ExtraConfigColumn = class extends PgColumn {
+      static [import_entity.entityKind] = "ExtraConfigColumn";
       getSQLType() {
         return this.getSQLType();
       }
@@ -815,8 +828,8 @@ var require_common = __commonJS({
         return this;
       }
     };
-    var IndexedColumn2 = class {
-      static [import_entity11.entityKind] = "IndexedColumn";
+    var IndexedColumn = class {
+      static [import_entity.entityKind] = "IndexedColumn";
       constructor(name, keyAsName, type, indexConfig) {
         this.name = name;
         this.keyAsName = keyAsName;
@@ -828,8 +841,8 @@ var require_common = __commonJS({
       type;
       indexConfig;
     };
-    var PgArrayBuilder2 = class extends PgColumnBuilder2 {
-      static [import_entity11.entityKind] = "PgArrayBuilder";
+    var PgArrayBuilder = class extends PgColumnBuilder {
+      static [import_entity.entityKind] = "PgArrayBuilder";
       constructor(name, baseBuilder, size) {
         super(name, "array", "PgArray");
         this.config.baseBuilder = baseBuilder;
@@ -838,14 +851,14 @@ var require_common = __commonJS({
       /** @internal */
       build(table) {
         const baseColumn = this.config.baseBuilder.build(table);
-        return new PgArray2(
+        return new PgArray(
           table,
           this.config,
           baseColumn
         );
       }
     };
-    var PgArray2 = class _PgArray extends PgColumn2 {
+    var PgArray = class _PgArray extends PgColumn {
       constructor(table, config, baseColumn, range) {
         super(table, config);
         this.baseColumn = baseColumn;
@@ -853,23 +866,23 @@ var require_common = __commonJS({
         this.size = config.size;
       }
       size;
-      static [import_entity11.entityKind] = "PgArray";
+      static [import_entity.entityKind] = "PgArray";
       getSQLType() {
         return `${this.baseColumn.getSQLType()}[${typeof this.size === "number" ? this.size : ""}]`;
       }
       mapFromDriverValue(value) {
         if (typeof value === "string") {
-          value = (0, import_array2.parsePgArray)(value);
+          value = (0, import_array.parsePgArray)(value);
         }
         return value.map((v) => this.baseColumn.mapFromDriverValue(v));
       }
       mapToDriverValue(value, isNestedArray = false) {
         const a = value.map(
-          (v) => v === null ? null : (0, import_entity11.is)(this.baseColumn, _PgArray) ? this.baseColumn.mapToDriverValue(v, true) : this.baseColumn.mapToDriverValue(v)
+          (v) => v === null ? null : (0, import_entity.is)(this.baseColumn, _PgArray) ? this.baseColumn.mapToDriverValue(v, true) : this.baseColumn.mapToDriverValue(v)
         );
         if (isNestedArray)
           return a;
-        return (0, import_array2.makePgArray)(a);
+        return (0, import_array.makePgArray)(a);
       }
     };
   }
@@ -898,35 +911,35 @@ var require_enum = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var enum_exports = {};
     __export2(enum_exports, {
-      PgEnumColumn: () => PgEnumColumn2,
-      PgEnumColumnBuilder: () => PgEnumColumnBuilder2,
-      isPgEnum: () => isPgEnum2,
+      PgEnumColumn: () => PgEnumColumn,
+      PgEnumColumnBuilder: () => PgEnumColumnBuilder,
+      isPgEnum: () => isPgEnum,
       pgEnum: () => pgEnum,
       pgEnumWithSchema: () => pgEnumWithSchema
     });
     module2.exports = __toCommonJS2(enum_exports);
-    var import_entity11 = require_entity();
-    var import_common2 = require_common();
-    var isPgEnumSym2 = Symbol.for("drizzle:isPgEnum");
-    function isPgEnum2(obj) {
-      return !!obj && typeof obj === "function" && isPgEnumSym2 in obj && obj[isPgEnumSym2] === true;
+    var import_entity = require_entity();
+    var import_common = require_common();
+    var isPgEnumSym = Symbol.for("drizzle:isPgEnum");
+    function isPgEnum(obj) {
+      return !!obj && typeof obj === "function" && isPgEnumSym in obj && obj[isPgEnumSym] === true;
     }
-    var PgEnumColumnBuilder2 = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgEnumColumnBuilder";
+    var PgEnumColumnBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgEnumColumnBuilder";
       constructor(name, enumInstance) {
         super(name, "string", "PgEnumColumn");
         this.config.enum = enumInstance;
       }
       /** @internal */
       build(table) {
-        return new PgEnumColumn2(
+        return new PgEnumColumn(
           table,
           this.config
         );
       }
     };
-    var PgEnumColumn2 = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgEnumColumn";
+    var PgEnumColumn = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgEnumColumn";
       enum = this.config.enum;
       enumValues = this.config.enum.enumValues;
       constructor(table, config) {
@@ -942,12 +955,12 @@ var require_enum = __commonJS({
     }
     function pgEnumWithSchema(enumName, values, schema) {
       const enumInstance = Object.assign(
-        (name) => new PgEnumColumnBuilder2(name ?? "", enumInstance),
+        (name) => new PgEnumColumnBuilder(name ?? "", enumInstance),
         {
           enumName,
           enumValues: values,
           schema,
-          [isPgEnumSym2]: true
+          [isPgEnumSym]: true
         }
       );
       return enumInstance;
@@ -978,17 +991,17 @@ var require_subquery = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var subquery_exports = {};
     __export2(subquery_exports, {
-      Subquery: () => Subquery2,
-      WithSubquery: () => WithSubquery2
+      Subquery: () => Subquery,
+      WithSubquery: () => WithSubquery
     });
     module2.exports = __toCommonJS2(subquery_exports);
-    var import_entity11 = require_entity();
-    var Subquery2 = class {
-      static [import_entity11.entityKind] = "Subquery";
-      constructor(sql2, selection, alias, isWith = false) {
+    var import_entity = require_entity();
+    var Subquery = class {
+      static [import_entity.entityKind] = "Subquery";
+      constructor(sql, selection, alias, isWith = false) {
         this._ = {
           brand: "Subquery",
-          sql: sql2,
+          sql,
           selectedFields: selection,
           alias,
           isWith
@@ -998,8 +1011,8 @@ var require_subquery = __commonJS({
       // 	return new SQL([this]);
       // }
     };
-    var WithSubquery2 = class extends Subquery2 {
-      static [import_entity11.entityKind] = "WithSubquery";
+    var WithSubquery = class extends Subquery {
+      static [import_entity.entityKind] = "WithSubquery";
     };
   }
 });
@@ -1028,10 +1041,10 @@ var require_version = __commonJS({
     var version_exports = {};
     __export2(version_exports, {
       compatibilityVersion: () => compatibilityVersion,
-      npmVersion: () => version2
+      npmVersion: () => version
     });
     module2.exports = __toCommonJS2(version_exports);
-    var version2 = "0.40.1";
+    var version = "0.40.1";
     var compatibilityVersion = 10;
   }
 });
@@ -1059,30 +1072,30 @@ var require_tracing = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var tracing_exports = {};
     __export2(tracing_exports, {
-      tracer: () => tracer2
+      tracer: () => tracer
     });
     module2.exports = __toCommonJS2(tracing_exports);
-    var import_tracing_utils3 = require_tracing_utils();
-    var import_version2 = require_version();
-    var otel2;
-    var rawTracer2;
-    var tracer2 = {
+    var import_tracing_utils = require_tracing_utils();
+    var import_version = require_version();
+    var otel;
+    var rawTracer;
+    var tracer = {
       startActiveSpan(name, fn) {
-        if (!otel2) {
+        if (!otel) {
           return fn();
         }
-        if (!rawTracer2) {
-          rawTracer2 = otel2.trace.getTracer("drizzle-orm", import_version2.npmVersion);
+        if (!rawTracer) {
+          rawTracer = otel.trace.getTracer("drizzle-orm", import_version.npmVersion);
         }
-        return (0, import_tracing_utils3.iife)(
-          (otel22, rawTracer22) => rawTracer22.startActiveSpan(
+        return (0, import_tracing_utils.iife)(
+          (otel2, rawTracer2) => rawTracer2.startActiveSpan(
             name,
             (span) => {
               try {
                 return fn(span);
               } catch (e) {
                 span.setStatus({
-                  code: otel22.SpanStatusCode.ERROR,
+                  code: otel2.SpanStatusCode.ERROR,
                   message: e instanceof Error ? e.message : "Unknown error"
                   // eslint-disable-line no-instanceof/no-instanceof
                 });
@@ -1092,8 +1105,8 @@ var require_tracing = __commonJS({
               }
             }
           ),
-          otel2,
-          rawTracer2
+          otel,
+          rawTracer
         );
       }
     };
@@ -1123,10 +1136,10 @@ var require_view_common = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var view_common_exports = {};
     __export2(view_common_exports, {
-      ViewBaseConfig: () => ViewBaseConfig2
+      ViewBaseConfig: () => ViewBaseConfig
     });
     module2.exports = __toCommonJS2(view_common_exports);
-    var ViewBaseConfig2 = Symbol.for("drizzle:ViewBaseConfig");
+    var ViewBaseConfig = Symbol.for("drizzle:ViewBaseConfig");
   }
 });
 
@@ -1153,83 +1166,83 @@ var require_table = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var table_exports = {};
     __export2(table_exports, {
-      BaseName: () => BaseName2,
-      Columns: () => Columns2,
-      ExtraConfigBuilder: () => ExtraConfigBuilder2,
-      ExtraConfigColumns: () => ExtraConfigColumns2,
-      IsAlias: () => IsAlias2,
-      OriginalName: () => OriginalName2,
-      Schema: () => Schema2,
-      Table: () => Table2,
+      BaseName: () => BaseName,
+      Columns: () => Columns,
+      ExtraConfigBuilder: () => ExtraConfigBuilder,
+      ExtraConfigColumns: () => ExtraConfigColumns,
+      IsAlias: () => IsAlias,
+      OriginalName: () => OriginalName,
+      Schema: () => Schema,
+      Table: () => Table,
       getTableName: () => getTableName,
       getTableUniqueName: () => getTableUniqueName,
       isTable: () => isTable
     });
     module2.exports = __toCommonJS2(table_exports);
-    var import_entity11 = require_entity();
-    var import_table_utils4 = require_table_utils();
-    var Schema2 = Symbol.for("drizzle:Schema");
-    var Columns2 = Symbol.for("drizzle:Columns");
-    var ExtraConfigColumns2 = Symbol.for("drizzle:ExtraConfigColumns");
-    var OriginalName2 = Symbol.for("drizzle:OriginalName");
-    var BaseName2 = Symbol.for("drizzle:BaseName");
-    var IsAlias2 = Symbol.for("drizzle:IsAlias");
-    var ExtraConfigBuilder2 = Symbol.for("drizzle:ExtraConfigBuilder");
-    var IsDrizzleTable2 = Symbol.for("drizzle:IsDrizzleTable");
-    var Table2 = class {
-      static [import_entity11.entityKind] = "Table";
+    var import_entity = require_entity();
+    var import_table_utils = require_table_utils();
+    var Schema = Symbol.for("drizzle:Schema");
+    var Columns = Symbol.for("drizzle:Columns");
+    var ExtraConfigColumns = Symbol.for("drizzle:ExtraConfigColumns");
+    var OriginalName = Symbol.for("drizzle:OriginalName");
+    var BaseName = Symbol.for("drizzle:BaseName");
+    var IsAlias = Symbol.for("drizzle:IsAlias");
+    var ExtraConfigBuilder = Symbol.for("drizzle:ExtraConfigBuilder");
+    var IsDrizzleTable = Symbol.for("drizzle:IsDrizzleTable");
+    var Table = class {
+      static [import_entity.entityKind] = "Table";
       /** @internal */
       static Symbol = {
-        Name: import_table_utils4.TableName,
-        Schema: Schema2,
-        OriginalName: OriginalName2,
-        Columns: Columns2,
-        ExtraConfigColumns: ExtraConfigColumns2,
-        BaseName: BaseName2,
-        IsAlias: IsAlias2,
-        ExtraConfigBuilder: ExtraConfigBuilder2
+        Name: import_table_utils.TableName,
+        Schema,
+        OriginalName,
+        Columns,
+        ExtraConfigColumns,
+        BaseName,
+        IsAlias,
+        ExtraConfigBuilder
       };
       /**
        * @internal
        * Can be changed if the table is aliased.
        */
-      [import_table_utils4.TableName];
+      [import_table_utils.TableName];
       /**
        * @internal
        * Used to store the original name of the table, before any aliasing.
        */
-      [OriginalName2];
+      [OriginalName];
       /** @internal */
-      [Schema2];
+      [Schema];
       /** @internal */
-      [Columns2];
+      [Columns];
       /** @internal */
-      [ExtraConfigColumns2];
+      [ExtraConfigColumns];
       /**
        *  @internal
        * Used to store the table name before the transformation via the `tableCreator` functions.
        */
-      [BaseName2];
+      [BaseName];
       /** @internal */
-      [IsAlias2] = false;
+      [IsAlias] = false;
       /** @internal */
-      [IsDrizzleTable2] = true;
+      [IsDrizzleTable] = true;
       /** @internal */
-      [ExtraConfigBuilder2] = void 0;
+      [ExtraConfigBuilder] = void 0;
       constructor(name, schema, baseName) {
-        this[import_table_utils4.TableName] = this[OriginalName2] = name;
-        this[Schema2] = schema;
-        this[BaseName2] = baseName;
+        this[import_table_utils.TableName] = this[OriginalName] = name;
+        this[Schema] = schema;
+        this[BaseName] = baseName;
       }
     };
     function isTable(table) {
-      return typeof table === "object" && table !== null && IsDrizzleTable2 in table;
+      return typeof table === "object" && table !== null && IsDrizzleTable in table;
     }
     function getTableName(table) {
-      return table[import_table_utils4.TableName];
+      return table[import_table_utils.TableName];
     }
     function getTableUniqueName(table) {
-      return `${table[Schema2] ?? "public"}.${table[import_table_utils4.TableName]}`;
+      return `${table[Schema] ?? "public"}.${table[import_table_utils.TableName]}`;
     }
   }
 });
@@ -1257,41 +1270,41 @@ var require_sql = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var sql_exports = {};
     __export2(sql_exports, {
-      FakePrimitiveParam: () => FakePrimitiveParam2,
-      Name: () => Name2,
-      Param: () => Param2,
-      Placeholder: () => Placeholder2,
-      SQL: () => SQL2,
-      StringChunk: () => StringChunk2,
-      View: () => View2,
+      FakePrimitiveParam: () => FakePrimitiveParam,
+      Name: () => Name,
+      Param: () => Param,
+      Placeholder: () => Placeholder,
+      SQL: () => SQL,
+      StringChunk: () => StringChunk,
+      View: () => View,
       fillPlaceholders: () => fillPlaceholders,
       getViewName: () => getViewName,
-      isDriverValueEncoder: () => isDriverValueEncoder2,
-      isSQLWrapper: () => isSQLWrapper2,
+      isDriverValueEncoder: () => isDriverValueEncoder,
+      isSQLWrapper: () => isSQLWrapper,
       isView: () => isView,
       name: () => name,
-      noopDecoder: () => noopDecoder2,
-      noopEncoder: () => noopEncoder2,
-      noopMapper: () => noopMapper2,
+      noopDecoder: () => noopDecoder,
+      noopEncoder: () => noopEncoder,
+      noopMapper: () => noopMapper,
       param: () => param,
       placeholder: () => placeholder,
-      sql: () => sql2
+      sql: () => sql
     });
     module2.exports = __toCommonJS2(sql_exports);
-    var import_entity11 = require_entity();
-    var import_enum2 = require_enum();
-    var import_subquery2 = require_subquery();
-    var import_tracing2 = require_tracing();
-    var import_view_common2 = require_view_common();
-    var import_column4 = require_column();
-    var import_table3 = require_table();
-    var FakePrimitiveParam2 = class {
-      static [import_entity11.entityKind] = "FakePrimitiveParam";
+    var import_entity = require_entity();
+    var import_enum = require_enum();
+    var import_subquery = require_subquery();
+    var import_tracing = require_tracing();
+    var import_view_common = require_view_common();
+    var import_column = require_column();
+    var import_table = require_table();
+    var FakePrimitiveParam = class {
+      static [import_entity.entityKind] = "FakePrimitiveParam";
     };
-    function isSQLWrapper2(value) {
+    function isSQLWrapper(value) {
       return value !== null && value !== void 0 && typeof value.getSQL === "function";
     }
-    function mergeQueries2(queries) {
+    function mergeQueries(queries) {
       const result = { sql: "", params: [] };
       for (const query of queries) {
         result.sql += query.sql;
@@ -1305,30 +1318,30 @@ var require_sql = __commonJS({
       }
       return result;
     }
-    var StringChunk2 = class {
-      static [import_entity11.entityKind] = "StringChunk";
+    var StringChunk = class {
+      static [import_entity.entityKind] = "StringChunk";
       value;
       constructor(value) {
         this.value = Array.isArray(value) ? value : [value];
       }
       getSQL() {
-        return new SQL2([this]);
+        return new SQL([this]);
       }
     };
-    var SQL2 = class _SQL {
+    var SQL = class _SQL {
       constructor(queryChunks) {
         this.queryChunks = queryChunks;
       }
-      static [import_entity11.entityKind] = "SQL";
+      static [import_entity.entityKind] = "SQL";
       /** @internal */
-      decoder = noopDecoder2;
+      decoder = noopDecoder;
       shouldInlineParams = false;
       append(query) {
         this.queryChunks.push(...query.queryChunks);
         return this;
       }
       toQuery(config) {
-        return import_tracing2.tracer.startActiveSpan("drizzle.buildSQL", (span) => {
+        return import_tracing.tracer.startActiveSpan("drizzle.buildSQL", (span) => {
           const query = this.buildQueryFromSourceParams(this.queryChunks, config);
           span?.setAttributes({
             "drizzle.query.text": query.sql,
@@ -1350,66 +1363,66 @@ var require_sql = __commonJS({
           inlineParams,
           paramStartIndex
         } = config;
-        return mergeQueries2(chunks.map((chunk) => {
-          if ((0, import_entity11.is)(chunk, StringChunk2)) {
+        return mergeQueries(chunks.map((chunk) => {
+          if ((0, import_entity.is)(chunk, StringChunk)) {
             return { sql: chunk.value.join(""), params: [] };
           }
-          if ((0, import_entity11.is)(chunk, Name2)) {
+          if ((0, import_entity.is)(chunk, Name)) {
             return { sql: escapeName(chunk.value), params: [] };
           }
           if (chunk === void 0) {
             return { sql: "", params: [] };
           }
           if (Array.isArray(chunk)) {
-            const result = [new StringChunk2("(")];
+            const result = [new StringChunk("(")];
             for (const [i, p] of chunk.entries()) {
               result.push(p);
               if (i < chunk.length - 1) {
-                result.push(new StringChunk2(", "));
+                result.push(new StringChunk(", "));
               }
             }
-            result.push(new StringChunk2(")"));
+            result.push(new StringChunk(")"));
             return this.buildQueryFromSourceParams(result, config);
           }
-          if ((0, import_entity11.is)(chunk, _SQL)) {
+          if ((0, import_entity.is)(chunk, _SQL)) {
             return this.buildQueryFromSourceParams(chunk.queryChunks, {
               ...config,
               inlineParams: inlineParams || chunk.shouldInlineParams
             });
           }
-          if ((0, import_entity11.is)(chunk, import_table3.Table)) {
-            const schemaName = chunk[import_table3.Table.Symbol.Schema];
-            const tableName = chunk[import_table3.Table.Symbol.Name];
+          if ((0, import_entity.is)(chunk, import_table.Table)) {
+            const schemaName = chunk[import_table.Table.Symbol.Schema];
+            const tableName = chunk[import_table.Table.Symbol.Name];
             return {
-              sql: schemaName === void 0 || chunk[import_table3.IsAlias] ? escapeName(tableName) : escapeName(schemaName) + "." + escapeName(tableName),
+              sql: schemaName === void 0 || chunk[import_table.IsAlias] ? escapeName(tableName) : escapeName(schemaName) + "." + escapeName(tableName),
               params: []
             };
           }
-          if ((0, import_entity11.is)(chunk, import_column4.Column)) {
+          if ((0, import_entity.is)(chunk, import_column.Column)) {
             const columnName = casing.getColumnCasing(chunk);
             if (_config.invokeSource === "indexes") {
               return { sql: escapeName(columnName), params: [] };
             }
-            const schemaName = chunk.table[import_table3.Table.Symbol.Schema];
+            const schemaName = chunk.table[import_table.Table.Symbol.Schema];
             return {
-              sql: chunk.table[import_table3.IsAlias] || schemaName === void 0 ? escapeName(chunk.table[import_table3.Table.Symbol.Name]) + "." + escapeName(columnName) : escapeName(schemaName) + "." + escapeName(chunk.table[import_table3.Table.Symbol.Name]) + "." + escapeName(columnName),
+              sql: chunk.table[import_table.IsAlias] || schemaName === void 0 ? escapeName(chunk.table[import_table.Table.Symbol.Name]) + "." + escapeName(columnName) : escapeName(schemaName) + "." + escapeName(chunk.table[import_table.Table.Symbol.Name]) + "." + escapeName(columnName),
               params: []
             };
           }
-          if ((0, import_entity11.is)(chunk, View2)) {
-            const schemaName = chunk[import_view_common2.ViewBaseConfig].schema;
-            const viewName = chunk[import_view_common2.ViewBaseConfig].name;
+          if ((0, import_entity.is)(chunk, View)) {
+            const schemaName = chunk[import_view_common.ViewBaseConfig].schema;
+            const viewName = chunk[import_view_common.ViewBaseConfig].name;
             return {
-              sql: schemaName === void 0 || chunk[import_view_common2.ViewBaseConfig].isAlias ? escapeName(viewName) : escapeName(schemaName) + "." + escapeName(viewName),
+              sql: schemaName === void 0 || chunk[import_view_common.ViewBaseConfig].isAlias ? escapeName(viewName) : escapeName(schemaName) + "." + escapeName(viewName),
               params: []
             };
           }
-          if ((0, import_entity11.is)(chunk, Param2)) {
-            if ((0, import_entity11.is)(chunk.value, Placeholder2)) {
+          if ((0, import_entity.is)(chunk, Param)) {
+            if ((0, import_entity.is)(chunk.value, Placeholder)) {
               return { sql: escapeParam(paramStartIndex.value++, chunk), params: [chunk], typings: ["none"] };
             }
             const mappedValue = chunk.value === null ? null : chunk.encoder.mapToDriverValue(chunk.value);
-            if ((0, import_entity11.is)(mappedValue, _SQL)) {
+            if ((0, import_entity.is)(mappedValue, _SQL)) {
               return this.buildQueryFromSourceParams([mappedValue], config);
             }
             if (inlineParams) {
@@ -1421,37 +1434,37 @@ var require_sql = __commonJS({
             }
             return { sql: escapeParam(paramStartIndex.value++, mappedValue), params: [mappedValue], typings };
           }
-          if ((0, import_entity11.is)(chunk, Placeholder2)) {
+          if ((0, import_entity.is)(chunk, Placeholder)) {
             return { sql: escapeParam(paramStartIndex.value++, chunk), params: [chunk], typings: ["none"] };
           }
-          if ((0, import_entity11.is)(chunk, _SQL.Aliased) && chunk.fieldAlias !== void 0) {
+          if ((0, import_entity.is)(chunk, _SQL.Aliased) && chunk.fieldAlias !== void 0) {
             return { sql: escapeName(chunk.fieldAlias), params: [] };
           }
-          if ((0, import_entity11.is)(chunk, import_subquery2.Subquery)) {
+          if ((0, import_entity.is)(chunk, import_subquery.Subquery)) {
             if (chunk._.isWith) {
               return { sql: escapeName(chunk._.alias), params: [] };
             }
             return this.buildQueryFromSourceParams([
-              new StringChunk2("("),
+              new StringChunk("("),
               chunk._.sql,
-              new StringChunk2(") "),
-              new Name2(chunk._.alias)
+              new StringChunk(") "),
+              new Name(chunk._.alias)
             ], config);
           }
-          if ((0, import_enum2.isPgEnum)(chunk)) {
+          if ((0, import_enum.isPgEnum)(chunk)) {
             if (chunk.schema) {
               return { sql: escapeName(chunk.schema) + "." + escapeName(chunk.enumName), params: [] };
             }
             return { sql: escapeName(chunk.enumName), params: [] };
           }
-          if (isSQLWrapper2(chunk)) {
+          if (isSQLWrapper(chunk)) {
             if (chunk.shouldOmitSQLParens?.()) {
               return this.buildQueryFromSourceParams([chunk.getSQL()], config);
             }
             return this.buildQueryFromSourceParams([
-              new StringChunk2("("),
+              new StringChunk("("),
               chunk.getSQL(),
-              new StringChunk2(")")
+              new StringChunk(")")
             ], config);
           }
           if (inlineParams) {
@@ -1506,73 +1519,73 @@ var require_sql = __commonJS({
         return condition ? this : void 0;
       }
     };
-    var Name2 = class {
+    var Name = class {
       constructor(value) {
         this.value = value;
       }
-      static [import_entity11.entityKind] = "Name";
+      static [import_entity.entityKind] = "Name";
       brand;
       getSQL() {
-        return new SQL2([this]);
+        return new SQL([this]);
       }
     };
     function name(value) {
-      return new Name2(value);
+      return new Name(value);
     }
-    function isDriverValueEncoder2(value) {
+    function isDriverValueEncoder(value) {
       return typeof value === "object" && value !== null && "mapToDriverValue" in value && typeof value.mapToDriverValue === "function";
     }
-    var noopDecoder2 = {
+    var noopDecoder = {
       mapFromDriverValue: (value) => value
     };
-    var noopEncoder2 = {
+    var noopEncoder = {
       mapToDriverValue: (value) => value
     };
-    var noopMapper2 = {
-      ...noopDecoder2,
-      ...noopEncoder2
+    var noopMapper = {
+      ...noopDecoder,
+      ...noopEncoder
     };
-    var Param2 = class {
+    var Param = class {
       /**
        * @param value - Parameter value
        * @param encoder - Encoder to convert the value to a driver parameter
        */
-      constructor(value, encoder = noopEncoder2) {
+      constructor(value, encoder = noopEncoder) {
         this.value = value;
         this.encoder = encoder;
       }
-      static [import_entity11.entityKind] = "Param";
+      static [import_entity.entityKind] = "Param";
       brand;
       getSQL() {
-        return new SQL2([this]);
+        return new SQL([this]);
       }
     };
     function param(value, encoder) {
-      return new Param2(value, encoder);
+      return new Param(value, encoder);
     }
-    function sql2(strings, ...params) {
+    function sql(strings, ...params) {
       const queryChunks = [];
       if (params.length > 0 || strings.length > 0 && strings[0] !== "") {
-        queryChunks.push(new StringChunk2(strings[0]));
+        queryChunks.push(new StringChunk(strings[0]));
       }
       for (const [paramIndex, param2] of params.entries()) {
-        queryChunks.push(param2, new StringChunk2(strings[paramIndex + 1]));
+        queryChunks.push(param2, new StringChunk(strings[paramIndex + 1]));
       }
-      return new SQL2(queryChunks);
+      return new SQL(queryChunks);
     }
-    ((sql22) => {
+    ((sql2) => {
       function empty() {
-        return new SQL2([]);
+        return new SQL([]);
       }
-      sql22.empty = empty;
+      sql2.empty = empty;
       function fromList(list) {
-        return new SQL2(list);
+        return new SQL(list);
       }
-      sql22.fromList = fromList;
+      sql2.fromList = fromList;
       function raw(str) {
-        return new SQL2([new StringChunk2(str)]);
+        return new SQL([new StringChunk(str)]);
       }
-      sql22.raw = raw;
+      sql2.raw = raw;
       function join(chunks, separator) {
         const result = [];
         for (const [i, chunk] of chunks.entries()) {
@@ -1581,29 +1594,29 @@ var require_sql = __commonJS({
           }
           result.push(chunk);
         }
-        return new SQL2(result);
+        return new SQL(result);
       }
-      sql22.join = join;
+      sql2.join = join;
       function identifier(value) {
-        return new Name2(value);
+        return new Name(value);
       }
-      sql22.identifier = identifier;
+      sql2.identifier = identifier;
       function placeholder2(name2) {
-        return new Placeholder2(name2);
+        return new Placeholder(name2);
       }
-      sql22.placeholder = placeholder2;
+      sql2.placeholder = placeholder2;
       function param2(value, encoder) {
-        return new Param2(value, encoder);
+        return new Param(value, encoder);
       }
-      sql22.param = param2;
-    })(sql2 || (sql2 = {}));
-    ((SQL22) => {
+      sql2.param = param2;
+    })(sql || (sql = {}));
+    ((SQL2) => {
       class Aliased {
-        constructor(sql22, fieldAlias) {
-          this.sql = sql22;
+        constructor(sql2, fieldAlias) {
+          this.sql = sql2;
           this.fieldAlias = fieldAlias;
         }
-        static [import_entity11.entityKind] = "SQL.Aliased";
+        static [import_entity.entityKind] = "SQL.Aliased";
         /** @internal */
         isSelectionField = false;
         getSQL() {
@@ -1614,29 +1627,29 @@ var require_sql = __commonJS({
           return new Aliased(this.sql, this.fieldAlias);
         }
       }
-      SQL22.Aliased = Aliased;
-    })(SQL2 || (SQL2 = {}));
-    var Placeholder2 = class {
+      SQL2.Aliased = Aliased;
+    })(SQL || (SQL = {}));
+    var Placeholder = class {
       constructor(name2) {
         this.name = name2;
       }
-      static [import_entity11.entityKind] = "Placeholder";
+      static [import_entity.entityKind] = "Placeholder";
       getSQL() {
-        return new SQL2([this]);
+        return new SQL([this]);
       }
     };
     function placeholder(name2) {
-      return new Placeholder2(name2);
+      return new Placeholder(name2);
     }
     function fillPlaceholders(params, values) {
       return params.map((p) => {
-        if ((0, import_entity11.is)(p, Placeholder2)) {
+        if ((0, import_entity.is)(p, Placeholder)) {
           if (!(p.name in values)) {
             throw new Error(`No value for placeholder "${p.name}" was provided`);
           }
           return values[p.name];
         }
-        if ((0, import_entity11.is)(p, Param2) && (0, import_entity11.is)(p.value, Placeholder2)) {
+        if ((0, import_entity.is)(p, Param) && (0, import_entity.is)(p.value, Placeholder)) {
           if (!(p.value.name in values)) {
             throw new Error(`No value for placeholder "${p.value.name}" was provided`);
           }
@@ -1645,15 +1658,15 @@ var require_sql = __commonJS({
         return p;
       });
     }
-    var IsDrizzleView2 = Symbol.for("drizzle:IsDrizzleView");
-    var View2 = class {
-      static [import_entity11.entityKind] = "View";
+    var IsDrizzleView = Symbol.for("drizzle:IsDrizzleView");
+    var View = class {
+      static [import_entity.entityKind] = "View";
       /** @internal */
-      [import_view_common2.ViewBaseConfig];
+      [import_view_common.ViewBaseConfig];
       /** @internal */
-      [IsDrizzleView2] = true;
+      [IsDrizzleView] = true;
       constructor({ name: name2, schema, selectedFields, query }) {
-        this[import_view_common2.ViewBaseConfig] = {
+        this[import_view_common.ViewBaseConfig] = {
           name: name2,
           originalName: name2,
           schema,
@@ -1664,23 +1677,23 @@ var require_sql = __commonJS({
         };
       }
       getSQL() {
-        return new SQL2([this]);
+        return new SQL([this]);
       }
     };
     function isView(view) {
-      return typeof view === "object" && view !== null && IsDrizzleView2 in view;
+      return typeof view === "object" && view !== null && IsDrizzleView in view;
     }
     function getViewName(view) {
-      return view[import_view_common2.ViewBaseConfig].name;
+      return view[import_view_common.ViewBaseConfig].name;
     }
-    import_column4.Column.prototype.getSQL = function() {
-      return new SQL2([this]);
+    import_column.Column.prototype.getSQL = function() {
+      return new SQL([this]);
     };
-    import_table3.Table.prototype.getSQL = function() {
-      return new SQL2([this]);
+    import_table.Table.prototype.getSQL = function() {
+      return new SQL([this]);
     };
-    import_subquery2.Subquery.prototype.getSQL = function() {
-      return new SQL2([this]);
+    import_subquery.Subquery.prototype.getSQL = function() {
+      return new SQL([this]);
     };
   }
 });
@@ -1718,16 +1731,16 @@ var require_alias = __commonJS({
       mapColumnsInSQLToAlias: () => mapColumnsInSQLToAlias
     });
     module2.exports = __toCommonJS2(alias_exports);
-    var import_column4 = require_column();
-    var import_entity11 = require_entity();
-    var import_sql2 = require_sql();
-    var import_table3 = require_table();
-    var import_view_common2 = require_view_common();
+    var import_column = require_column();
+    var import_entity = require_entity();
+    var import_sql = require_sql();
+    var import_table = require_table();
+    var import_view_common = require_view_common();
     var ColumnAliasProxyHandler = class {
       constructor(table) {
         this.table = table;
       }
-      static [import_entity11.entityKind] = "ColumnAliasProxyHandler";
+      static [import_entity.entityKind] = "ColumnAliasProxyHandler";
       get(columnObj, prop) {
         if (prop === "table") {
           return this.table;
@@ -1740,26 +1753,26 @@ var require_alias = __commonJS({
         this.alias = alias;
         this.replaceOriginalName = replaceOriginalName;
       }
-      static [import_entity11.entityKind] = "TableAliasProxyHandler";
+      static [import_entity.entityKind] = "TableAliasProxyHandler";
       get(target, prop) {
-        if (prop === import_table3.Table.Symbol.IsAlias) {
+        if (prop === import_table.Table.Symbol.IsAlias) {
           return true;
         }
-        if (prop === import_table3.Table.Symbol.Name) {
+        if (prop === import_table.Table.Symbol.Name) {
           return this.alias;
         }
-        if (this.replaceOriginalName && prop === import_table3.Table.Symbol.OriginalName) {
+        if (this.replaceOriginalName && prop === import_table.Table.Symbol.OriginalName) {
           return this.alias;
         }
-        if (prop === import_view_common2.ViewBaseConfig) {
+        if (prop === import_view_common.ViewBaseConfig) {
           return {
-            ...target[import_view_common2.ViewBaseConfig],
+            ...target[import_view_common.ViewBaseConfig],
             name: this.alias,
             isAlias: true
           };
         }
-        if (prop === import_table3.Table.Symbol.Columns) {
-          const columns = target[import_table3.Table.Symbol.Columns];
+        if (prop === import_table.Table.Symbol.Columns) {
+          const columns = target[import_table.Table.Symbol.Columns];
           if (!columns) {
             return columns;
           }
@@ -1773,7 +1786,7 @@ var require_alias = __commonJS({
           return proxiedColumns;
         }
         const value = target[prop];
-        if ((0, import_entity11.is)(value, import_column4.Column)) {
+        if ((0, import_entity.is)(value, import_column.Column)) {
           return new Proxy(value, new ColumnAliasProxyHandler(new Proxy(target, this)));
         }
         return value;
@@ -1783,7 +1796,7 @@ var require_alias = __commonJS({
       constructor(alias) {
         this.alias = alias;
       }
-      static [import_entity11.entityKind] = "RelationTableAliasProxyHandler";
+      static [import_entity.entityKind] = "RelationTableAliasProxyHandler";
       get(target, prop) {
         if (prop === "sourceTable") {
           return aliasedTable(target.sourceTable, this.alias);
@@ -1804,17 +1817,17 @@ var require_alias = __commonJS({
       );
     }
     function mapColumnsInAliasedSQLToAlias(query, alias) {
-      return new import_sql2.SQL.Aliased(mapColumnsInSQLToAlias(query.sql, alias), query.fieldAlias);
+      return new import_sql.SQL.Aliased(mapColumnsInSQLToAlias(query.sql, alias), query.fieldAlias);
     }
     function mapColumnsInSQLToAlias(query, alias) {
-      return import_sql2.sql.join(query.queryChunks.map((c) => {
-        if ((0, import_entity11.is)(c, import_column4.Column)) {
+      return import_sql.sql.join(query.queryChunks.map((c) => {
+        if ((0, import_entity.is)(c, import_column.Column)) {
           return aliasedTableColumn(c, alias);
         }
-        if ((0, import_entity11.is)(c, import_sql2.SQL)) {
+        if ((0, import_entity.is)(c, import_sql.SQL)) {
           return mapColumnsInSQLToAlias(c, alias);
         }
-        if ((0, import_entity11.is)(c, import_sql2.SQL.Aliased)) {
+        if ((0, import_entity.is)(c, import_sql.SQL.Aliased)) {
           return mapColumnsInAliasedSQLToAlias(c, alias);
         }
         return c;
@@ -1823,9 +1836,9 @@ var require_alias = __commonJS({
   }
 });
 
-// node_modules/drizzle-orm/pg-core/alias.cjs
-var require_alias2 = __commonJS({
-  "node_modules/drizzle-orm/pg-core/alias.cjs"(exports2, module2) {
+// node_modules/drizzle-orm/errors.cjs
+var require_errors = __commonJS({
+  "node_modules/drizzle-orm/errors.cjs"(exports2, module2) {
     "use strict";
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
@@ -1844,21 +1857,319 @@ var require_alias2 = __commonJS({
       return to;
     };
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var alias_exports = {};
-    __export2(alias_exports, {
-      alias: () => alias
+    var errors_exports = {};
+    __export2(errors_exports, {
+      DrizzleError: () => DrizzleError,
+      TransactionRollbackError: () => TransactionRollbackError
     });
-    module2.exports = __toCommonJS2(alias_exports);
-    var import_alias = require_alias();
-    function alias(table, alias2) {
-      return new Proxy(table, new import_alias.TableAliasProxyHandler(alias2, false));
+    module2.exports = __toCommonJS2(errors_exports);
+    var import_entity = require_entity();
+    var DrizzleError = class extends Error {
+      static [import_entity.entityKind] = "DrizzleError";
+      constructor({ message, cause }) {
+        super(message);
+        this.name = "DrizzleError";
+        this.cause = cause;
+      }
+    };
+    var TransactionRollbackError = class extends DrizzleError {
+      static [import_entity.entityKind] = "TransactionRollbackError";
+      constructor() {
+        super({ message: "Rollback" });
+      }
+    };
+  }
+});
+
+// node_modules/drizzle-orm/sql/expressions/conditions.cjs
+var require_conditions = __commonJS({
+  "node_modules/drizzle-orm/sql/expressions/conditions.cjs"(exports2, module2) {
+    "use strict";
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all) => {
+      for (var name in all)
+        __defProp2(target, name, { get: all[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var conditions_exports = {};
+    __export2(conditions_exports, {
+      and: () => and,
+      arrayContained: () => arrayContained,
+      arrayContains: () => arrayContains,
+      arrayOverlaps: () => arrayOverlaps,
+      between: () => between,
+      bindIfParam: () => bindIfParam,
+      eq: () => eq2,
+      exists: () => exists,
+      gt: () => gt,
+      gte: () => gte,
+      ilike: () => ilike,
+      inArray: () => inArray,
+      isNotNull: () => isNotNull,
+      isNull: () => isNull,
+      like: () => like,
+      lt: () => lt,
+      lte: () => lte,
+      ne: () => ne,
+      not: () => not,
+      notBetween: () => notBetween,
+      notExists: () => notExists,
+      notIlike: () => notIlike,
+      notInArray: () => notInArray,
+      notLike: () => notLike,
+      or: () => or
+    });
+    module2.exports = __toCommonJS2(conditions_exports);
+    var import_column = require_column();
+    var import_entity = require_entity();
+    var import_table = require_table();
+    var import_sql = require_sql();
+    function bindIfParam(value, column) {
+      if ((0, import_sql.isDriverValueEncoder)(column) && !(0, import_sql.isSQLWrapper)(value) && !(0, import_entity.is)(value, import_sql.Param) && !(0, import_entity.is)(value, import_sql.Placeholder) && !(0, import_entity.is)(value, import_column.Column) && !(0, import_entity.is)(value, import_table.Table) && !(0, import_entity.is)(value, import_sql.View)) {
+        return new import_sql.Param(value, column);
+      }
+      return value;
+    }
+    var eq2 = (left, right) => {
+      return import_sql.sql`${left} = ${bindIfParam(right, left)}`;
+    };
+    var ne = (left, right) => {
+      return import_sql.sql`${left} <> ${bindIfParam(right, left)}`;
+    };
+    function and(...unfilteredConditions) {
+      const conditions = unfilteredConditions.filter(
+        (c) => c !== void 0
+      );
+      if (conditions.length === 0) {
+        return void 0;
+      }
+      if (conditions.length === 1) {
+        return new import_sql.SQL(conditions);
+      }
+      return new import_sql.SQL([
+        new import_sql.StringChunk("("),
+        import_sql.sql.join(conditions, new import_sql.StringChunk(" and ")),
+        new import_sql.StringChunk(")")
+      ]);
+    }
+    function or(...unfilteredConditions) {
+      const conditions = unfilteredConditions.filter(
+        (c) => c !== void 0
+      );
+      if (conditions.length === 0) {
+        return void 0;
+      }
+      if (conditions.length === 1) {
+        return new import_sql.SQL(conditions);
+      }
+      return new import_sql.SQL([
+        new import_sql.StringChunk("("),
+        import_sql.sql.join(conditions, new import_sql.StringChunk(" or ")),
+        new import_sql.StringChunk(")")
+      ]);
+    }
+    function not(condition) {
+      return import_sql.sql`not ${condition}`;
+    }
+    var gt = (left, right) => {
+      return import_sql.sql`${left} > ${bindIfParam(right, left)}`;
+    };
+    var gte = (left, right) => {
+      return import_sql.sql`${left} >= ${bindIfParam(right, left)}`;
+    };
+    var lt = (left, right) => {
+      return import_sql.sql`${left} < ${bindIfParam(right, left)}`;
+    };
+    var lte = (left, right) => {
+      return import_sql.sql`${left} <= ${bindIfParam(right, left)}`;
+    };
+    function inArray(column, values) {
+      if (Array.isArray(values)) {
+        if (values.length === 0) {
+          return import_sql.sql`false`;
+        }
+        return import_sql.sql`${column} in ${values.map((v) => bindIfParam(v, column))}`;
+      }
+      return import_sql.sql`${column} in ${bindIfParam(values, column)}`;
+    }
+    function notInArray(column, values) {
+      if (Array.isArray(values)) {
+        if (values.length === 0) {
+          return import_sql.sql`true`;
+        }
+        return import_sql.sql`${column} not in ${values.map((v) => bindIfParam(v, column))}`;
+      }
+      return import_sql.sql`${column} not in ${bindIfParam(values, column)}`;
+    }
+    function isNull(value) {
+      return import_sql.sql`${value} is null`;
+    }
+    function isNotNull(value) {
+      return import_sql.sql`${value} is not null`;
+    }
+    function exists(subquery) {
+      return import_sql.sql`exists ${subquery}`;
+    }
+    function notExists(subquery) {
+      return import_sql.sql`not exists ${subquery}`;
+    }
+    function between(column, min, max) {
+      return import_sql.sql`${column} between ${bindIfParam(min, column)} and ${bindIfParam(
+        max,
+        column
+      )}`;
+    }
+    function notBetween(column, min, max) {
+      return import_sql.sql`${column} not between ${bindIfParam(
+        min,
+        column
+      )} and ${bindIfParam(max, column)}`;
+    }
+    function like(column, value) {
+      return import_sql.sql`${column} like ${value}`;
+    }
+    function notLike(column, value) {
+      return import_sql.sql`${column} not like ${value}`;
+    }
+    function ilike(column, value) {
+      return import_sql.sql`${column} ilike ${value}`;
+    }
+    function notIlike(column, value) {
+      return import_sql.sql`${column} not ilike ${value}`;
+    }
+    function arrayContains(column, values) {
+      if (Array.isArray(values)) {
+        if (values.length === 0) {
+          throw new Error("arrayContains requires at least one value");
+        }
+        const array = import_sql.sql`${bindIfParam(values, column)}`;
+        return import_sql.sql`${column} @> ${array}`;
+      }
+      return import_sql.sql`${column} @> ${bindIfParam(values, column)}`;
+    }
+    function arrayContained(column, values) {
+      if (Array.isArray(values)) {
+        if (values.length === 0) {
+          throw new Error("arrayContained requires at least one value");
+        }
+        const array = import_sql.sql`${bindIfParam(values, column)}`;
+        return import_sql.sql`${column} <@ ${array}`;
+      }
+      return import_sql.sql`${column} <@ ${bindIfParam(values, column)}`;
+    }
+    function arrayOverlaps(column, values) {
+      if (Array.isArray(values)) {
+        if (values.length === 0) {
+          throw new Error("arrayOverlaps requires at least one value");
+        }
+        const array = import_sql.sql`${bindIfParam(values, column)}`;
+        return import_sql.sql`${column} && ${array}`;
+      }
+      return import_sql.sql`${column} && ${bindIfParam(values, column)}`;
     }
   }
 });
 
-// node_modules/drizzle-orm/pg-core/checks.cjs
-var require_checks = __commonJS({
-  "node_modules/drizzle-orm/pg-core/checks.cjs"(exports2, module2) {
+// node_modules/drizzle-orm/sql/expressions/select.cjs
+var require_select = __commonJS({
+  "node_modules/drizzle-orm/sql/expressions/select.cjs"(exports2, module2) {
+    "use strict";
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all) => {
+      for (var name in all)
+        __defProp2(target, name, { get: all[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc2) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc2 = __getOwnPropDesc2(from, key)) || desc2.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var select_exports = {};
+    __export2(select_exports, {
+      asc: () => asc,
+      desc: () => desc
+    });
+    module2.exports = __toCommonJS2(select_exports);
+    var import_sql = require_sql();
+    function asc(column) {
+      return import_sql.sql`${column} asc`;
+    }
+    function desc(column) {
+      return import_sql.sql`${column} desc`;
+    }
+  }
+});
+
+// node_modules/drizzle-orm/sql/expressions/index.cjs
+var require_expressions = __commonJS({
+  "node_modules/drizzle-orm/sql/expressions/index.cjs"(exports2, module2) {
+    "use strict";
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __reExport = (target, mod, secondTarget) => (__copyProps2(target, mod, "default"), secondTarget && __copyProps2(secondTarget, mod, "default"));
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var expressions_exports = {};
+    module2.exports = __toCommonJS2(expressions_exports);
+    __reExport(expressions_exports, require_conditions(), module2.exports);
+    __reExport(expressions_exports, require_select(), module2.exports);
+  }
+});
+
+// node_modules/drizzle-orm/expressions.cjs
+var require_expressions2 = __commonJS({
+  "node_modules/drizzle-orm/expressions.cjs"(exports2, module2) {
+    "use strict";
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __reExport = (target, mod, secondTarget) => (__copyProps2(target, mod, "default"), secondTarget && __copyProps2(secondTarget, mod, "default"));
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var expressions_exports = {};
+    module2.exports = __toCommonJS2(expressions_exports);
+    __reExport(expressions_exports, require_expressions(), module2.exports);
+  }
+});
+
+// node_modules/drizzle-orm/logger.cjs
+var require_logger = __commonJS({
+  "node_modules/drizzle-orm/logger.cjs"(exports2, module2) {
     "use strict";
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
@@ -1877,39 +2188,117 @@ var require_checks = __commonJS({
       return to;
     };
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var checks_exports = {};
-    __export2(checks_exports, {
-      Check: () => Check,
-      CheckBuilder: () => CheckBuilder,
-      check: () => check
+    var logger_exports = {};
+    __export2(logger_exports, {
+      ConsoleLogWriter: () => ConsoleLogWriter,
+      DefaultLogger: () => DefaultLogger,
+      NoopLogger: () => NoopLogger
     });
-    module2.exports = __toCommonJS2(checks_exports);
-    var import_entity11 = require_entity();
-    var CheckBuilder = class {
-      constructor(name, value) {
-        this.name = name;
-        this.value = value;
-      }
-      static [import_entity11.entityKind] = "PgCheckBuilder";
-      brand;
-      /** @internal */
-      build(table) {
-        return new Check(table, this);
+    module2.exports = __toCommonJS2(logger_exports);
+    var import_entity = require_entity();
+    var ConsoleLogWriter = class {
+      static [import_entity.entityKind] = "ConsoleLogWriter";
+      write(message) {
+        console.log(message);
       }
     };
-    var Check = class {
-      constructor(table, builder) {
-        this.table = table;
-        this.name = builder.name;
-        this.value = builder.value;
+    var DefaultLogger = class {
+      static [import_entity.entityKind] = "DefaultLogger";
+      writer;
+      constructor(config) {
+        this.writer = config?.writer ?? new ConsoleLogWriter();
       }
-      static [import_entity11.entityKind] = "PgCheck";
-      name;
-      value;
+      logQuery(query, params) {
+        const stringifiedParams = params.map((p) => {
+          try {
+            return JSON.stringify(p);
+          } catch {
+            return String(p);
+          }
+        });
+        const paramsStr = stringifiedParams.length ? ` -- params: [${stringifiedParams.join(", ")}]` : "";
+        this.writer.write(`Query: ${query}${paramsStr}`);
+      }
     };
-    function check(name, value) {
-      return new CheckBuilder(name, value);
-    }
+    var NoopLogger = class {
+      static [import_entity.entityKind] = "NoopLogger";
+      logQuery() {
+      }
+    };
+  }
+});
+
+// node_modules/drizzle-orm/operations.cjs
+var require_operations = __commonJS({
+  "node_modules/drizzle-orm/operations.cjs"(exports2, module2) {
+    "use strict";
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var operations_exports = {};
+    module2.exports = __toCommonJS2(operations_exports);
+  }
+});
+
+// node_modules/drizzle-orm/query-promise.cjs
+var require_query_promise = __commonJS({
+  "node_modules/drizzle-orm/query-promise.cjs"(exports2, module2) {
+    "use strict";
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all) => {
+      for (var name in all)
+        __defProp2(target, name, { get: all[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var query_promise_exports = {};
+    __export2(query_promise_exports, {
+      QueryPromise: () => QueryPromise
+    });
+    module2.exports = __toCommonJS2(query_promise_exports);
+    var import_entity = require_entity();
+    var QueryPromise = class {
+      static [import_entity.entityKind] = "QueryPromise";
+      [Symbol.toStringTag] = "QueryPromise";
+      catch(onRejected) {
+        return this.then(void 0, onRejected);
+      }
+      finally(onFinally) {
+        return this.then(
+          (value) => {
+            onFinally?.();
+            return value;
+          },
+          (reason) => {
+            onFinally?.();
+            throw reason;
+          }
+        );
+      }
+      then(onFulfilled, onRejected) {
+        return this.execute().then(onFulfilled, onRejected);
+      }
+    };
   }
 });
 
@@ -1948,20 +2337,20 @@ var require_utils = __commonJS({
       orderSelectedFields: () => orderSelectedFields
     });
     module2.exports = __toCommonJS2(utils_exports);
-    var import_column4 = require_column();
-    var import_entity11 = require_entity();
-    var import_sql2 = require_sql();
-    var import_subquery2 = require_subquery();
-    var import_table3 = require_table();
-    var import_view_common2 = require_view_common();
+    var import_column = require_column();
+    var import_entity = require_entity();
+    var import_sql = require_sql();
+    var import_subquery = require_subquery();
+    var import_table = require_table();
+    var import_view_common = require_view_common();
     function mapResultRow(columns, row, joinsNotNullableMap) {
       const nullifyMap = {};
       const result = columns.reduce(
         (result2, { path, field }, columnIndex) => {
           let decoder;
-          if ((0, import_entity11.is)(field, import_column4.Column)) {
+          if ((0, import_entity.is)(field, import_column.Column)) {
             decoder = field;
-          } else if ((0, import_entity11.is)(field, import_sql2.SQL)) {
+          } else if ((0, import_entity.is)(field, import_sql.SQL)) {
             decoder = field.decoder;
           } else {
             decoder = field.sql.decoder;
@@ -1976,11 +2365,11 @@ var require_utils = __commonJS({
             } else {
               const rawValue = row[columnIndex];
               const value = node[pathChunk] = rawValue === null ? null : decoder.mapFromDriverValue(rawValue);
-              if (joinsNotNullableMap && (0, import_entity11.is)(field, import_column4.Column) && path.length === 2) {
+              if (joinsNotNullableMap && (0, import_entity.is)(field, import_column.Column) && path.length === 2) {
                 const objectName = path[0];
                 if (!(objectName in nullifyMap)) {
-                  nullifyMap[objectName] = value === null ? (0, import_table3.getTableName)(field.table) : false;
-                } else if (typeof nullifyMap[objectName] === "string" && nullifyMap[objectName] !== (0, import_table3.getTableName)(field.table)) {
+                  nullifyMap[objectName] = value === null ? (0, import_table.getTableName)(field.table) : false;
+                } else if (typeof nullifyMap[objectName] === "string" && nullifyMap[objectName] !== (0, import_table.getTableName)(field.table)) {
                   nullifyMap[objectName] = false;
                 }
               }
@@ -2005,10 +2394,10 @@ var require_utils = __commonJS({
           return result;
         }
         const newPath = pathPrefix ? [...pathPrefix, name] : [name];
-        if ((0, import_entity11.is)(field, import_column4.Column) || (0, import_entity11.is)(field, import_sql2.SQL) || (0, import_entity11.is)(field, import_sql2.SQL.Aliased)) {
+        if ((0, import_entity.is)(field, import_column.Column) || (0, import_entity.is)(field, import_sql.SQL) || (0, import_entity.is)(field, import_sql.SQL.Aliased)) {
           result.push({ path: newPath, field });
-        } else if ((0, import_entity11.is)(field, import_table3.Table)) {
-          result.push(...orderSelectedFields(field[import_table3.Table.Symbol.Columns], newPath));
+        } else if ((0, import_entity.is)(field, import_table.Table)) {
+          result.push(...orderSelectedFields(field[import_table.Table.Symbol.Columns], newPath));
         } else {
           result.push(...orderSelectedFields(field, newPath));
         }
@@ -2030,10 +2419,10 @@ var require_utils = __commonJS({
     }
     function mapUpdateSet(table, values) {
       const entries = Object.entries(values).filter(([, value]) => value !== void 0).map(([key, value]) => {
-        if ((0, import_entity11.is)(value, import_sql2.SQL) || (0, import_entity11.is)(value, import_column4.Column)) {
+        if ((0, import_entity.is)(value, import_sql.SQL) || (0, import_entity.is)(value, import_column.Column)) {
           return [key, value];
         } else {
-          return [key, new import_sql2.Param(value, table[import_table3.Table.Symbol.Columns][key])];
+          return [key, new import_sql.Param(value, table[import_table.Table.Symbol.Columns][key])];
         }
       });
       if (entries.length === 0) {
@@ -2055,13 +2444,13 @@ var require_utils = __commonJS({
       }
     }
     function getTableColumns(table) {
-      return table[import_table3.Table.Symbol.Columns];
+      return table[import_table.Table.Symbol.Columns];
     }
     function getViewSelectedFields(view) {
-      return view[import_view_common2.ViewBaseConfig].selectedFields;
+      return view[import_view_common.ViewBaseConfig].selectedFields;
     }
     function getTableLikeName(table) {
-      return (0, import_entity11.is)(table, import_subquery2.Subquery) ? table._.alias : (0, import_entity11.is)(table, import_sql2.View) ? table[import_view_common2.ViewBaseConfig].name : (0, import_entity11.is)(table, import_sql2.SQL) ? void 0 : table[import_table3.Table.Symbol.IsAlias] ? table[import_table3.Table.Symbol.Name] : table[import_table3.Table.Symbol.BaseName];
+      return (0, import_entity.is)(table, import_subquery.Subquery) ? table._.alias : (0, import_entity.is)(table, import_sql.View) ? table[import_view_common.ViewBaseConfig].name : (0, import_entity.is)(table, import_sql.SQL) ? void 0 : table[import_table.Table.Symbol.IsAlias] ? table[import_table.Table.Symbol.Name] : table[import_table.Table.Symbol.BaseName];
     }
     function getColumnNameAndConfig(a, b) {
       return {
@@ -2142,10 +2531,10 @@ var require_int_common = __commonJS({
       PgIntColumnBaseBuilder: () => PgIntColumnBaseBuilder
     });
     module2.exports = __toCommonJS2(int_common_exports);
-    var import_entity11 = require_entity();
-    var import_common2 = require_common();
-    var PgIntColumnBaseBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgIntColumnBaseBuilder";
+    var import_entity = require_entity();
+    var import_common = require_common();
+    var PgIntColumnBaseBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgIntColumnBaseBuilder";
       generatedAlwaysAsIdentity(sequence) {
         if (sequence) {
           const { name, ...options } = sequence;
@@ -2214,12 +2603,12 @@ var require_bigint = __commonJS({
       bigint: () => bigint
     });
     module2.exports = __toCommonJS2(bigint_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
+    var import_common = require_common();
     var import_int_common = require_int_common();
     var PgBigInt53Builder = class extends import_int_common.PgIntColumnBaseBuilder {
-      static [import_entity11.entityKind] = "PgBigInt53Builder";
+      static [import_entity.entityKind] = "PgBigInt53Builder";
       constructor(name) {
         super(name, "number", "PgBigInt53");
       }
@@ -2228,8 +2617,8 @@ var require_bigint = __commonJS({
         return new PgBigInt53(table, this.config);
       }
     };
-    var PgBigInt53 = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgBigInt53";
+    var PgBigInt53 = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgBigInt53";
       getSQLType() {
         return "bigint";
       }
@@ -2241,7 +2630,7 @@ var require_bigint = __commonJS({
       }
     };
     var PgBigInt64Builder = class extends import_int_common.PgIntColumnBaseBuilder {
-      static [import_entity11.entityKind] = "PgBigInt64Builder";
+      static [import_entity.entityKind] = "PgBigInt64Builder";
       constructor(name) {
         super(name, "bigint", "PgBigInt64");
       }
@@ -2253,8 +2642,8 @@ var require_bigint = __commonJS({
         );
       }
     };
-    var PgBigInt64 = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgBigInt64";
+    var PgBigInt64 = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgBigInt64";
       getSQLType() {
         return "bigint";
       }
@@ -2303,11 +2692,11 @@ var require_bigserial = __commonJS({
       bigserial: () => bigserial
     });
     module2.exports = __toCommonJS2(bigserial_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
-    var PgBigSerial53Builder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgBigSerial53Builder";
+    var import_common = require_common();
+    var PgBigSerial53Builder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgBigSerial53Builder";
       constructor(name) {
         super(name, "number", "PgBigSerial53");
         this.config.hasDefault = true;
@@ -2321,8 +2710,8 @@ var require_bigserial = __commonJS({
         );
       }
     };
-    var PgBigSerial53 = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgBigSerial53";
+    var PgBigSerial53 = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgBigSerial53";
       getSQLType() {
         return "bigserial";
       }
@@ -2333,8 +2722,8 @@ var require_bigserial = __commonJS({
         return Number(value);
       }
     };
-    var PgBigSerial64Builder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgBigSerial64Builder";
+    var PgBigSerial64Builder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgBigSerial64Builder";
       constructor(name) {
         super(name, "bigint", "PgBigSerial64");
         this.config.hasDefault = true;
@@ -2347,8 +2736,8 @@ var require_bigserial = __commonJS({
         );
       }
     };
-    var PgBigSerial64 = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgBigSerial64";
+    var PgBigSerial64 = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgBigSerial64";
       getSQLType() {
         return "bigserial";
       }
@@ -2395,10 +2784,10 @@ var require_boolean = __commonJS({
       boolean: () => boolean
     });
     module2.exports = __toCommonJS2(boolean_exports);
-    var import_entity11 = require_entity();
-    var import_common2 = require_common();
-    var PgBooleanBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgBooleanBuilder";
+    var import_entity = require_entity();
+    var import_common = require_common();
+    var PgBooleanBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgBooleanBuilder";
       constructor(name) {
         super(name, "boolean", "PgBoolean");
       }
@@ -2407,8 +2796,8 @@ var require_boolean = __commonJS({
         return new PgBoolean(table, this.config);
       }
     };
-    var PgBoolean = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgBoolean";
+    var PgBoolean = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgBoolean";
       getSQLType() {
         return "boolean";
       }
@@ -2447,11 +2836,11 @@ var require_char = __commonJS({
       char: () => char
     });
     module2.exports = __toCommonJS2(char_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
-    var PgCharBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgCharBuilder";
+    var import_common = require_common();
+    var PgCharBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgCharBuilder";
       constructor(name, config) {
         super(name, "string", "PgChar");
         this.config.length = config.length;
@@ -2465,8 +2854,8 @@ var require_char = __commonJS({
         );
       }
     };
-    var PgChar = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgChar";
+    var PgChar = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgChar";
       length = this.config.length;
       enumValues = this.config.enumValues;
       getSQLType() {
@@ -2508,10 +2897,10 @@ var require_cidr = __commonJS({
       cidr: () => cidr
     });
     module2.exports = __toCommonJS2(cidr_exports);
-    var import_entity11 = require_entity();
-    var import_common2 = require_common();
-    var PgCidrBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgCidrBuilder";
+    var import_entity = require_entity();
+    var import_common = require_common();
+    var PgCidrBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgCidrBuilder";
       constructor(name) {
         super(name, "string", "PgCidr");
       }
@@ -2520,8 +2909,8 @@ var require_cidr = __commonJS({
         return new PgCidr(table, this.config);
       }
     };
-    var PgCidr = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgCidr";
+    var PgCidr = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgCidr";
       getSQLType() {
         return "cidr";
       }
@@ -2560,11 +2949,11 @@ var require_custom = __commonJS({
       customType: () => customType
     });
     module2.exports = __toCommonJS2(custom_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
-    var PgCustomColumnBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgCustomColumnBuilder";
+    var import_common = require_common();
+    var PgCustomColumnBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgCustomColumnBuilder";
       constructor(name, fieldConfig, customTypeParams) {
         super(name, "custom", "PgCustomColumn");
         this.config.fieldConfig = fieldConfig;
@@ -2578,8 +2967,8 @@ var require_custom = __commonJS({
         );
       }
     };
-    var PgCustomColumn = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgCustomColumn";
+    var PgCustomColumn = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgCustomColumn";
       sqlName;
       mapTo;
       mapFrom;
@@ -2634,13 +3023,13 @@ var require_date_common = __commonJS({
       PgDateColumnBaseBuilder: () => PgDateColumnBaseBuilder
     });
     module2.exports = __toCommonJS2(date_common_exports);
-    var import_entity11 = require_entity();
-    var import_sql2 = require_sql();
-    var import_common2 = require_common();
-    var PgDateColumnBaseBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgDateColumnBaseBuilder";
+    var import_entity = require_entity();
+    var import_sql = require_sql();
+    var import_common = require_common();
+    var PgDateColumnBaseBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgDateColumnBaseBuilder";
       defaultNow() {
-        return this.default(import_sql2.sql`now()`);
+        return this.default(import_sql.sql`now()`);
       }
     };
   }
@@ -2676,12 +3065,12 @@ var require_date = __commonJS({
       date: () => date
     });
     module2.exports = __toCommonJS2(date_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
+    var import_common = require_common();
     var import_date_common = require_date_common();
     var PgDateBuilder = class extends import_date_common.PgDateColumnBaseBuilder {
-      static [import_entity11.entityKind] = "PgDateBuilder";
+      static [import_entity.entityKind] = "PgDateBuilder";
       constructor(name) {
         super(name, "date", "PgDate");
       }
@@ -2690,8 +3079,8 @@ var require_date = __commonJS({
         return new PgDate(table, this.config);
       }
     };
-    var PgDate = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgDate";
+    var PgDate = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgDate";
       getSQLType() {
         return "date";
       }
@@ -2703,7 +3092,7 @@ var require_date = __commonJS({
       }
     };
     var PgDateStringBuilder = class extends import_date_common.PgDateColumnBaseBuilder {
-      static [import_entity11.entityKind] = "PgDateStringBuilder";
+      static [import_entity.entityKind] = "PgDateStringBuilder";
       constructor(name) {
         super(name, "string", "PgDateString");
       }
@@ -2715,8 +3104,8 @@ var require_date = __commonJS({
         );
       }
     };
-    var PgDateString = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgDateString";
+    var PgDateString = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgDateString";
       getSQLType() {
         return "date";
       }
@@ -2759,10 +3148,10 @@ var require_double_precision = __commonJS({
       doublePrecision: () => doublePrecision
     });
     module2.exports = __toCommonJS2(double_precision_exports);
-    var import_entity11 = require_entity();
-    var import_common2 = require_common();
-    var PgDoublePrecisionBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgDoublePrecisionBuilder";
+    var import_entity = require_entity();
+    var import_common = require_common();
+    var PgDoublePrecisionBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgDoublePrecisionBuilder";
       constructor(name) {
         super(name, "number", "PgDoublePrecision");
       }
@@ -2774,8 +3163,8 @@ var require_double_precision = __commonJS({
         );
       }
     };
-    var PgDoublePrecision = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgDoublePrecision";
+    var PgDoublePrecision = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgDoublePrecision";
       getSQLType() {
         return "double precision";
       }
@@ -2820,10 +3209,10 @@ var require_inet = __commonJS({
       inet: () => inet
     });
     module2.exports = __toCommonJS2(inet_exports);
-    var import_entity11 = require_entity();
-    var import_common2 = require_common();
-    var PgInetBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgInetBuilder";
+    var import_entity = require_entity();
+    var import_common = require_common();
+    var PgInetBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgInetBuilder";
       constructor(name) {
         super(name, "string", "PgInet");
       }
@@ -2832,8 +3221,8 @@ var require_inet = __commonJS({
         return new PgInet(table, this.config);
       }
     };
-    var PgInet = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgInet";
+    var PgInet = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgInet";
       getSQLType() {
         return "inet";
       }
@@ -2872,11 +3261,11 @@ var require_integer = __commonJS({
       integer: () => integer
     });
     module2.exports = __toCommonJS2(integer_exports);
-    var import_entity11 = require_entity();
-    var import_common2 = require_common();
+    var import_entity = require_entity();
+    var import_common = require_common();
     var import_int_common = require_int_common();
     var PgIntegerBuilder = class extends import_int_common.PgIntColumnBaseBuilder {
-      static [import_entity11.entityKind] = "PgIntegerBuilder";
+      static [import_entity.entityKind] = "PgIntegerBuilder";
       constructor(name) {
         super(name, "number", "PgInteger");
       }
@@ -2885,8 +3274,8 @@ var require_integer = __commonJS({
         return new PgInteger(table, this.config);
       }
     };
-    var PgInteger = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgInteger";
+    var PgInteger = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgInteger";
       getSQLType() {
         return "integer";
       }
@@ -2931,11 +3320,11 @@ var require_interval = __commonJS({
       interval: () => interval
     });
     module2.exports = __toCommonJS2(interval_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
-    var PgIntervalBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgIntervalBuilder";
+    var import_common = require_common();
+    var PgIntervalBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgIntervalBuilder";
       constructor(name, intervalConfig) {
         super(name, "string", "PgInterval");
         this.config.intervalConfig = intervalConfig;
@@ -2945,8 +3334,8 @@ var require_interval = __commonJS({
         return new PgInterval(table, this.config);
       }
     };
-    var PgInterval = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgInterval";
+    var PgInterval = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgInterval";
       fields = this.config.intervalConfig.fields;
       precision = this.config.intervalConfig.precision;
       getSQLType() {
@@ -2990,10 +3379,10 @@ var require_json = __commonJS({
       json: () => json
     });
     module2.exports = __toCommonJS2(json_exports);
-    var import_entity11 = require_entity();
-    var import_common2 = require_common();
-    var PgJsonBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgJsonBuilder";
+    var import_entity = require_entity();
+    var import_common = require_common();
+    var PgJsonBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgJsonBuilder";
       constructor(name) {
         super(name, "json", "PgJson");
       }
@@ -3002,8 +3391,8 @@ var require_json = __commonJS({
         return new PgJson(table, this.config);
       }
     };
-    var PgJson = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgJson";
+    var PgJson = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgJson";
       constructor(table, config) {
         super(table, config);
       }
@@ -3058,10 +3447,10 @@ var require_jsonb = __commonJS({
       jsonb: () => jsonb
     });
     module2.exports = __toCommonJS2(jsonb_exports);
-    var import_entity11 = require_entity();
-    var import_common2 = require_common();
-    var PgJsonbBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgJsonbBuilder";
+    var import_entity = require_entity();
+    var import_common = require_common();
+    var PgJsonbBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgJsonbBuilder";
       constructor(name) {
         super(name, "json", "PgJsonb");
       }
@@ -3070,8 +3459,8 @@ var require_jsonb = __commonJS({
         return new PgJsonb(table, this.config);
       }
     };
-    var PgJsonb = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgJsonb";
+    var PgJsonb = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgJsonb";
       constructor(table, config) {
         super(table, config);
       }
@@ -3128,11 +3517,11 @@ var require_line = __commonJS({
       line: () => line
     });
     module2.exports = __toCommonJS2(line_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
-    var PgLineBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgLineBuilder";
+    var import_common = require_common();
+    var PgLineBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgLineBuilder";
       constructor(name) {
         super(name, "array", "PgLine");
       }
@@ -3144,8 +3533,8 @@ var require_line = __commonJS({
         );
       }
     };
-    var PgLineTuple = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgLine";
+    var PgLineTuple = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgLine";
       getSQLType() {
         return "line";
       }
@@ -3157,8 +3546,8 @@ var require_line = __commonJS({
         return `{${value[0]},${value[1]},${value[2]}}`;
       }
     };
-    var PgLineABCBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgLineABCBuilder";
+    var PgLineABCBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgLineABCBuilder";
       constructor(name) {
         super(name, "json", "PgLineABC");
       }
@@ -3170,8 +3559,8 @@ var require_line = __commonJS({
         );
       }
     };
-    var PgLineABC = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgLineABC";
+    var PgLineABC = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgLineABC";
       getSQLType() {
         return "line";
       }
@@ -3221,10 +3610,10 @@ var require_macaddr = __commonJS({
       macaddr: () => macaddr
     });
     module2.exports = __toCommonJS2(macaddr_exports);
-    var import_entity11 = require_entity();
-    var import_common2 = require_common();
-    var PgMacaddrBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgMacaddrBuilder";
+    var import_entity = require_entity();
+    var import_common = require_common();
+    var PgMacaddrBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgMacaddrBuilder";
       constructor(name) {
         super(name, "string", "PgMacaddr");
       }
@@ -3233,8 +3622,8 @@ var require_macaddr = __commonJS({
         return new PgMacaddr(table, this.config);
       }
     };
-    var PgMacaddr = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgMacaddr";
+    var PgMacaddr = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgMacaddr";
       getSQLType() {
         return "macaddr";
       }
@@ -3273,10 +3662,10 @@ var require_macaddr8 = __commonJS({
       macaddr8: () => macaddr8
     });
     module2.exports = __toCommonJS2(macaddr8_exports);
-    var import_entity11 = require_entity();
-    var import_common2 = require_common();
-    var PgMacaddr8Builder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgMacaddr8Builder";
+    var import_entity = require_entity();
+    var import_common = require_common();
+    var PgMacaddr8Builder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgMacaddr8Builder";
       constructor(name) {
         super(name, "string", "PgMacaddr8");
       }
@@ -3285,8 +3674,8 @@ var require_macaddr8 = __commonJS({
         return new PgMacaddr8(table, this.config);
       }
     };
-    var PgMacaddr8 = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgMacaddr8";
+    var PgMacaddr8 = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgMacaddr8";
       getSQLType() {
         return "macaddr8";
       }
@@ -3326,11 +3715,11 @@ var require_numeric = __commonJS({
       numeric: () => numeric
     });
     module2.exports = __toCommonJS2(numeric_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
-    var PgNumericBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgNumericBuilder";
+    var import_common = require_common();
+    var PgNumericBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgNumericBuilder";
       constructor(name, precision, scale) {
         super(name, "string", "PgNumeric");
         this.config.precision = precision;
@@ -3341,8 +3730,8 @@ var require_numeric = __commonJS({
         return new PgNumeric(table, this.config);
       }
     };
-    var PgNumeric = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgNumeric";
+    var PgNumeric = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgNumeric";
       precision;
       scale;
       constructor(table, config) {
@@ -3398,11 +3787,11 @@ var require_point = __commonJS({
       point: () => point
     });
     module2.exports = __toCommonJS2(point_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
-    var PgPointTupleBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgPointTupleBuilder";
+    var import_common = require_common();
+    var PgPointTupleBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgPointTupleBuilder";
       constructor(name) {
         super(name, "array", "PgPointTuple");
       }
@@ -3414,8 +3803,8 @@ var require_point = __commonJS({
         );
       }
     };
-    var PgPointTuple = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgPointTuple";
+    var PgPointTuple = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgPointTuple";
       getSQLType() {
         return "point";
       }
@@ -3430,8 +3819,8 @@ var require_point = __commonJS({
         return `(${value[0]},${value[1]})`;
       }
     };
-    var PgPointObjectBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgPointObjectBuilder";
+    var PgPointObjectBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgPointObjectBuilder";
       constructor(name) {
         super(name, "json", "PgPointObject");
       }
@@ -3443,8 +3832,8 @@ var require_point = __commonJS({
         );
       }
     };
-    var PgPointObject = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgPointObject";
+    var PgPointObject = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgPointObject";
       getSQLType() {
         return "point";
       }
@@ -3565,12 +3954,12 @@ var require_geometry = __commonJS({
       geometry: () => geometry
     });
     module2.exports = __toCommonJS2(geometry_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
+    var import_common = require_common();
     var import_utils2 = require_utils2();
-    var PgGeometryBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgGeometryBuilder";
+    var PgGeometryBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgGeometryBuilder";
       constructor(name) {
         super(name, "array", "PgGeometry");
       }
@@ -3582,8 +3971,8 @@ var require_geometry = __commonJS({
         );
       }
     };
-    var PgGeometry = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgGeometry";
+    var PgGeometry = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgGeometry";
       getSQLType() {
         return "geometry(point)";
       }
@@ -3594,8 +3983,8 @@ var require_geometry = __commonJS({
         return `point(${value[0]} ${value[1]})`;
       }
     };
-    var PgGeometryObjectBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgGeometryObjectBuilder";
+    var PgGeometryObjectBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgGeometryObjectBuilder";
       constructor(name) {
         super(name, "json", "PgGeometryObject");
       }
@@ -3607,8 +3996,8 @@ var require_geometry = __commonJS({
         );
       }
     };
-    var PgGeometryObject = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgGeometryObject";
+    var PgGeometryObject = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgGeometryObject";
       getSQLType() {
         return "geometry(point)";
       }
@@ -3658,10 +4047,10 @@ var require_real = __commonJS({
       real: () => real
     });
     module2.exports = __toCommonJS2(real_exports);
-    var import_entity11 = require_entity();
-    var import_common2 = require_common();
-    var PgRealBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgRealBuilder";
+    var import_entity = require_entity();
+    var import_common = require_common();
+    var PgRealBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgRealBuilder";
       constructor(name, length) {
         super(name, "number", "PgReal");
         this.config.length = length;
@@ -3671,8 +4060,8 @@ var require_real = __commonJS({
         return new PgReal(table, this.config);
       }
     };
-    var PgReal = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgReal";
+    var PgReal = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgReal";
       constructor(table, config) {
         super(table, config);
       }
@@ -3720,10 +4109,10 @@ var require_serial = __commonJS({
       serial: () => serial
     });
     module2.exports = __toCommonJS2(serial_exports);
-    var import_entity11 = require_entity();
-    var import_common2 = require_common();
-    var PgSerialBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgSerialBuilder";
+    var import_entity = require_entity();
+    var import_common = require_common();
+    var PgSerialBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgSerialBuilder";
       constructor(name) {
         super(name, "number", "PgSerial");
         this.config.hasDefault = true;
@@ -3734,8 +4123,8 @@ var require_serial = __commonJS({
         return new PgSerial(table, this.config);
       }
     };
-    var PgSerial = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgSerial";
+    var PgSerial = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgSerial";
       getSQLType() {
         return "serial";
       }
@@ -3774,11 +4163,11 @@ var require_smallint = __commonJS({
       smallint: () => smallint
     });
     module2.exports = __toCommonJS2(smallint_exports);
-    var import_entity11 = require_entity();
-    var import_common2 = require_common();
+    var import_entity = require_entity();
+    var import_common = require_common();
     var import_int_common = require_int_common();
     var PgSmallIntBuilder = class extends import_int_common.PgIntColumnBaseBuilder {
-      static [import_entity11.entityKind] = "PgSmallIntBuilder";
+      static [import_entity.entityKind] = "PgSmallIntBuilder";
       constructor(name) {
         super(name, "number", "PgSmallInt");
       }
@@ -3787,8 +4176,8 @@ var require_smallint = __commonJS({
         return new PgSmallInt(table, this.config);
       }
     };
-    var PgSmallInt = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgSmallInt";
+    var PgSmallInt = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgSmallInt";
       getSQLType() {
         return "smallint";
       }
@@ -3833,10 +4222,10 @@ var require_smallserial = __commonJS({
       smallserial: () => smallserial
     });
     module2.exports = __toCommonJS2(smallserial_exports);
-    var import_entity11 = require_entity();
-    var import_common2 = require_common();
-    var PgSmallSerialBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgSmallSerialBuilder";
+    var import_entity = require_entity();
+    var import_common = require_common();
+    var PgSmallSerialBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgSmallSerialBuilder";
       constructor(name) {
         super(name, "number", "PgSmallSerial");
         this.config.hasDefault = true;
@@ -3850,8 +4239,8 @@ var require_smallserial = __commonJS({
         );
       }
     };
-    var PgSmallSerial = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgSmallSerial";
+    var PgSmallSerial = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgSmallSerial";
       getSQLType() {
         return "smallserial";
       }
@@ -3890,11 +4279,11 @@ var require_text = __commonJS({
       text: () => text
     });
     module2.exports = __toCommonJS2(text_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
-    var PgTextBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgTextBuilder";
+    var import_common = require_common();
+    var PgTextBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgTextBuilder";
       constructor(name, config) {
         super(name, "string", "PgText");
         this.config.enumValues = config.enum;
@@ -3904,8 +4293,8 @@ var require_text = __commonJS({
         return new PgText(table, this.config);
       }
     };
-    var PgText = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgText";
+    var PgText = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgText";
       enumValues = this.config.enumValues;
       getSQLType() {
         return "text";
@@ -3946,9 +4335,9 @@ var require_time = __commonJS({
       time: () => time
     });
     module2.exports = __toCommonJS2(time_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
+    var import_common = require_common();
     var import_date_common = require_date_common();
     var PgTimeBuilder = class extends import_date_common.PgDateColumnBaseBuilder {
       constructor(name, withTimezone, precision) {
@@ -3958,14 +4347,14 @@ var require_time = __commonJS({
         this.config.withTimezone = withTimezone;
         this.config.precision = precision;
       }
-      static [import_entity11.entityKind] = "PgTimeBuilder";
+      static [import_entity.entityKind] = "PgTimeBuilder";
       /** @internal */
       build(table) {
         return new PgTime(table, this.config);
       }
     };
-    var PgTime = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgTime";
+    var PgTime = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgTime";
       withTimezone;
       precision;
       constructor(table, config) {
@@ -4015,12 +4404,12 @@ var require_timestamp = __commonJS({
       timestamp: () => timestamp
     });
     module2.exports = __toCommonJS2(timestamp_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
+    var import_common = require_common();
     var import_date_common = require_date_common();
     var PgTimestampBuilder = class extends import_date_common.PgDateColumnBaseBuilder {
-      static [import_entity11.entityKind] = "PgTimestampBuilder";
+      static [import_entity.entityKind] = "PgTimestampBuilder";
       constructor(name, withTimezone, precision) {
         super(name, "date", "PgTimestamp");
         this.config.withTimezone = withTimezone;
@@ -4031,8 +4420,8 @@ var require_timestamp = __commonJS({
         return new PgTimestamp(table, this.config);
       }
     };
-    var PgTimestamp = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgTimestamp";
+    var PgTimestamp = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgTimestamp";
       withTimezone;
       precision;
       constructor(table, config) {
@@ -4052,7 +4441,7 @@ var require_timestamp = __commonJS({
       };
     };
     var PgTimestampStringBuilder = class extends import_date_common.PgDateColumnBaseBuilder {
-      static [import_entity11.entityKind] = "PgTimestampStringBuilder";
+      static [import_entity.entityKind] = "PgTimestampStringBuilder";
       constructor(name, withTimezone, precision) {
         super(name, "string", "PgTimestampString");
         this.config.withTimezone = withTimezone;
@@ -4066,8 +4455,8 @@ var require_timestamp = __commonJS({
         );
       }
     };
-    var PgTimestampString = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgTimestampString";
+    var PgTimestampString = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgTimestampString";
       withTimezone;
       precision;
       constructor(table, config) {
@@ -4118,11 +4507,11 @@ var require_uuid = __commonJS({
       uuid: () => uuid
     });
     module2.exports = __toCommonJS2(uuid_exports);
-    var import_entity11 = require_entity();
-    var import_sql2 = require_sql();
-    var import_common2 = require_common();
-    var PgUUIDBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgUUIDBuilder";
+    var import_entity = require_entity();
+    var import_sql = require_sql();
+    var import_common = require_common();
+    var PgUUIDBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgUUIDBuilder";
       constructor(name) {
         super(name, "string", "PgUUID");
       }
@@ -4130,15 +4519,15 @@ var require_uuid = __commonJS({
        * Adds `default gen_random_uuid()` to the column definition.
        */
       defaultRandom() {
-        return this.default(import_sql2.sql`gen_random_uuid()`);
+        return this.default(import_sql.sql`gen_random_uuid()`);
       }
       /** @internal */
       build(table) {
         return new PgUUID(table, this.config);
       }
     };
-    var PgUUID = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgUUID";
+    var PgUUID = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgUUID";
       getSQLType() {
         return "uuid";
       }
@@ -4177,11 +4566,11 @@ var require_varchar = __commonJS({
       varchar: () => varchar
     });
     module2.exports = __toCommonJS2(varchar_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
-    var PgVarcharBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgVarcharBuilder";
+    var import_common = require_common();
+    var PgVarcharBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgVarcharBuilder";
       constructor(name, config) {
         super(name, "string", "PgVarchar");
         this.config.length = config.length;
@@ -4195,8 +4584,8 @@ var require_varchar = __commonJS({
         );
       }
     };
-    var PgVarchar = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgVarchar";
+    var PgVarchar = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgVarchar";
       length = this.config.length;
       enumValues = this.config.enumValues;
       getSQLType() {
@@ -4238,11 +4627,11 @@ var require_bit = __commonJS({
       bit: () => bit
     });
     module2.exports = __toCommonJS2(bit_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
-    var PgBinaryVectorBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgBinaryVectorBuilder";
+    var import_common = require_common();
+    var PgBinaryVectorBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgBinaryVectorBuilder";
       constructor(name, config) {
         super(name, "string", "PgBinaryVector");
         this.config.dimensions = config.dimensions;
@@ -4255,8 +4644,8 @@ var require_bit = __commonJS({
         );
       }
     };
-    var PgBinaryVector = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgBinaryVector";
+    var PgBinaryVector = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgBinaryVector";
       dimensions = this.config.dimensions;
       getSQLType() {
         return `bit(${this.dimensions})`;
@@ -4297,11 +4686,11 @@ var require_halfvec = __commonJS({
       halfvec: () => halfvec
     });
     module2.exports = __toCommonJS2(halfvec_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
-    var PgHalfVectorBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgHalfVectorBuilder";
+    var import_common = require_common();
+    var PgHalfVectorBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgHalfVectorBuilder";
       constructor(name, config) {
         super(name, "array", "PgHalfVector");
         this.config.dimensions = config.dimensions;
@@ -4314,8 +4703,8 @@ var require_halfvec = __commonJS({
         );
       }
     };
-    var PgHalfVector = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgHalfVector";
+    var PgHalfVector = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgHalfVector";
       dimensions = this.config.dimensions;
       getSQLType() {
         return `halfvec(${this.dimensions})`;
@@ -4362,11 +4751,11 @@ var require_sparsevec = __commonJS({
       sparsevec: () => sparsevec
     });
     module2.exports = __toCommonJS2(sparsevec_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
-    var PgSparseVectorBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgSparseVectorBuilder";
+    var import_common = require_common();
+    var PgSparseVectorBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgSparseVectorBuilder";
       constructor(name, config) {
         super(name, "string", "PgSparseVector");
         this.config.dimensions = config.dimensions;
@@ -4379,8 +4768,8 @@ var require_sparsevec = __commonJS({
         );
       }
     };
-    var PgSparseVector = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgSparseVector";
+    var PgSparseVector = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgSparseVector";
       dimensions = this.config.dimensions;
       getSQLType() {
         return `sparsevec(${this.dimensions})`;
@@ -4421,11 +4810,11 @@ var require_vector = __commonJS({
       vector: () => vector
     });
     module2.exports = __toCommonJS2(vector_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_utils = require_utils();
-    var import_common2 = require_common();
-    var PgVectorBuilder = class extends import_common2.PgColumnBuilder {
-      static [import_entity11.entityKind] = "PgVectorBuilder";
+    var import_common = require_common();
+    var PgVectorBuilder = class extends import_common.PgColumnBuilder {
+      static [import_entity.entityKind] = "PgVectorBuilder";
       constructor(name, config) {
         super(name, "array", "PgVector");
         this.config.dimensions = config.dimensions;
@@ -4438,8 +4827,8 @@ var require_vector = __commonJS({
         );
       }
     };
-    var PgVector = class extends import_common2.PgColumn {
-      static [import_entity11.entityKind] = "PgVector";
+    var PgVector = class extends import_common.PgColumn {
+      static [import_entity.entityKind] = "PgVector";
       dimensions = this.config.dimensions;
       getSQLType() {
         return `vector(${this.dimensions})`;
@@ -4455,471 +4844,6 @@ var require_vector = __commonJS({
       const { name, config } = (0, import_utils.getColumnNameAndConfig)(a, b);
       return new PgVectorBuilder(name, config);
     }
-  }
-});
-
-// node_modules/drizzle-orm/pg-core/columns/index.cjs
-var require_columns = __commonJS({
-  "node_modules/drizzle-orm/pg-core/columns/index.cjs"(exports2, module2) {
-    "use strict";
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __reExport = (target, mod, secondTarget) => (__copyProps2(target, mod, "default"), secondTarget && __copyProps2(secondTarget, mod, "default"));
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var columns_exports = {};
-    module2.exports = __toCommonJS2(columns_exports);
-    __reExport(columns_exports, require_bigint(), module2.exports);
-    __reExport(columns_exports, require_bigserial(), module2.exports);
-    __reExport(columns_exports, require_boolean(), module2.exports);
-    __reExport(columns_exports, require_char(), module2.exports);
-    __reExport(columns_exports, require_cidr(), module2.exports);
-    __reExport(columns_exports, require_common(), module2.exports);
-    __reExport(columns_exports, require_custom(), module2.exports);
-    __reExport(columns_exports, require_date(), module2.exports);
-    __reExport(columns_exports, require_double_precision(), module2.exports);
-    __reExport(columns_exports, require_enum(), module2.exports);
-    __reExport(columns_exports, require_inet(), module2.exports);
-    __reExport(columns_exports, require_int_common(), module2.exports);
-    __reExport(columns_exports, require_integer(), module2.exports);
-    __reExport(columns_exports, require_interval(), module2.exports);
-    __reExport(columns_exports, require_json(), module2.exports);
-    __reExport(columns_exports, require_jsonb(), module2.exports);
-    __reExport(columns_exports, require_line(), module2.exports);
-    __reExport(columns_exports, require_macaddr(), module2.exports);
-    __reExport(columns_exports, require_macaddr8(), module2.exports);
-    __reExport(columns_exports, require_numeric(), module2.exports);
-    __reExport(columns_exports, require_point(), module2.exports);
-    __reExport(columns_exports, require_geometry(), module2.exports);
-    __reExport(columns_exports, require_real(), module2.exports);
-    __reExport(columns_exports, require_serial(), module2.exports);
-    __reExport(columns_exports, require_smallint(), module2.exports);
-    __reExport(columns_exports, require_smallserial(), module2.exports);
-    __reExport(columns_exports, require_text(), module2.exports);
-    __reExport(columns_exports, require_time(), module2.exports);
-    __reExport(columns_exports, require_timestamp(), module2.exports);
-    __reExport(columns_exports, require_uuid(), module2.exports);
-    __reExport(columns_exports, require_varchar(), module2.exports);
-    __reExport(columns_exports, require_bit(), module2.exports);
-    __reExport(columns_exports, require_halfvec(), module2.exports);
-    __reExport(columns_exports, require_sparsevec(), module2.exports);
-    __reExport(columns_exports, require_vector(), module2.exports);
-  }
-});
-
-// node_modules/drizzle-orm/query-promise.cjs
-var require_query_promise = __commonJS({
-  "node_modules/drizzle-orm/query-promise.cjs"(exports2, module2) {
-    "use strict";
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, { get: all[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var query_promise_exports = {};
-    __export2(query_promise_exports, {
-      QueryPromise: () => QueryPromise
-    });
-    module2.exports = __toCommonJS2(query_promise_exports);
-    var import_entity11 = require_entity();
-    var QueryPromise = class {
-      static [import_entity11.entityKind] = "QueryPromise";
-      [Symbol.toStringTag] = "QueryPromise";
-      catch(onRejected) {
-        return this.then(void 0, onRejected);
-      }
-      finally(onFinally) {
-        return this.then(
-          (value) => {
-            onFinally?.();
-            return value;
-          },
-          (reason) => {
-            onFinally?.();
-            throw reason;
-          }
-        );
-      }
-      then(onFulfilled, onRejected) {
-        return this.execute().then(onFulfilled, onRejected);
-      }
-    };
-  }
-});
-
-// node_modules/drizzle-orm/selection-proxy.cjs
-var require_selection_proxy = __commonJS({
-  "node_modules/drizzle-orm/selection-proxy.cjs"(exports2, module2) {
-    "use strict";
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, { get: all[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var selection_proxy_exports = {};
-    __export2(selection_proxy_exports, {
-      SelectionProxyHandler: () => SelectionProxyHandler
-    });
-    module2.exports = __toCommonJS2(selection_proxy_exports);
-    var import_alias = require_alias();
-    var import_column4 = require_column();
-    var import_entity11 = require_entity();
-    var import_sql2 = require_sql();
-    var import_subquery2 = require_subquery();
-    var import_view_common2 = require_view_common();
-    var SelectionProxyHandler = class _SelectionProxyHandler {
-      static [import_entity11.entityKind] = "SelectionProxyHandler";
-      config;
-      constructor(config) {
-        this.config = { ...config };
-      }
-      get(subquery, prop) {
-        if (prop === "_") {
-          return {
-            ...subquery["_"],
-            selectedFields: new Proxy(
-              subquery._.selectedFields,
-              this
-            )
-          };
-        }
-        if (prop === import_view_common2.ViewBaseConfig) {
-          return {
-            ...subquery[import_view_common2.ViewBaseConfig],
-            selectedFields: new Proxy(
-              subquery[import_view_common2.ViewBaseConfig].selectedFields,
-              this
-            )
-          };
-        }
-        if (typeof prop === "symbol") {
-          return subquery[prop];
-        }
-        const columns = (0, import_entity11.is)(subquery, import_subquery2.Subquery) ? subquery._.selectedFields : (0, import_entity11.is)(subquery, import_sql2.View) ? subquery[import_view_common2.ViewBaseConfig].selectedFields : subquery;
-        const value = columns[prop];
-        if ((0, import_entity11.is)(value, import_sql2.SQL.Aliased)) {
-          if (this.config.sqlAliasedBehavior === "sql" && !value.isSelectionField) {
-            return value.sql;
-          }
-          const newValue = value.clone();
-          newValue.isSelectionField = true;
-          return newValue;
-        }
-        if ((0, import_entity11.is)(value, import_sql2.SQL)) {
-          if (this.config.sqlBehavior === "sql") {
-            return value;
-          }
-          throw new Error(
-            `You tried to reference "${prop}" field from a subquery, which is a raw SQL field, but it doesn't have an alias declared. Please add an alias to the field using ".as('alias')" method.`
-          );
-        }
-        if ((0, import_entity11.is)(value, import_column4.Column)) {
-          if (this.config.alias) {
-            return new Proxy(
-              value,
-              new import_alias.ColumnAliasProxyHandler(
-                new Proxy(
-                  value.table,
-                  new import_alias.TableAliasProxyHandler(this.config.alias, this.config.replaceOriginalName ?? false)
-                )
-              )
-            );
-          }
-          return value;
-        }
-        if (typeof value !== "object" || value === null) {
-          return value;
-        }
-        return new Proxy(value, new _SelectionProxyHandler(this.config));
-      }
-    };
-  }
-});
-
-// node_modules/drizzle-orm/pg-core/query-builders/delete.cjs
-var require_delete = __commonJS({
-  "node_modules/drizzle-orm/pg-core/query-builders/delete.cjs"(exports2, module2) {
-    "use strict";
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, { get: all[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var delete_exports = {};
-    __export2(delete_exports, {
-      PgDeleteBase: () => PgDeleteBase
-    });
-    module2.exports = __toCommonJS2(delete_exports);
-    var import_entity11 = require_entity();
-    var import_query_promise = require_query_promise();
-    var import_selection_proxy = require_selection_proxy();
-    var import_table3 = require_table();
-    var import_tracing2 = require_tracing();
-    var import_utils = require_utils();
-    var PgDeleteBase = class extends import_query_promise.QueryPromise {
-      constructor(table, session, dialect, withList) {
-        super();
-        this.session = session;
-        this.dialect = dialect;
-        this.config = { table, withList };
-      }
-      static [import_entity11.entityKind] = "PgDelete";
-      config;
-      /**
-       * Adds a `where` clause to the query.
-       *
-       * Calling this method will delete only those rows that fulfill a specified condition.
-       *
-       * See docs: {@link https://orm.drizzle.team/docs/delete}
-       *
-       * @param where the `where` clause.
-       *
-       * @example
-       * You can use conditional operators and `sql function` to filter the rows to be deleted.
-       *
-       * ```ts
-       * // Delete all cars with green color
-       * await db.delete(cars).where(eq(cars.color, 'green'));
-       * // or
-       * await db.delete(cars).where(sql`${cars.color} = 'green'`)
-       * ```
-       *
-       * You can logically combine conditional operators with `and()` and `or()` operators:
-       *
-       * ```ts
-       * // Delete all BMW cars with a green color
-       * await db.delete(cars).where(and(eq(cars.color, 'green'), eq(cars.brand, 'BMW')));
-       *
-       * // Delete all cars with the green or blue color
-       * await db.delete(cars).where(or(eq(cars.color, 'green'), eq(cars.color, 'blue')));
-       * ```
-       */
-      where(where) {
-        this.config.where = where;
-        return this;
-      }
-      returning(fields = this.config.table[import_table3.Table.Symbol.Columns]) {
-        this.config.returningFields = fields;
-        this.config.returning = (0, import_utils.orderSelectedFields)(fields);
-        return this;
-      }
-      /** @internal */
-      getSQL() {
-        return this.dialect.buildDeleteQuery(this.config);
-      }
-      toSQL() {
-        const { typings: _typings, ...rest } = this.dialect.sqlToQuery(this.getSQL());
-        return rest;
-      }
-      /** @internal */
-      _prepare(name) {
-        return import_tracing2.tracer.startActiveSpan("drizzle.prepareQuery", () => {
-          return this.session.prepareQuery(this.dialect.sqlToQuery(this.getSQL()), this.config.returning, name, true);
-        });
-      }
-      prepare(name) {
-        return this._prepare(name);
-      }
-      authToken;
-      /** @internal */
-      setToken(token) {
-        this.authToken = token;
-        return this;
-      }
-      execute = (placeholderValues) => {
-        return import_tracing2.tracer.startActiveSpan("drizzle.operation", () => {
-          return this._prepare().execute(placeholderValues, this.authToken);
-        });
-      };
-      /** @internal */
-      getSelectedFields() {
-        return this.config.returningFields ? new Proxy(
-          this.config.returningFields,
-          new import_selection_proxy.SelectionProxyHandler({
-            alias: (0, import_table3.getTableName)(this.config.table),
-            sqlAliasedBehavior: "alias",
-            sqlBehavior: "error"
-          })
-        ) : void 0;
-      }
-      $dynamic() {
-        return this;
-      }
-    };
-  }
-});
-
-// node_modules/drizzle-orm/casing.cjs
-var require_casing = __commonJS({
-  "node_modules/drizzle-orm/casing.cjs"(exports2, module2) {
-    "use strict";
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, { get: all[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var casing_exports = {};
-    __export2(casing_exports, {
-      CasingCache: () => CasingCache,
-      toCamelCase: () => toCamelCase,
-      toSnakeCase: () => toSnakeCase
-    });
-    module2.exports = __toCommonJS2(casing_exports);
-    var import_entity11 = require_entity();
-    var import_table3 = require_table();
-    function toSnakeCase(input) {
-      const words = input.replace(/['\u2019]/g, "").match(/[\da-z]+|[A-Z]+(?![a-z])|[A-Z][\da-z]+/g) ?? [];
-      return words.map((word) => word.toLowerCase()).join("_");
-    }
-    function toCamelCase(input) {
-      const words = input.replace(/['\u2019]/g, "").match(/[\da-z]+|[A-Z]+(?![a-z])|[A-Z][\da-z]+/g) ?? [];
-      return words.reduce((acc, word, i) => {
-        const formattedWord = i === 0 ? word.toLowerCase() : `${word[0].toUpperCase()}${word.slice(1)}`;
-        return acc + formattedWord;
-      }, "");
-    }
-    function noopCase(input) {
-      return input;
-    }
-    var CasingCache = class {
-      static [import_entity11.entityKind] = "CasingCache";
-      /** @internal */
-      cache = {};
-      cachedTables = {};
-      convert;
-      constructor(casing) {
-        this.convert = casing === "snake_case" ? toSnakeCase : casing === "camelCase" ? toCamelCase : noopCase;
-      }
-      getColumnCasing(column) {
-        if (!column.keyAsName)
-          return column.name;
-        const schema = column.table[import_table3.Table.Symbol.Schema] ?? "public";
-        const tableName = column.table[import_table3.Table.Symbol.OriginalName];
-        const key = `${schema}.${tableName}.${column.name}`;
-        if (!this.cache[key]) {
-          this.cacheTable(column.table);
-        }
-        return this.cache[key];
-      }
-      cacheTable(table) {
-        const schema = table[import_table3.Table.Symbol.Schema] ?? "public";
-        const tableName = table[import_table3.Table.Symbol.OriginalName];
-        const tableKey = `${schema}.${tableName}`;
-        if (!this.cachedTables[tableKey]) {
-          for (const column of Object.values(table[import_table3.Table.Symbol.Columns])) {
-            const columnKey = `${tableKey}.${column.name}`;
-            this.cache[columnKey] = this.convert(column.name);
-          }
-          this.cachedTables[tableKey] = true;
-        }
-      }
-      clearCache() {
-        this.cache = {};
-        this.cachedTables = {};
-      }
-    };
-  }
-});
-
-// node_modules/drizzle-orm/errors.cjs
-var require_errors = __commonJS({
-  "node_modules/drizzle-orm/errors.cjs"(exports2, module2) {
-    "use strict";
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, { get: all[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var errors_exports = {};
-    __export2(errors_exports, {
-      DrizzleError: () => DrizzleError,
-      TransactionRollbackError: () => TransactionRollbackError
-    });
-    module2.exports = __toCommonJS2(errors_exports);
-    var import_entity11 = require_entity();
-    var DrizzleError = class extends Error {
-      static [import_entity11.entityKind] = "DrizzleError";
-      constructor({ message, cause }) {
-        super(message);
-        this.name = "DrizzleError";
-        this.cause = cause;
-      }
-    };
-    var TransactionRollbackError = class extends DrizzleError {
-      static [import_entity11.entityKind] = "TransactionRollbackError";
-      constructor() {
-        super({ message: "Rollback" });
-      }
-    };
   }
 });
 
@@ -5051,15 +4975,15 @@ var require_table2 = __commonJS({
       pgTableWithSchema: () => pgTableWithSchema
     });
     module2.exports = __toCommonJS2(table_exports);
-    var import_entity11 = require_entity();
-    var import_table3 = require_table();
+    var import_entity = require_entity();
+    var import_table = require_table();
     var import_all = require_all();
     var InlineForeignKeys = Symbol.for("drizzle:PgInlineForeignKeys");
     var EnableRLS = Symbol.for("drizzle:EnableRLS");
-    var PgTable = class extends import_table3.Table {
-      static [import_entity11.entityKind] = "PgTable";
+    var PgTable = class extends import_table.Table {
+      static [import_entity.entityKind] = "PgTable";
       /** @internal */
-      static Symbol = Object.assign({}, import_table3.Table.Symbol, {
+      static Symbol = Object.assign({}, import_table.Table.Symbol, {
         InlineForeignKeys,
         EnableRLS
       });
@@ -5068,9 +4992,9 @@ var require_table2 = __commonJS({
       /** @internal */
       [EnableRLS] = false;
       /** @internal */
-      [import_table3.Table.Symbol.ExtraConfigBuilder] = void 0;
+      [import_table.Table.Symbol.ExtraConfigBuilder] = void 0;
       /** @internal */
-      [import_table3.Table.Symbol.ExtraConfigColumns] = {};
+      [import_table.Table.Symbol.ExtraConfigColumns] = {};
     };
     function pgTableWithSchema(name, columns, extraConfig, schema, baseName = name) {
       const rawTable = new PgTable(name, schema, baseName);
@@ -5093,8 +5017,8 @@ var require_table2 = __commonJS({
         })
       );
       const table = Object.assign(rawTable, builtColumns);
-      table[import_table3.Table.Symbol.Columns] = builtColumns;
-      table[import_table3.Table.Symbol.ExtraConfigColumns] = builtColumnsForExtraConfig;
+      table[import_table.Table.Symbol.Columns] = builtColumns;
+      table[import_table.Table.Symbol.ExtraConfigColumns] = builtColumnsForExtraConfig;
       if (extraConfig) {
         table[PgTable.Symbol.ExtraConfigBuilder] = extraConfig;
       }
@@ -5144,8 +5068,8 @@ var require_primary_keys = __commonJS({
       primaryKey: () => primaryKey
     });
     module2.exports = __toCommonJS2(primary_keys_exports);
-    var import_entity11 = require_entity();
-    var import_table3 = require_table2();
+    var import_entity = require_entity();
+    var import_table = require_table2();
     function primaryKey(...config) {
       if (config[0].columns) {
         return new PrimaryKeyBuilder(config[0].columns, config[0].name);
@@ -5153,7 +5077,7 @@ var require_primary_keys = __commonJS({
       return new PrimaryKeyBuilder(config);
     }
     var PrimaryKeyBuilder = class {
-      static [import_entity11.entityKind] = "PgPrimaryKeyBuilder";
+      static [import_entity.entityKind] = "PgPrimaryKeyBuilder";
       /** @internal */
       columns;
       /** @internal */
@@ -5173,275 +5097,13 @@ var require_primary_keys = __commonJS({
         this.columns = columns;
         this.name = name;
       }
-      static [import_entity11.entityKind] = "PgPrimaryKey";
+      static [import_entity.entityKind] = "PgPrimaryKey";
       columns;
       name;
       getName() {
-        return this.name ?? `${this.table[import_table3.PgTable.Symbol.Name]}_${this.columns.map((column) => column.name).join("_")}_pk`;
+        return this.name ?? `${this.table[import_table.PgTable.Symbol.Name]}_${this.columns.map((column) => column.name).join("_")}_pk`;
       }
     };
-  }
-});
-
-// node_modules/drizzle-orm/sql/expressions/conditions.cjs
-var require_conditions = __commonJS({
-  "node_modules/drizzle-orm/sql/expressions/conditions.cjs"(exports2, module2) {
-    "use strict";
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, { get: all[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var conditions_exports = {};
-    __export2(conditions_exports, {
-      and: () => and,
-      arrayContained: () => arrayContained,
-      arrayContains: () => arrayContains,
-      arrayOverlaps: () => arrayOverlaps,
-      between: () => between,
-      bindIfParam: () => bindIfParam2,
-      eq: () => eq2,
-      exists: () => exists,
-      gt: () => gt,
-      gte: () => gte,
-      ilike: () => ilike,
-      inArray: () => inArray,
-      isNotNull: () => isNotNull,
-      isNull: () => isNull,
-      like: () => like,
-      lt: () => lt,
-      lte: () => lte,
-      ne: () => ne,
-      not: () => not,
-      notBetween: () => notBetween,
-      notExists: () => notExists,
-      notIlike: () => notIlike,
-      notInArray: () => notInArray,
-      notLike: () => notLike,
-      or: () => or
-    });
-    module2.exports = __toCommonJS2(conditions_exports);
-    var import_column4 = require_column();
-    var import_entity11 = require_entity();
-    var import_table3 = require_table();
-    var import_sql2 = require_sql();
-    function bindIfParam2(value, column) {
-      if ((0, import_sql2.isDriverValueEncoder)(column) && !(0, import_sql2.isSQLWrapper)(value) && !(0, import_entity11.is)(value, import_sql2.Param) && !(0, import_entity11.is)(value, import_sql2.Placeholder) && !(0, import_entity11.is)(value, import_column4.Column) && !(0, import_entity11.is)(value, import_table3.Table) && !(0, import_entity11.is)(value, import_sql2.View)) {
-        return new import_sql2.Param(value, column);
-      }
-      return value;
-    }
-    var eq2 = (left, right) => {
-      return import_sql2.sql`${left} = ${bindIfParam2(right, left)}`;
-    };
-    var ne = (left, right) => {
-      return import_sql2.sql`${left} <> ${bindIfParam2(right, left)}`;
-    };
-    function and(...unfilteredConditions) {
-      const conditions = unfilteredConditions.filter(
-        (c) => c !== void 0
-      );
-      if (conditions.length === 0) {
-        return void 0;
-      }
-      if (conditions.length === 1) {
-        return new import_sql2.SQL(conditions);
-      }
-      return new import_sql2.SQL([
-        new import_sql2.StringChunk("("),
-        import_sql2.sql.join(conditions, new import_sql2.StringChunk(" and ")),
-        new import_sql2.StringChunk(")")
-      ]);
-    }
-    function or(...unfilteredConditions) {
-      const conditions = unfilteredConditions.filter(
-        (c) => c !== void 0
-      );
-      if (conditions.length === 0) {
-        return void 0;
-      }
-      if (conditions.length === 1) {
-        return new import_sql2.SQL(conditions);
-      }
-      return new import_sql2.SQL([
-        new import_sql2.StringChunk("("),
-        import_sql2.sql.join(conditions, new import_sql2.StringChunk(" or ")),
-        new import_sql2.StringChunk(")")
-      ]);
-    }
-    function not(condition) {
-      return import_sql2.sql`not ${condition}`;
-    }
-    var gt = (left, right) => {
-      return import_sql2.sql`${left} > ${bindIfParam2(right, left)}`;
-    };
-    var gte = (left, right) => {
-      return import_sql2.sql`${left} >= ${bindIfParam2(right, left)}`;
-    };
-    var lt = (left, right) => {
-      return import_sql2.sql`${left} < ${bindIfParam2(right, left)}`;
-    };
-    var lte = (left, right) => {
-      return import_sql2.sql`${left} <= ${bindIfParam2(right, left)}`;
-    };
-    function inArray(column, values) {
-      if (Array.isArray(values)) {
-        if (values.length === 0) {
-          return import_sql2.sql`false`;
-        }
-        return import_sql2.sql`${column} in ${values.map((v) => bindIfParam2(v, column))}`;
-      }
-      return import_sql2.sql`${column} in ${bindIfParam2(values, column)}`;
-    }
-    function notInArray(column, values) {
-      if (Array.isArray(values)) {
-        if (values.length === 0) {
-          return import_sql2.sql`true`;
-        }
-        return import_sql2.sql`${column} not in ${values.map((v) => bindIfParam2(v, column))}`;
-      }
-      return import_sql2.sql`${column} not in ${bindIfParam2(values, column)}`;
-    }
-    function isNull(value) {
-      return import_sql2.sql`${value} is null`;
-    }
-    function isNotNull(value) {
-      return import_sql2.sql`${value} is not null`;
-    }
-    function exists(subquery) {
-      return import_sql2.sql`exists ${subquery}`;
-    }
-    function notExists(subquery) {
-      return import_sql2.sql`not exists ${subquery}`;
-    }
-    function between(column, min, max) {
-      return import_sql2.sql`${column} between ${bindIfParam2(min, column)} and ${bindIfParam2(
-        max,
-        column
-      )}`;
-    }
-    function notBetween(column, min, max) {
-      return import_sql2.sql`${column} not between ${bindIfParam2(
-        min,
-        column
-      )} and ${bindIfParam2(max, column)}`;
-    }
-    function like(column, value) {
-      return import_sql2.sql`${column} like ${value}`;
-    }
-    function notLike(column, value) {
-      return import_sql2.sql`${column} not like ${value}`;
-    }
-    function ilike(column, value) {
-      return import_sql2.sql`${column} ilike ${value}`;
-    }
-    function notIlike(column, value) {
-      return import_sql2.sql`${column} not ilike ${value}`;
-    }
-    function arrayContains(column, values) {
-      if (Array.isArray(values)) {
-        if (values.length === 0) {
-          throw new Error("arrayContains requires at least one value");
-        }
-        const array = import_sql2.sql`${bindIfParam2(values, column)}`;
-        return import_sql2.sql`${column} @> ${array}`;
-      }
-      return import_sql2.sql`${column} @> ${bindIfParam2(values, column)}`;
-    }
-    function arrayContained(column, values) {
-      if (Array.isArray(values)) {
-        if (values.length === 0) {
-          throw new Error("arrayContained requires at least one value");
-        }
-        const array = import_sql2.sql`${bindIfParam2(values, column)}`;
-        return import_sql2.sql`${column} <@ ${array}`;
-      }
-      return import_sql2.sql`${column} <@ ${bindIfParam2(values, column)}`;
-    }
-    function arrayOverlaps(column, values) {
-      if (Array.isArray(values)) {
-        if (values.length === 0) {
-          throw new Error("arrayOverlaps requires at least one value");
-        }
-        const array = import_sql2.sql`${bindIfParam2(values, column)}`;
-        return import_sql2.sql`${column} && ${array}`;
-      }
-      return import_sql2.sql`${column} && ${bindIfParam2(values, column)}`;
-    }
-  }
-});
-
-// node_modules/drizzle-orm/sql/expressions/select.cjs
-var require_select = __commonJS({
-  "node_modules/drizzle-orm/sql/expressions/select.cjs"(exports2, module2) {
-    "use strict";
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, { get: all[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc2) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc2 = __getOwnPropDesc2(from, key)) || desc2.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var select_exports = {};
-    __export2(select_exports, {
-      asc: () => asc,
-      desc: () => desc
-    });
-    module2.exports = __toCommonJS2(select_exports);
-    var import_sql2 = require_sql();
-    function asc(column) {
-      return import_sql2.sql`${column} asc`;
-    }
-    function desc(column) {
-      return import_sql2.sql`${column} desc`;
-    }
-  }
-});
-
-// node_modules/drizzle-orm/sql/expressions/index.cjs
-var require_expressions = __commonJS({
-  "node_modules/drizzle-orm/sql/expressions/index.cjs"(exports2, module2) {
-    "use strict";
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __reExport = (target, mod, secondTarget) => (__copyProps2(target, mod, "default"), secondTarget && __copyProps2(secondTarget, mod, "default"));
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var expressions_exports = {};
-    module2.exports = __toCommonJS2(expressions_exports);
-    __reExport(expressions_exports, require_conditions(), module2.exports);
-    __reExport(expressions_exports, require_select(), module2.exports);
   }
 });
 
@@ -5483,20 +5145,20 @@ var require_relations = __commonJS({
       relations: () => relations
     });
     module2.exports = __toCommonJS2(relations_exports);
-    var import_table3 = require_table();
-    var import_column4 = require_column();
-    var import_entity11 = require_entity();
+    var import_table = require_table();
+    var import_column = require_column();
+    var import_entity = require_entity();
     var import_primary_keys = require_primary_keys();
     var import_expressions = require_expressions();
-    var import_sql2 = require_sql();
+    var import_sql = require_sql();
     var Relation = class {
       constructor(sourceTable, referencedTable, relationName) {
         this.sourceTable = sourceTable;
         this.referencedTable = referencedTable;
         this.relationName = relationName;
-        this.referencedTableName = referencedTable[import_table3.Table.Symbol.Name];
+        this.referencedTableName = referencedTable[import_table.Table.Symbol.Name];
       }
-      static [import_entity11.entityKind] = "Relation";
+      static [import_entity.entityKind] = "Relation";
       referencedTableName;
       fieldName;
     };
@@ -5505,7 +5167,7 @@ var require_relations = __commonJS({
         this.table = table;
         this.config = config;
       }
-      static [import_entity11.entityKind] = "Relations";
+      static [import_entity.entityKind] = "Relations";
     };
     var One = class _One extends Relation {
       constructor(sourceTable, referencedTable, config, isNullable) {
@@ -5513,7 +5175,7 @@ var require_relations = __commonJS({
         this.config = config;
         this.isNullable = isNullable;
       }
-      static [import_entity11.entityKind] = "One";
+      static [import_entity.entityKind] = "One";
       withFieldName(fieldName) {
         const relation = new _One(
           this.sourceTable,
@@ -5530,7 +5192,7 @@ var require_relations = __commonJS({
         super(sourceTable, referencedTable, config?.relationName);
         this.config = config;
       }
-      static [import_entity11.entityKind] = "Many";
+      static [import_entity.entityKind] = "Many";
       withFieldName(fieldName) {
         const relation = new _Many(
           this.sourceTable,
@@ -5564,53 +5226,53 @@ var require_relations = __commonJS({
         notIlike: import_expressions.notIlike,
         notInArray: import_expressions.notInArray,
         or: import_expressions.or,
-        sql: import_sql2.sql
+        sql: import_sql.sql
       };
     }
     function getOrderByOperators() {
       return {
-        sql: import_sql2.sql,
+        sql: import_sql.sql,
         asc: import_expressions.asc,
         desc: import_expressions.desc
       };
     }
     function extractTablesRelationalConfig(schema, configHelpers) {
-      if (Object.keys(schema).length === 1 && "default" in schema && !(0, import_entity11.is)(schema["default"], import_table3.Table)) {
+      if (Object.keys(schema).length === 1 && "default" in schema && !(0, import_entity.is)(schema["default"], import_table.Table)) {
         schema = schema["default"];
       }
       const tableNamesMap = {};
       const relationsBuffer = {};
       const tablesConfig = {};
       for (const [key, value] of Object.entries(schema)) {
-        if ((0, import_entity11.is)(value, import_table3.Table)) {
-          const dbName = (0, import_table3.getTableUniqueName)(value);
+        if ((0, import_entity.is)(value, import_table.Table)) {
+          const dbName = (0, import_table.getTableUniqueName)(value);
           const bufferedRelations = relationsBuffer[dbName];
           tableNamesMap[dbName] = key;
           tablesConfig[key] = {
             tsName: key,
-            dbName: value[import_table3.Table.Symbol.Name],
-            schema: value[import_table3.Table.Symbol.Schema],
-            columns: value[import_table3.Table.Symbol.Columns],
+            dbName: value[import_table.Table.Symbol.Name],
+            schema: value[import_table.Table.Symbol.Schema],
+            columns: value[import_table.Table.Symbol.Columns],
             relations: bufferedRelations?.relations ?? {},
             primaryKey: bufferedRelations?.primaryKey ?? []
           };
           for (const column of Object.values(
-            value[import_table3.Table.Symbol.Columns]
+            value[import_table.Table.Symbol.Columns]
           )) {
             if (column.primary) {
               tablesConfig[key].primaryKey.push(column);
             }
           }
-          const extraConfig = value[import_table3.Table.Symbol.ExtraConfigBuilder]?.(value[import_table3.Table.Symbol.ExtraConfigColumns]);
+          const extraConfig = value[import_table.Table.Symbol.ExtraConfigBuilder]?.(value[import_table.Table.Symbol.ExtraConfigColumns]);
           if (extraConfig) {
             for (const configEntry of Object.values(extraConfig)) {
-              if ((0, import_entity11.is)(configEntry, import_primary_keys.PrimaryKeyBuilder)) {
+              if ((0, import_entity.is)(configEntry, import_primary_keys.PrimaryKeyBuilder)) {
                 tablesConfig[key].primaryKey.push(...configEntry.columns);
               }
             }
           }
-        } else if ((0, import_entity11.is)(value, Relations)) {
-          const dbName = (0, import_table3.getTableUniqueName)(value.table);
+        } else if ((0, import_entity.is)(value, Relations)) {
+          const dbName = (0, import_table.getTableUniqueName)(value.table);
           const tableName = tableNamesMap[dbName];
           const relations2 = value.config(
             configHelpers(value.table)
@@ -5664,16 +5326,16 @@ var require_relations = __commonJS({
       };
     }
     function normalizeRelation(schema, tableNamesMap, relation) {
-      if ((0, import_entity11.is)(relation, One) && relation.config) {
+      if ((0, import_entity.is)(relation, One) && relation.config) {
         return {
           fields: relation.config.fields,
           references: relation.config.references
         };
       }
-      const referencedTableTsName = tableNamesMap[(0, import_table3.getTableUniqueName)(relation.referencedTable)];
+      const referencedTableTsName = tableNamesMap[(0, import_table.getTableUniqueName)(relation.referencedTable)];
       if (!referencedTableTsName) {
         throw new Error(
-          `Table "${relation.referencedTable[import_table3.Table.Symbol.Name]}" not found in schema`
+          `Table "${relation.referencedTable[import_table.Table.Symbol.Name]}" not found in schema`
         );
       }
       const referencedTableConfig = schema[referencedTableTsName];
@@ -5681,10 +5343,10 @@ var require_relations = __commonJS({
         throw new Error(`Table "${referencedTableTsName}" not found in schema`);
       }
       const sourceTable = relation.sourceTable;
-      const sourceTableTsName = tableNamesMap[(0, import_table3.getTableUniqueName)(sourceTable)];
+      const sourceTableTsName = tableNamesMap[(0, import_table.getTableUniqueName)(sourceTable)];
       if (!sourceTableTsName) {
         throw new Error(
-          `Table "${sourceTable[import_table3.Table.Symbol.Name]}" not found in schema`
+          `Table "${sourceTable[import_table.Table.Symbol.Name]}" not found in schema`
         );
       }
       const reverseRelations = [];
@@ -5699,10 +5361,10 @@ var require_relations = __commonJS({
         throw relation.relationName ? new Error(
           `There are multiple relations with name "${relation.relationName}" in table "${referencedTableTsName}"`
         ) : new Error(
-          `There are multiple relations between "${referencedTableTsName}" and "${relation.sourceTable[import_table3.Table.Symbol.Name]}". Please specify relation name`
+          `There are multiple relations between "${referencedTableTsName}" and "${relation.sourceTable[import_table.Table.Symbol.Name]}". Please specify relation name`
         );
       }
-      if (reverseRelations[0] && (0, import_entity11.is)(reverseRelations[0], One) && reverseRelations[0].config) {
+      if (reverseRelations[0] && (0, import_entity.is)(reverseRelations[0], One) && reverseRelations[0].config) {
         return {
           fields: reverseRelations[0].config.references,
           references: reverseRelations[0].config.fields
@@ -5728,7 +5390,7 @@ var require_relations = __commonJS({
           const relation = tableConfig.relations[selectionItem.tsKey];
           const rawSubRows = row[selectionItemIndex];
           const subRows = typeof rawSubRows === "string" ? JSON.parse(rawSubRows) : rawSubRows;
-          result[selectionItem.tsKey] = (0, import_entity11.is)(relation, One) ? subRows && mapRelationalRow(
+          result[selectionItem.tsKey] = (0, import_entity.is)(relation, One) ? subRows && mapRelationalRow(
             tablesConfig,
             tablesConfig[selectionItem.relationTableTsKey],
             subRows,
@@ -5747,9 +5409,9 @@ var require_relations = __commonJS({
           const value = mapColumnValue(row[selectionItemIndex]);
           const field = selectionItem.field;
           let decoder;
-          if ((0, import_entity11.is)(field, import_column4.Column)) {
+          if ((0, import_entity.is)(field, import_column.Column)) {
             decoder = field;
-          } else if ((0, import_entity11.is)(field, import_sql2.SQL)) {
+          } else if ((0, import_entity.is)(field, import_sql.SQL)) {
             decoder = field.decoder;
           } else {
             decoder = field.sql.decoder;
@@ -5795,32 +5457,32 @@ var require_aggregate = __commonJS({
       sumDistinct: () => sumDistinct
     });
     module2.exports = __toCommonJS2(aggregate_exports);
-    var import_column4 = require_column();
-    var import_entity11 = require_entity();
-    var import_sql2 = require_sql();
+    var import_column = require_column();
+    var import_entity = require_entity();
+    var import_sql = require_sql();
     function count(expression) {
-      return import_sql2.sql`count(${expression || import_sql2.sql.raw("*")})`.mapWith(Number);
+      return import_sql.sql`count(${expression || import_sql.sql.raw("*")})`.mapWith(Number);
     }
     function countDistinct(expression) {
-      return import_sql2.sql`count(distinct ${expression})`.mapWith(Number);
+      return import_sql.sql`count(distinct ${expression})`.mapWith(Number);
     }
     function avg(expression) {
-      return import_sql2.sql`avg(${expression})`.mapWith(String);
+      return import_sql.sql`avg(${expression})`.mapWith(String);
     }
     function avgDistinct(expression) {
-      return import_sql2.sql`avg(distinct ${expression})`.mapWith(String);
+      return import_sql.sql`avg(distinct ${expression})`.mapWith(String);
     }
     function sum(expression) {
-      return import_sql2.sql`sum(${expression})`.mapWith(String);
+      return import_sql.sql`sum(${expression})`.mapWith(String);
     }
     function sumDistinct(expression) {
-      return import_sql2.sql`sum(distinct ${expression})`.mapWith(String);
+      return import_sql.sql`sum(distinct ${expression})`.mapWith(String);
     }
     function max(expression) {
-      return import_sql2.sql`max(${expression})`.mapWith((0, import_entity11.is)(expression, import_column4.Column) ? expression : String);
+      return import_sql.sql`max(${expression})`.mapWith((0, import_entity.is)(expression, import_column.Column) ? expression : String);
     }
     function min(expression) {
-      return import_sql2.sql`min(${expression})`.mapWith((0, import_entity11.is)(expression, import_column4.Column) ? expression : String);
+      return import_sql.sql`min(${expression})`.mapWith((0, import_entity.is)(expression, import_column.Column) ? expression : String);
     }
   }
 });
@@ -5856,45 +5518,45 @@ var require_vector2 = __commonJS({
       l2Distance: () => l2Distance
     });
     module2.exports = __toCommonJS2(vector_exports);
-    var import_sql2 = require_sql();
+    var import_sql = require_sql();
     function toSql(value) {
       return JSON.stringify(value);
     }
     function l2Distance(column, value) {
       if (Array.isArray(value)) {
-        return import_sql2.sql`${column} <-> ${toSql(value)}`;
+        return import_sql.sql`${column} <-> ${toSql(value)}`;
       }
-      return import_sql2.sql`${column} <-> ${value}`;
+      return import_sql.sql`${column} <-> ${value}`;
     }
     function l1Distance(column, value) {
       if (Array.isArray(value)) {
-        return import_sql2.sql`${column} <+> ${toSql(value)}`;
+        return import_sql.sql`${column} <+> ${toSql(value)}`;
       }
-      return import_sql2.sql`${column} <+> ${value}`;
+      return import_sql.sql`${column} <+> ${value}`;
     }
     function innerProduct(column, value) {
       if (Array.isArray(value)) {
-        return import_sql2.sql`${column} <#> ${toSql(value)}`;
+        return import_sql.sql`${column} <#> ${toSql(value)}`;
       }
-      return import_sql2.sql`${column} <#> ${value}`;
+      return import_sql.sql`${column} <#> ${value}`;
     }
     function cosineDistance(column, value) {
       if (Array.isArray(value)) {
-        return import_sql2.sql`${column} <=> ${toSql(value)}`;
+        return import_sql.sql`${column} <=> ${toSql(value)}`;
       }
-      return import_sql2.sql`${column} <=> ${value}`;
+      return import_sql.sql`${column} <=> ${value}`;
     }
     function hammingDistance(column, value) {
       if (Array.isArray(value)) {
-        return import_sql2.sql`${column} <~> ${toSql(value)}`;
+        return import_sql.sql`${column} <~> ${toSql(value)}`;
       }
-      return import_sql2.sql`${column} <~> ${value}`;
+      return import_sql.sql`${column} <~> ${value}`;
     }
     function jaccardDistance(column, value) {
       if (Array.isArray(value)) {
-        return import_sql2.sql`${column} <%> ${toSql(value)}`;
+        return import_sql.sql`${column} <%> ${toSql(value)}`;
       }
-      return import_sql2.sql`${column} <%> ${value}`;
+      return import_sql.sql`${column} <%> ${value}`;
     }
   }
 });
@@ -5950,6 +5612,502 @@ var require_sql2 = __commonJS({
   }
 });
 
+// node_modules/drizzle-orm/index.cjs
+var require_drizzle_orm = __commonJS({
+  "node_modules/drizzle-orm/index.cjs"(exports2, module2) {
+    "use strict";
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __reExport = (target, mod, secondTarget) => (__copyProps2(target, mod, "default"), secondTarget && __copyProps2(secondTarget, mod, "default"));
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var src_exports = {};
+    module2.exports = __toCommonJS2(src_exports);
+    __reExport(src_exports, require_alias(), module2.exports);
+    __reExport(src_exports, require_column_builder(), module2.exports);
+    __reExport(src_exports, require_column(), module2.exports);
+    __reExport(src_exports, require_entity(), module2.exports);
+    __reExport(src_exports, require_errors(), module2.exports);
+    __reExport(src_exports, require_expressions2(), module2.exports);
+    __reExport(src_exports, require_logger(), module2.exports);
+    __reExport(src_exports, require_operations(), module2.exports);
+    __reExport(src_exports, require_query_promise(), module2.exports);
+    __reExport(src_exports, require_relations(), module2.exports);
+    __reExport(src_exports, require_sql2(), module2.exports);
+    __reExport(src_exports, require_subquery(), module2.exports);
+    __reExport(src_exports, require_table(), module2.exports);
+    __reExport(src_exports, require_utils(), module2.exports);
+    __reExport(src_exports, require_view_common(), module2.exports);
+  }
+});
+
+// node_modules/drizzle-orm/pg-core/alias.cjs
+var require_alias2 = __commonJS({
+  "node_modules/drizzle-orm/pg-core/alias.cjs"(exports2, module2) {
+    "use strict";
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all) => {
+      for (var name in all)
+        __defProp2(target, name, { get: all[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var alias_exports = {};
+    __export2(alias_exports, {
+      alias: () => alias
+    });
+    module2.exports = __toCommonJS2(alias_exports);
+    var import_alias = require_alias();
+    function alias(table, alias2) {
+      return new Proxy(table, new import_alias.TableAliasProxyHandler(alias2, false));
+    }
+  }
+});
+
+// node_modules/drizzle-orm/pg-core/checks.cjs
+var require_checks = __commonJS({
+  "node_modules/drizzle-orm/pg-core/checks.cjs"(exports2, module2) {
+    "use strict";
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all) => {
+      for (var name in all)
+        __defProp2(target, name, { get: all[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var checks_exports = {};
+    __export2(checks_exports, {
+      Check: () => Check,
+      CheckBuilder: () => CheckBuilder,
+      check: () => check
+    });
+    module2.exports = __toCommonJS2(checks_exports);
+    var import_entity = require_entity();
+    var CheckBuilder = class {
+      constructor(name, value) {
+        this.name = name;
+        this.value = value;
+      }
+      static [import_entity.entityKind] = "PgCheckBuilder";
+      brand;
+      /** @internal */
+      build(table) {
+        return new Check(table, this);
+      }
+    };
+    var Check = class {
+      constructor(table, builder) {
+        this.table = table;
+        this.name = builder.name;
+        this.value = builder.value;
+      }
+      static [import_entity.entityKind] = "PgCheck";
+      name;
+      value;
+    };
+    function check(name, value) {
+      return new CheckBuilder(name, value);
+    }
+  }
+});
+
+// node_modules/drizzle-orm/pg-core/columns/index.cjs
+var require_columns = __commonJS({
+  "node_modules/drizzle-orm/pg-core/columns/index.cjs"(exports2, module2) {
+    "use strict";
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __reExport = (target, mod, secondTarget) => (__copyProps2(target, mod, "default"), secondTarget && __copyProps2(secondTarget, mod, "default"));
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var columns_exports = {};
+    module2.exports = __toCommonJS2(columns_exports);
+    __reExport(columns_exports, require_bigint(), module2.exports);
+    __reExport(columns_exports, require_bigserial(), module2.exports);
+    __reExport(columns_exports, require_boolean(), module2.exports);
+    __reExport(columns_exports, require_char(), module2.exports);
+    __reExport(columns_exports, require_cidr(), module2.exports);
+    __reExport(columns_exports, require_common(), module2.exports);
+    __reExport(columns_exports, require_custom(), module2.exports);
+    __reExport(columns_exports, require_date(), module2.exports);
+    __reExport(columns_exports, require_double_precision(), module2.exports);
+    __reExport(columns_exports, require_enum(), module2.exports);
+    __reExport(columns_exports, require_inet(), module2.exports);
+    __reExport(columns_exports, require_int_common(), module2.exports);
+    __reExport(columns_exports, require_integer(), module2.exports);
+    __reExport(columns_exports, require_interval(), module2.exports);
+    __reExport(columns_exports, require_json(), module2.exports);
+    __reExport(columns_exports, require_jsonb(), module2.exports);
+    __reExport(columns_exports, require_line(), module2.exports);
+    __reExport(columns_exports, require_macaddr(), module2.exports);
+    __reExport(columns_exports, require_macaddr8(), module2.exports);
+    __reExport(columns_exports, require_numeric(), module2.exports);
+    __reExport(columns_exports, require_point(), module2.exports);
+    __reExport(columns_exports, require_geometry(), module2.exports);
+    __reExport(columns_exports, require_real(), module2.exports);
+    __reExport(columns_exports, require_serial(), module2.exports);
+    __reExport(columns_exports, require_smallint(), module2.exports);
+    __reExport(columns_exports, require_smallserial(), module2.exports);
+    __reExport(columns_exports, require_text(), module2.exports);
+    __reExport(columns_exports, require_time(), module2.exports);
+    __reExport(columns_exports, require_timestamp(), module2.exports);
+    __reExport(columns_exports, require_uuid(), module2.exports);
+    __reExport(columns_exports, require_varchar(), module2.exports);
+    __reExport(columns_exports, require_bit(), module2.exports);
+    __reExport(columns_exports, require_halfvec(), module2.exports);
+    __reExport(columns_exports, require_sparsevec(), module2.exports);
+    __reExport(columns_exports, require_vector(), module2.exports);
+  }
+});
+
+// node_modules/drizzle-orm/selection-proxy.cjs
+var require_selection_proxy = __commonJS({
+  "node_modules/drizzle-orm/selection-proxy.cjs"(exports2, module2) {
+    "use strict";
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all) => {
+      for (var name in all)
+        __defProp2(target, name, { get: all[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var selection_proxy_exports = {};
+    __export2(selection_proxy_exports, {
+      SelectionProxyHandler: () => SelectionProxyHandler
+    });
+    module2.exports = __toCommonJS2(selection_proxy_exports);
+    var import_alias = require_alias();
+    var import_column = require_column();
+    var import_entity = require_entity();
+    var import_sql = require_sql();
+    var import_subquery = require_subquery();
+    var import_view_common = require_view_common();
+    var SelectionProxyHandler = class _SelectionProxyHandler {
+      static [import_entity.entityKind] = "SelectionProxyHandler";
+      config;
+      constructor(config) {
+        this.config = { ...config };
+      }
+      get(subquery, prop) {
+        if (prop === "_") {
+          return {
+            ...subquery["_"],
+            selectedFields: new Proxy(
+              subquery._.selectedFields,
+              this
+            )
+          };
+        }
+        if (prop === import_view_common.ViewBaseConfig) {
+          return {
+            ...subquery[import_view_common.ViewBaseConfig],
+            selectedFields: new Proxy(
+              subquery[import_view_common.ViewBaseConfig].selectedFields,
+              this
+            )
+          };
+        }
+        if (typeof prop === "symbol") {
+          return subquery[prop];
+        }
+        const columns = (0, import_entity.is)(subquery, import_subquery.Subquery) ? subquery._.selectedFields : (0, import_entity.is)(subquery, import_sql.View) ? subquery[import_view_common.ViewBaseConfig].selectedFields : subquery;
+        const value = columns[prop];
+        if ((0, import_entity.is)(value, import_sql.SQL.Aliased)) {
+          if (this.config.sqlAliasedBehavior === "sql" && !value.isSelectionField) {
+            return value.sql;
+          }
+          const newValue = value.clone();
+          newValue.isSelectionField = true;
+          return newValue;
+        }
+        if ((0, import_entity.is)(value, import_sql.SQL)) {
+          if (this.config.sqlBehavior === "sql") {
+            return value;
+          }
+          throw new Error(
+            `You tried to reference "${prop}" field from a subquery, which is a raw SQL field, but it doesn't have an alias declared. Please add an alias to the field using ".as('alias')" method.`
+          );
+        }
+        if ((0, import_entity.is)(value, import_column.Column)) {
+          if (this.config.alias) {
+            return new Proxy(
+              value,
+              new import_alias.ColumnAliasProxyHandler(
+                new Proxy(
+                  value.table,
+                  new import_alias.TableAliasProxyHandler(this.config.alias, this.config.replaceOriginalName ?? false)
+                )
+              )
+            );
+          }
+          return value;
+        }
+        if (typeof value !== "object" || value === null) {
+          return value;
+        }
+        return new Proxy(value, new _SelectionProxyHandler(this.config));
+      }
+    };
+  }
+});
+
+// node_modules/drizzle-orm/pg-core/query-builders/delete.cjs
+var require_delete = __commonJS({
+  "node_modules/drizzle-orm/pg-core/query-builders/delete.cjs"(exports2, module2) {
+    "use strict";
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all) => {
+      for (var name in all)
+        __defProp2(target, name, { get: all[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var delete_exports = {};
+    __export2(delete_exports, {
+      PgDeleteBase: () => PgDeleteBase
+    });
+    module2.exports = __toCommonJS2(delete_exports);
+    var import_entity = require_entity();
+    var import_query_promise = require_query_promise();
+    var import_selection_proxy = require_selection_proxy();
+    var import_table = require_table();
+    var import_tracing = require_tracing();
+    var import_utils = require_utils();
+    var PgDeleteBase = class extends import_query_promise.QueryPromise {
+      constructor(table, session, dialect, withList) {
+        super();
+        this.session = session;
+        this.dialect = dialect;
+        this.config = { table, withList };
+      }
+      static [import_entity.entityKind] = "PgDelete";
+      config;
+      /**
+       * Adds a `where` clause to the query.
+       *
+       * Calling this method will delete only those rows that fulfill a specified condition.
+       *
+       * See docs: {@link https://orm.drizzle.team/docs/delete}
+       *
+       * @param where the `where` clause.
+       *
+       * @example
+       * You can use conditional operators and `sql function` to filter the rows to be deleted.
+       *
+       * ```ts
+       * // Delete all cars with green color
+       * await db.delete(cars).where(eq(cars.color, 'green'));
+       * // or
+       * await db.delete(cars).where(sql`${cars.color} = 'green'`)
+       * ```
+       *
+       * You can logically combine conditional operators with `and()` and `or()` operators:
+       *
+       * ```ts
+       * // Delete all BMW cars with a green color
+       * await db.delete(cars).where(and(eq(cars.color, 'green'), eq(cars.brand, 'BMW')));
+       *
+       * // Delete all cars with the green or blue color
+       * await db.delete(cars).where(or(eq(cars.color, 'green'), eq(cars.color, 'blue')));
+       * ```
+       */
+      where(where) {
+        this.config.where = where;
+        return this;
+      }
+      returning(fields = this.config.table[import_table.Table.Symbol.Columns]) {
+        this.config.returningFields = fields;
+        this.config.returning = (0, import_utils.orderSelectedFields)(fields);
+        return this;
+      }
+      /** @internal */
+      getSQL() {
+        return this.dialect.buildDeleteQuery(this.config);
+      }
+      toSQL() {
+        const { typings: _typings, ...rest } = this.dialect.sqlToQuery(this.getSQL());
+        return rest;
+      }
+      /** @internal */
+      _prepare(name) {
+        return import_tracing.tracer.startActiveSpan("drizzle.prepareQuery", () => {
+          return this.session.prepareQuery(this.dialect.sqlToQuery(this.getSQL()), this.config.returning, name, true);
+        });
+      }
+      prepare(name) {
+        return this._prepare(name);
+      }
+      authToken;
+      /** @internal */
+      setToken(token) {
+        this.authToken = token;
+        return this;
+      }
+      execute = (placeholderValues) => {
+        return import_tracing.tracer.startActiveSpan("drizzle.operation", () => {
+          return this._prepare().execute(placeholderValues, this.authToken);
+        });
+      };
+      /** @internal */
+      getSelectedFields() {
+        return this.config.returningFields ? new Proxy(
+          this.config.returningFields,
+          new import_selection_proxy.SelectionProxyHandler({
+            alias: (0, import_table.getTableName)(this.config.table),
+            sqlAliasedBehavior: "alias",
+            sqlBehavior: "error"
+          })
+        ) : void 0;
+      }
+      $dynamic() {
+        return this;
+      }
+    };
+  }
+});
+
+// node_modules/drizzle-orm/casing.cjs
+var require_casing = __commonJS({
+  "node_modules/drizzle-orm/casing.cjs"(exports2, module2) {
+    "use strict";
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all) => {
+      for (var name in all)
+        __defProp2(target, name, { get: all[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var casing_exports = {};
+    __export2(casing_exports, {
+      CasingCache: () => CasingCache,
+      toCamelCase: () => toCamelCase,
+      toSnakeCase: () => toSnakeCase
+    });
+    module2.exports = __toCommonJS2(casing_exports);
+    var import_entity = require_entity();
+    var import_table = require_table();
+    function toSnakeCase(input) {
+      const words = input.replace(/['\u2019]/g, "").match(/[\da-z]+|[A-Z]+(?![a-z])|[A-Z][\da-z]+/g) ?? [];
+      return words.map((word) => word.toLowerCase()).join("_");
+    }
+    function toCamelCase(input) {
+      const words = input.replace(/['\u2019]/g, "").match(/[\da-z]+|[A-Z]+(?![a-z])|[A-Z][\da-z]+/g) ?? [];
+      return words.reduce((acc, word, i) => {
+        const formattedWord = i === 0 ? word.toLowerCase() : `${word[0].toUpperCase()}${word.slice(1)}`;
+        return acc + formattedWord;
+      }, "");
+    }
+    function noopCase(input) {
+      return input;
+    }
+    var CasingCache = class {
+      static [import_entity.entityKind] = "CasingCache";
+      /** @internal */
+      cache = {};
+      cachedTables = {};
+      convert;
+      constructor(casing) {
+        this.convert = casing === "snake_case" ? toSnakeCase : casing === "camelCase" ? toCamelCase : noopCase;
+      }
+      getColumnCasing(column) {
+        if (!column.keyAsName)
+          return column.name;
+        const schema = column.table[import_table.Table.Symbol.Schema] ?? "public";
+        const tableName = column.table[import_table.Table.Symbol.OriginalName];
+        const key = `${schema}.${tableName}.${column.name}`;
+        if (!this.cache[key]) {
+          this.cacheTable(column.table);
+        }
+        return this.cache[key];
+      }
+      cacheTable(table) {
+        const schema = table[import_table.Table.Symbol.Schema] ?? "public";
+        const tableName = table[import_table.Table.Symbol.OriginalName];
+        const tableKey = `${schema}.${tableName}`;
+        if (!this.cachedTables[tableKey]) {
+          for (const column of Object.values(table[import_table.Table.Symbol.Columns])) {
+            const columnKey = `${tableKey}.${column.name}`;
+            this.cache[columnKey] = this.convert(column.name);
+          }
+          this.cachedTables[tableKey] = true;
+        }
+      }
+      clearCache() {
+        this.cache = {};
+        this.cachedTables = {};
+      }
+    };
+  }
+});
+
 // node_modules/drizzle-orm/pg-core/view-base.cjs
 var require_view_base = __commonJS({
   "node_modules/drizzle-orm/pg-core/view-base.cjs"(exports2, module2) {
@@ -5976,10 +6134,10 @@ var require_view_base = __commonJS({
       PgViewBase: () => PgViewBase
     });
     module2.exports = __toCommonJS2(view_base_exports);
-    var import_entity11 = require_entity();
-    var import_sql2 = require_sql();
-    var PgViewBase = class extends import_sql2.View {
-      static [import_entity11.entityKind] = "PgViewBase";
+    var import_entity = require_entity();
+    var import_sql = require_sql();
+    var PgViewBase = class extends import_sql.View {
+      static [import_entity.entityKind] = "PgViewBase";
     };
   }
 });
@@ -6012,21 +6170,21 @@ var require_dialect = __commonJS({
     module2.exports = __toCommonJS2(dialect_exports);
     var import_alias = require_alias();
     var import_casing = require_casing();
-    var import_column4 = require_column();
-    var import_entity11 = require_entity();
+    var import_column = require_column();
+    var import_entity = require_entity();
     var import_errors = require_errors();
     var import_columns = require_columns();
-    var import_table3 = require_table2();
+    var import_table = require_table2();
     var import_relations = require_relations();
-    var import_sql2 = require_sql2();
-    var import_sql22 = require_sql();
-    var import_subquery2 = require_subquery();
-    var import_table22 = require_table();
+    var import_sql = require_sql2();
+    var import_sql2 = require_sql();
+    var import_subquery = require_subquery();
+    var import_table2 = require_table();
     var import_utils = require_utils();
-    var import_view_common2 = require_view_common();
+    var import_view_common = require_view_common();
     var import_view_base = require_view_base();
     var PgDialect = class {
-      static [import_entity11.entityKind] = "PgDialect";
+      static [import_entity.entityKind] = "PgDialect";
       /** @internal */
       casing;
       constructor(config) {
@@ -6035,27 +6193,27 @@ var require_dialect = __commonJS({
       async migrate(migrations, session, config) {
         const migrationsTable = typeof config === "string" ? "__drizzle_migrations" : config.migrationsTable ?? "__drizzle_migrations";
         const migrationsSchema = typeof config === "string" ? "drizzle" : config.migrationsSchema ?? "drizzle";
-        const migrationTableCreate = import_sql22.sql`
-			CREATE TABLE IF NOT EXISTS ${import_sql22.sql.identifier(migrationsSchema)}.${import_sql22.sql.identifier(migrationsTable)} (
+        const migrationTableCreate = import_sql2.sql`
+			CREATE TABLE IF NOT EXISTS ${import_sql2.sql.identifier(migrationsSchema)}.${import_sql2.sql.identifier(migrationsTable)} (
 				id SERIAL PRIMARY KEY,
 				hash text NOT NULL,
 				created_at bigint
 			)
 		`;
-        await session.execute(import_sql22.sql`CREATE SCHEMA IF NOT EXISTS ${import_sql22.sql.identifier(migrationsSchema)}`);
+        await session.execute(import_sql2.sql`CREATE SCHEMA IF NOT EXISTS ${import_sql2.sql.identifier(migrationsSchema)}`);
         await session.execute(migrationTableCreate);
         const dbMigrations = await session.all(
-          import_sql22.sql`select id, hash, created_at from ${import_sql22.sql.identifier(migrationsSchema)}.${import_sql22.sql.identifier(migrationsTable)} order by created_at desc limit 1`
+          import_sql2.sql`select id, hash, created_at from ${import_sql2.sql.identifier(migrationsSchema)}.${import_sql2.sql.identifier(migrationsTable)} order by created_at desc limit 1`
         );
         const lastDbMigration = dbMigrations[0];
         await session.transaction(async (tx) => {
           for await (const migration of migrations) {
             if (!lastDbMigration || Number(lastDbMigration.created_at) < migration.folderMillis) {
               for (const stmt of migration.sql) {
-                await tx.execute(import_sql22.sql.raw(stmt));
+                await tx.execute(import_sql2.sql.raw(stmt));
               }
               await tx.execute(
-                import_sql22.sql`insert into ${import_sql22.sql.identifier(migrationsSchema)}.${import_sql22.sql.identifier(migrationsTable)} ("hash", "created_at") values(${migration.hash}, ${migration.folderMillis})`
+                import_sql2.sql`insert into ${import_sql2.sql.identifier(migrationsSchema)}.${import_sql2.sql.identifier(migrationsTable)} ("hash", "created_at") values(${migration.hash}, ${migration.folderMillis})`
               );
             }
           }
@@ -6073,51 +6231,51 @@ var require_dialect = __commonJS({
       buildWithCTE(queries) {
         if (!queries?.length)
           return void 0;
-        const withSqlChunks = [import_sql22.sql`with `];
+        const withSqlChunks = [import_sql2.sql`with `];
         for (const [i, w] of queries.entries()) {
-          withSqlChunks.push(import_sql22.sql`${import_sql22.sql.identifier(w._.alias)} as (${w._.sql})`);
+          withSqlChunks.push(import_sql2.sql`${import_sql2.sql.identifier(w._.alias)} as (${w._.sql})`);
           if (i < queries.length - 1) {
-            withSqlChunks.push(import_sql22.sql`, `);
+            withSqlChunks.push(import_sql2.sql`, `);
           }
         }
-        withSqlChunks.push(import_sql22.sql` `);
-        return import_sql22.sql.join(withSqlChunks);
+        withSqlChunks.push(import_sql2.sql` `);
+        return import_sql2.sql.join(withSqlChunks);
       }
       buildDeleteQuery({ table, where, returning, withList }) {
         const withSql = this.buildWithCTE(withList);
-        const returningSql = returning ? import_sql22.sql` returning ${this.buildSelection(returning, { isSingleTable: true })}` : void 0;
-        const whereSql = where ? import_sql22.sql` where ${where}` : void 0;
-        return import_sql22.sql`${withSql}delete from ${table}${whereSql}${returningSql}`;
+        const returningSql = returning ? import_sql2.sql` returning ${this.buildSelection(returning, { isSingleTable: true })}` : void 0;
+        const whereSql = where ? import_sql2.sql` where ${where}` : void 0;
+        return import_sql2.sql`${withSql}delete from ${table}${whereSql}${returningSql}`;
       }
       buildUpdateSet(table, set) {
-        const tableColumns = table[import_table22.Table.Symbol.Columns];
+        const tableColumns = table[import_table2.Table.Symbol.Columns];
         const columnNames = Object.keys(tableColumns).filter(
           (colName) => set[colName] !== void 0 || tableColumns[colName]?.onUpdateFn !== void 0
         );
         const setSize = columnNames.length;
-        return import_sql22.sql.join(columnNames.flatMap((colName, i) => {
+        return import_sql2.sql.join(columnNames.flatMap((colName, i) => {
           const col = tableColumns[colName];
-          const value = set[colName] ?? import_sql22.sql.param(col.onUpdateFn(), col);
-          const res = import_sql22.sql`${import_sql22.sql.identifier(this.casing.getColumnCasing(col))} = ${value}`;
+          const value = set[colName] ?? import_sql2.sql.param(col.onUpdateFn(), col);
+          const res = import_sql2.sql`${import_sql2.sql.identifier(this.casing.getColumnCasing(col))} = ${value}`;
           if (i < setSize - 1) {
-            return [res, import_sql22.sql.raw(", ")];
+            return [res, import_sql2.sql.raw(", ")];
           }
           return [res];
         }));
       }
       buildUpdateQuery({ table, set, where, returning, withList, from, joins }) {
         const withSql = this.buildWithCTE(withList);
-        const tableName = table[import_table3.PgTable.Symbol.Name];
-        const tableSchema = table[import_table3.PgTable.Symbol.Schema];
-        const origTableName = table[import_table3.PgTable.Symbol.OriginalName];
+        const tableName = table[import_table.PgTable.Symbol.Name];
+        const tableSchema = table[import_table.PgTable.Symbol.Schema];
+        const origTableName = table[import_table.PgTable.Symbol.OriginalName];
         const alias = tableName === origTableName ? void 0 : tableName;
-        const tableSql = import_sql22.sql`${tableSchema ? import_sql22.sql`${import_sql22.sql.identifier(tableSchema)}.` : void 0}${import_sql22.sql.identifier(origTableName)}${alias && import_sql22.sql` ${import_sql22.sql.identifier(alias)}`}`;
+        const tableSql = import_sql2.sql`${tableSchema ? import_sql2.sql`${import_sql2.sql.identifier(tableSchema)}.` : void 0}${import_sql2.sql.identifier(origTableName)}${alias && import_sql2.sql` ${import_sql2.sql.identifier(alias)}`}`;
         const setSql = this.buildUpdateSet(table, set);
-        const fromSql = from && import_sql22.sql.join([import_sql22.sql.raw(" from "), this.buildFromTable(from)]);
+        const fromSql = from && import_sql2.sql.join([import_sql2.sql.raw(" from "), this.buildFromTable(from)]);
         const joinsSql = this.buildJoins(joins);
-        const returningSql = returning ? import_sql22.sql` returning ${this.buildSelection(returning, { isSingleTable: !from })}` : void 0;
-        const whereSql = where ? import_sql22.sql` where ${where}` : void 0;
-        return import_sql22.sql`${withSql}update ${tableSql} set ${setSql}${fromSql}${joinsSql}${whereSql}${returningSql}`;
+        const returningSql = returning ? import_sql2.sql` returning ${this.buildSelection(returning, { isSingleTable: !from })}` : void 0;
+        const whereSql = where ? import_sql2.sql` where ${where}` : void 0;
+        return import_sql2.sql`${withSql}update ${tableSql} set ${setSql}${fromSql}${joinsSql}${whereSql}${returningSql}`;
       }
       /**
        * Builds selection SQL with provided fields/expressions
@@ -6134,16 +6292,16 @@ var require_dialect = __commonJS({
         const columnsLen = fields.length;
         const chunks = fields.flatMap(({ field }, i) => {
           const chunk = [];
-          if ((0, import_entity11.is)(field, import_sql22.SQL.Aliased) && field.isSelectionField) {
-            chunk.push(import_sql22.sql.identifier(field.fieldAlias));
-          } else if ((0, import_entity11.is)(field, import_sql22.SQL.Aliased) || (0, import_entity11.is)(field, import_sql22.SQL)) {
-            const query = (0, import_entity11.is)(field, import_sql22.SQL.Aliased) ? field.sql : field;
+          if ((0, import_entity.is)(field, import_sql2.SQL.Aliased) && field.isSelectionField) {
+            chunk.push(import_sql2.sql.identifier(field.fieldAlias));
+          } else if ((0, import_entity.is)(field, import_sql2.SQL.Aliased) || (0, import_entity.is)(field, import_sql2.SQL)) {
+            const query = (0, import_entity.is)(field, import_sql2.SQL.Aliased) ? field.sql : field;
             if (isSingleTable) {
               chunk.push(
-                new import_sql22.SQL(
+                new import_sql2.SQL(
                   query.queryChunks.map((c) => {
-                    if ((0, import_entity11.is)(c, import_columns.PgColumn)) {
-                      return import_sql22.sql.identifier(this.casing.getColumnCasing(c));
+                    if ((0, import_entity.is)(c, import_columns.PgColumn)) {
+                      return import_sql2.sql.identifier(this.casing.getColumnCasing(c));
                     }
                     return c;
                   })
@@ -6152,22 +6310,22 @@ var require_dialect = __commonJS({
             } else {
               chunk.push(query);
             }
-            if ((0, import_entity11.is)(field, import_sql22.SQL.Aliased)) {
-              chunk.push(import_sql22.sql` as ${import_sql22.sql.identifier(field.fieldAlias)}`);
+            if ((0, import_entity.is)(field, import_sql2.SQL.Aliased)) {
+              chunk.push(import_sql2.sql` as ${import_sql2.sql.identifier(field.fieldAlias)}`);
             }
-          } else if ((0, import_entity11.is)(field, import_column4.Column)) {
+          } else if ((0, import_entity.is)(field, import_column.Column)) {
             if (isSingleTable) {
-              chunk.push(import_sql22.sql.identifier(this.casing.getColumnCasing(field)));
+              chunk.push(import_sql2.sql.identifier(this.casing.getColumnCasing(field)));
             } else {
               chunk.push(field);
             }
           }
           if (i < columnsLen - 1) {
-            chunk.push(import_sql22.sql`, `);
+            chunk.push(import_sql2.sql`, `);
           }
           return chunk;
         });
-        return import_sql22.sql.join(chunks);
+        return import_sql2.sql.join(chunks);
       }
       buildJoins(joins) {
         if (!joins || joins.length === 0) {
@@ -6176,44 +6334,44 @@ var require_dialect = __commonJS({
         const joinsArray = [];
         for (const [index, joinMeta] of joins.entries()) {
           if (index === 0) {
-            joinsArray.push(import_sql22.sql` `);
+            joinsArray.push(import_sql2.sql` `);
           }
           const table = joinMeta.table;
-          const lateralSql = joinMeta.lateral ? import_sql22.sql` lateral` : void 0;
-          if ((0, import_entity11.is)(table, import_table3.PgTable)) {
-            const tableName = table[import_table3.PgTable.Symbol.Name];
-            const tableSchema = table[import_table3.PgTable.Symbol.Schema];
-            const origTableName = table[import_table3.PgTable.Symbol.OriginalName];
+          const lateralSql = joinMeta.lateral ? import_sql2.sql` lateral` : void 0;
+          if ((0, import_entity.is)(table, import_table.PgTable)) {
+            const tableName = table[import_table.PgTable.Symbol.Name];
+            const tableSchema = table[import_table.PgTable.Symbol.Schema];
+            const origTableName = table[import_table.PgTable.Symbol.OriginalName];
             const alias = tableName === origTableName ? void 0 : joinMeta.alias;
             joinsArray.push(
-              import_sql22.sql`${import_sql22.sql.raw(joinMeta.joinType)} join${lateralSql} ${tableSchema ? import_sql22.sql`${import_sql22.sql.identifier(tableSchema)}.` : void 0}${import_sql22.sql.identifier(origTableName)}${alias && import_sql22.sql` ${import_sql22.sql.identifier(alias)}`} on ${joinMeta.on}`
+              import_sql2.sql`${import_sql2.sql.raw(joinMeta.joinType)} join${lateralSql} ${tableSchema ? import_sql2.sql`${import_sql2.sql.identifier(tableSchema)}.` : void 0}${import_sql2.sql.identifier(origTableName)}${alias && import_sql2.sql` ${import_sql2.sql.identifier(alias)}`} on ${joinMeta.on}`
             );
-          } else if ((0, import_entity11.is)(table, import_sql2.View)) {
-            const viewName = table[import_view_common2.ViewBaseConfig].name;
-            const viewSchema = table[import_view_common2.ViewBaseConfig].schema;
-            const origViewName = table[import_view_common2.ViewBaseConfig].originalName;
+          } else if ((0, import_entity.is)(table, import_sql.View)) {
+            const viewName = table[import_view_common.ViewBaseConfig].name;
+            const viewSchema = table[import_view_common.ViewBaseConfig].schema;
+            const origViewName = table[import_view_common.ViewBaseConfig].originalName;
             const alias = viewName === origViewName ? void 0 : joinMeta.alias;
             joinsArray.push(
-              import_sql22.sql`${import_sql22.sql.raw(joinMeta.joinType)} join${lateralSql} ${viewSchema ? import_sql22.sql`${import_sql22.sql.identifier(viewSchema)}.` : void 0}${import_sql22.sql.identifier(origViewName)}${alias && import_sql22.sql` ${import_sql22.sql.identifier(alias)}`} on ${joinMeta.on}`
+              import_sql2.sql`${import_sql2.sql.raw(joinMeta.joinType)} join${lateralSql} ${viewSchema ? import_sql2.sql`${import_sql2.sql.identifier(viewSchema)}.` : void 0}${import_sql2.sql.identifier(origViewName)}${alias && import_sql2.sql` ${import_sql2.sql.identifier(alias)}`} on ${joinMeta.on}`
             );
           } else {
             joinsArray.push(
-              import_sql22.sql`${import_sql22.sql.raw(joinMeta.joinType)} join${lateralSql} ${table} on ${joinMeta.on}`
+              import_sql2.sql`${import_sql2.sql.raw(joinMeta.joinType)} join${lateralSql} ${table} on ${joinMeta.on}`
             );
           }
           if (index < joins.length - 1) {
-            joinsArray.push(import_sql22.sql` `);
+            joinsArray.push(import_sql2.sql` `);
           }
         }
-        return import_sql22.sql.join(joinsArray);
+        return import_sql2.sql.join(joinsArray);
       }
       buildFromTable(table) {
-        if ((0, import_entity11.is)(table, import_table22.Table) && table[import_table22.Table.Symbol.OriginalName] !== table[import_table22.Table.Symbol.Name]) {
-          let fullName = import_sql22.sql`${import_sql22.sql.identifier(table[import_table22.Table.Symbol.OriginalName])}`;
-          if (table[import_table22.Table.Symbol.Schema]) {
-            fullName = import_sql22.sql`${import_sql22.sql.identifier(table[import_table22.Table.Symbol.Schema])}.${fullName}`;
+        if ((0, import_entity.is)(table, import_table2.Table) && table[import_table2.Table.Symbol.OriginalName] !== table[import_table2.Table.Symbol.Name]) {
+          let fullName = import_sql2.sql`${import_sql2.sql.identifier(table[import_table2.Table.Symbol.OriginalName])}`;
+          if (table[import_table2.Table.Symbol.Schema]) {
+            fullName = import_sql2.sql`${import_sql2.sql.identifier(table[import_table2.Table.Symbol.Schema])}.${fullName}`;
           }
-          return import_sql22.sql`${fullName} ${import_sql22.sql.identifier(table[import_table22.Table.Symbol.Name])}`;
+          return import_sql2.sql`${fullName} ${import_sql2.sql.identifier(table[import_table2.Table.Symbol.Name])}`;
         }
         return table;
       }
@@ -6235,10 +6393,10 @@ var require_dialect = __commonJS({
       }) {
         const fieldsList = fieldsFlat ?? (0, import_utils.orderSelectedFields)(fields);
         for (const f of fieldsList) {
-          if ((0, import_entity11.is)(f.field, import_column4.Column) && (0, import_table22.getTableName)(f.field.table) !== ((0, import_entity11.is)(table, import_subquery2.Subquery) ? table._.alias : (0, import_entity11.is)(table, import_view_base.PgViewBase) ? table[import_view_common2.ViewBaseConfig].name : (0, import_entity11.is)(table, import_sql22.SQL) ? void 0 : (0, import_table22.getTableName)(table)) && !((table2) => joins?.some(
-            ({ alias }) => alias === (table2[import_table22.Table.Symbol.IsAlias] ? (0, import_table22.getTableName)(table2) : table2[import_table22.Table.Symbol.BaseName])
+          if ((0, import_entity.is)(f.field, import_column.Column) && (0, import_table2.getTableName)(f.field.table) !== ((0, import_entity.is)(table, import_subquery.Subquery) ? table._.alias : (0, import_entity.is)(table, import_view_base.PgViewBase) ? table[import_view_common.ViewBaseConfig].name : (0, import_entity.is)(table, import_sql2.SQL) ? void 0 : (0, import_table2.getTableName)(table)) && !((table2) => joins?.some(
+            ({ alias }) => alias === (table2[import_table2.Table.Symbol.IsAlias] ? (0, import_table2.getTableName)(table2) : table2[import_table2.Table.Symbol.BaseName])
           ))(f.field.table)) {
-            const tableName = (0, import_table22.getTableName)(f.field.table);
+            const tableName = (0, import_table2.getTableName)(f.field.table);
             throw new Error(
               `Your "${f.path.join("->")}" field references a column "${tableName}"."${f.field.name}", but the table "${tableName}" is not part of the query! Did you forget to join it?`
             );
@@ -6248,42 +6406,42 @@ var require_dialect = __commonJS({
         const withSql = this.buildWithCTE(withList);
         let distinctSql;
         if (distinct) {
-          distinctSql = distinct === true ? import_sql22.sql` distinct` : import_sql22.sql` distinct on (${import_sql22.sql.join(distinct.on, import_sql22.sql`, `)})`;
+          distinctSql = distinct === true ? import_sql2.sql` distinct` : import_sql2.sql` distinct on (${import_sql2.sql.join(distinct.on, import_sql2.sql`, `)})`;
         }
         const selection = this.buildSelection(fieldsList, { isSingleTable });
         const tableSql = this.buildFromTable(table);
         const joinsSql = this.buildJoins(joins);
-        const whereSql = where ? import_sql22.sql` where ${where}` : void 0;
-        const havingSql = having ? import_sql22.sql` having ${having}` : void 0;
+        const whereSql = where ? import_sql2.sql` where ${where}` : void 0;
+        const havingSql = having ? import_sql2.sql` having ${having}` : void 0;
         let orderBySql;
         if (orderBy && orderBy.length > 0) {
-          orderBySql = import_sql22.sql` order by ${import_sql22.sql.join(orderBy, import_sql22.sql`, `)}`;
+          orderBySql = import_sql2.sql` order by ${import_sql2.sql.join(orderBy, import_sql2.sql`, `)}`;
         }
         let groupBySql;
         if (groupBy && groupBy.length > 0) {
-          groupBySql = import_sql22.sql` group by ${import_sql22.sql.join(groupBy, import_sql22.sql`, `)}`;
+          groupBySql = import_sql2.sql` group by ${import_sql2.sql.join(groupBy, import_sql2.sql`, `)}`;
         }
-        const limitSql = typeof limit === "object" || typeof limit === "number" && limit >= 0 ? import_sql22.sql` limit ${limit}` : void 0;
-        const offsetSql = offset ? import_sql22.sql` offset ${offset}` : void 0;
-        const lockingClauseSql = import_sql22.sql.empty();
+        const limitSql = typeof limit === "object" || typeof limit === "number" && limit >= 0 ? import_sql2.sql` limit ${limit}` : void 0;
+        const offsetSql = offset ? import_sql2.sql` offset ${offset}` : void 0;
+        const lockingClauseSql = import_sql2.sql.empty();
         if (lockingClause) {
-          const clauseSql = import_sql22.sql` for ${import_sql22.sql.raw(lockingClause.strength)}`;
+          const clauseSql = import_sql2.sql` for ${import_sql2.sql.raw(lockingClause.strength)}`;
           if (lockingClause.config.of) {
             clauseSql.append(
-              import_sql22.sql` of ${import_sql22.sql.join(
+              import_sql2.sql` of ${import_sql2.sql.join(
                 Array.isArray(lockingClause.config.of) ? lockingClause.config.of : [lockingClause.config.of],
-                import_sql22.sql`, `
+                import_sql2.sql`, `
               )}`
             );
           }
           if (lockingClause.config.noWait) {
-            clauseSql.append(import_sql22.sql` no wait`);
+            clauseSql.append(import_sql2.sql` no wait`);
           } else if (lockingClause.config.skipLocked) {
-            clauseSql.append(import_sql22.sql` skip locked`);
+            clauseSql.append(import_sql2.sql` skip locked`);
           }
           lockingClauseSql.append(clauseSql);
         }
-        const finalQuery = import_sql22.sql`${withSql}select${distinctSql} ${selection} from ${tableSql}${joinsSql}${whereSql}${groupBySql}${havingSql}${orderBySql}${limitSql}${offsetSql}${lockingClauseSql}`;
+        const finalQuery = import_sql2.sql`${withSql}select${distinctSql} ${selection} from ${tableSql}${joinsSql}${whereSql}${groupBySql}${havingSql}${orderBySql}${limitSql}${offsetSql}${lockingClauseSql}`;
         if (setOperators.length > 0) {
           return this.buildSetOperations(finalQuery, setOperators);
         }
@@ -6306,65 +6464,65 @@ var require_dialect = __commonJS({
         leftSelect,
         setOperator: { type, isAll, rightSelect, limit, orderBy, offset }
       }) {
-        const leftChunk = import_sql22.sql`(${leftSelect.getSQL()}) `;
-        const rightChunk = import_sql22.sql`(${rightSelect.getSQL()})`;
+        const leftChunk = import_sql2.sql`(${leftSelect.getSQL()}) `;
+        const rightChunk = import_sql2.sql`(${rightSelect.getSQL()})`;
         let orderBySql;
         if (orderBy && orderBy.length > 0) {
           const orderByValues = [];
           for (const singleOrderBy of orderBy) {
-            if ((0, import_entity11.is)(singleOrderBy, import_columns.PgColumn)) {
-              orderByValues.push(import_sql22.sql.identifier(singleOrderBy.name));
-            } else if ((0, import_entity11.is)(singleOrderBy, import_sql22.SQL)) {
+            if ((0, import_entity.is)(singleOrderBy, import_columns.PgColumn)) {
+              orderByValues.push(import_sql2.sql.identifier(singleOrderBy.name));
+            } else if ((0, import_entity.is)(singleOrderBy, import_sql2.SQL)) {
               for (let i = 0; i < singleOrderBy.queryChunks.length; i++) {
                 const chunk = singleOrderBy.queryChunks[i];
-                if ((0, import_entity11.is)(chunk, import_columns.PgColumn)) {
-                  singleOrderBy.queryChunks[i] = import_sql22.sql.identifier(chunk.name);
+                if ((0, import_entity.is)(chunk, import_columns.PgColumn)) {
+                  singleOrderBy.queryChunks[i] = import_sql2.sql.identifier(chunk.name);
                 }
               }
-              orderByValues.push(import_sql22.sql`${singleOrderBy}`);
+              orderByValues.push(import_sql2.sql`${singleOrderBy}`);
             } else {
-              orderByValues.push(import_sql22.sql`${singleOrderBy}`);
+              orderByValues.push(import_sql2.sql`${singleOrderBy}`);
             }
           }
-          orderBySql = import_sql22.sql` order by ${import_sql22.sql.join(orderByValues, import_sql22.sql`, `)} `;
+          orderBySql = import_sql2.sql` order by ${import_sql2.sql.join(orderByValues, import_sql2.sql`, `)} `;
         }
-        const limitSql = typeof limit === "object" || typeof limit === "number" && limit >= 0 ? import_sql22.sql` limit ${limit}` : void 0;
-        const operatorChunk = import_sql22.sql.raw(`${type} ${isAll ? "all " : ""}`);
-        const offsetSql = offset ? import_sql22.sql` offset ${offset}` : void 0;
-        return import_sql22.sql`${leftChunk}${operatorChunk}${rightChunk}${orderBySql}${limitSql}${offsetSql}`;
+        const limitSql = typeof limit === "object" || typeof limit === "number" && limit >= 0 ? import_sql2.sql` limit ${limit}` : void 0;
+        const operatorChunk = import_sql2.sql.raw(`${type} ${isAll ? "all " : ""}`);
+        const offsetSql = offset ? import_sql2.sql` offset ${offset}` : void 0;
+        return import_sql2.sql`${leftChunk}${operatorChunk}${rightChunk}${orderBySql}${limitSql}${offsetSql}`;
       }
       buildInsertQuery({ table, values: valuesOrSelect, onConflict, returning, withList, select, overridingSystemValue_ }) {
         const valuesSqlList = [];
-        const columns = table[import_table22.Table.Symbol.Columns];
+        const columns = table[import_table2.Table.Symbol.Columns];
         const colEntries = Object.entries(columns).filter(([_, col]) => !col.shouldDisableInsert());
         const insertOrder = colEntries.map(
-          ([, column]) => import_sql22.sql.identifier(this.casing.getColumnCasing(column))
+          ([, column]) => import_sql2.sql.identifier(this.casing.getColumnCasing(column))
         );
         if (select) {
           const select2 = valuesOrSelect;
-          if ((0, import_entity11.is)(select2, import_sql22.SQL)) {
+          if ((0, import_entity.is)(select2, import_sql2.SQL)) {
             valuesSqlList.push(select2);
           } else {
             valuesSqlList.push(select2.getSQL());
           }
         } else {
           const values = valuesOrSelect;
-          valuesSqlList.push(import_sql22.sql.raw("values "));
+          valuesSqlList.push(import_sql2.sql.raw("values "));
           for (const [valueIndex, value] of values.entries()) {
             const valueList = [];
             for (const [fieldName, col] of colEntries) {
               const colValue = value[fieldName];
-              if (colValue === void 0 || (0, import_entity11.is)(colValue, import_sql22.Param) && colValue.value === void 0) {
+              if (colValue === void 0 || (0, import_entity.is)(colValue, import_sql2.Param) && colValue.value === void 0) {
                 if (col.defaultFn !== void 0) {
                   const defaultFnResult = col.defaultFn();
-                  const defaultValue = (0, import_entity11.is)(defaultFnResult, import_sql22.SQL) ? defaultFnResult : import_sql22.sql.param(defaultFnResult, col);
+                  const defaultValue = (0, import_entity.is)(defaultFnResult, import_sql2.SQL) ? defaultFnResult : import_sql2.sql.param(defaultFnResult, col);
                   valueList.push(defaultValue);
                 } else if (!col.default && col.onUpdateFn !== void 0) {
                   const onUpdateFnResult = col.onUpdateFn();
-                  const newValue = (0, import_entity11.is)(onUpdateFnResult, import_sql22.SQL) ? onUpdateFnResult : import_sql22.sql.param(onUpdateFnResult, col);
+                  const newValue = (0, import_entity.is)(onUpdateFnResult, import_sql2.SQL) ? onUpdateFnResult : import_sql2.sql.param(onUpdateFnResult, col);
                   valueList.push(newValue);
                 } else {
-                  valueList.push(import_sql22.sql`default`);
+                  valueList.push(import_sql2.sql`default`);
                 }
               } else {
                 valueList.push(colValue);
@@ -6372,34 +6530,34 @@ var require_dialect = __commonJS({
             }
             valuesSqlList.push(valueList);
             if (valueIndex < values.length - 1) {
-              valuesSqlList.push(import_sql22.sql`, `);
+              valuesSqlList.push(import_sql2.sql`, `);
             }
           }
         }
         const withSql = this.buildWithCTE(withList);
-        const valuesSql = import_sql22.sql.join(valuesSqlList);
-        const returningSql = returning ? import_sql22.sql` returning ${this.buildSelection(returning, { isSingleTable: true })}` : void 0;
-        const onConflictSql = onConflict ? import_sql22.sql` on conflict ${onConflict}` : void 0;
-        const overridingSql = overridingSystemValue_ === true ? import_sql22.sql`overriding system value ` : void 0;
-        return import_sql22.sql`${withSql}insert into ${table} ${insertOrder} ${overridingSql}${valuesSql}${onConflictSql}${returningSql}`;
+        const valuesSql = import_sql2.sql.join(valuesSqlList);
+        const returningSql = returning ? import_sql2.sql` returning ${this.buildSelection(returning, { isSingleTable: true })}` : void 0;
+        const onConflictSql = onConflict ? import_sql2.sql` on conflict ${onConflict}` : void 0;
+        const overridingSql = overridingSystemValue_ === true ? import_sql2.sql`overriding system value ` : void 0;
+        return import_sql2.sql`${withSql}insert into ${table} ${insertOrder} ${overridingSql}${valuesSql}${onConflictSql}${returningSql}`;
       }
       buildRefreshMaterializedViewQuery({ view, concurrently, withNoData }) {
-        const concurrentlySql = concurrently ? import_sql22.sql` concurrently` : void 0;
-        const withNoDataSql = withNoData ? import_sql22.sql` with no data` : void 0;
-        return import_sql22.sql`refresh materialized view${concurrentlySql} ${view}${withNoDataSql}`;
+        const concurrentlySql = concurrently ? import_sql2.sql` concurrently` : void 0;
+        const withNoDataSql = withNoData ? import_sql2.sql` with no data` : void 0;
+        return import_sql2.sql`refresh materialized view${concurrentlySql} ${view}${withNoDataSql}`;
       }
       prepareTyping(encoder) {
-        if ((0, import_entity11.is)(encoder, import_columns.PgJsonb) || (0, import_entity11.is)(encoder, import_columns.PgJson)) {
+        if ((0, import_entity.is)(encoder, import_columns.PgJsonb) || (0, import_entity.is)(encoder, import_columns.PgJson)) {
           return "json";
-        } else if ((0, import_entity11.is)(encoder, import_columns.PgNumeric)) {
+        } else if ((0, import_entity.is)(encoder, import_columns.PgNumeric)) {
           return "decimal";
-        } else if ((0, import_entity11.is)(encoder, import_columns.PgTime)) {
+        } else if ((0, import_entity.is)(encoder, import_columns.PgTime)) {
           return "time";
-        } else if ((0, import_entity11.is)(encoder, import_columns.PgTimestamp) || (0, import_entity11.is)(encoder, import_columns.PgTimestampString)) {
+        } else if ((0, import_entity.is)(encoder, import_columns.PgTimestamp) || (0, import_entity.is)(encoder, import_columns.PgTimestampString)) {
           return "timestamp";
-        } else if ((0, import_entity11.is)(encoder, import_columns.PgDate) || (0, import_entity11.is)(encoder, import_columns.PgDateString)) {
+        } else if ((0, import_entity.is)(encoder, import_columns.PgDate) || (0, import_entity.is)(encoder, import_columns.PgDateString)) {
           return "date";
-        } else if ((0, import_entity11.is)(encoder, import_columns.PgUUID)) {
+        } else if ((0, import_entity.is)(encoder, import_columns.PgUUID)) {
           return "uuid";
         } else {
           return "none";
@@ -6959,7 +7117,7 @@ var require_dialect = __commonJS({
           }
           let extras;
           if (config.extras) {
-            extras = typeof config.extras === "function" ? config.extras(aliasedColumns, { sql: import_sql22.sql }) : config.extras;
+            extras = typeof config.extras === "function" ? config.extras(aliasedColumns, { sql: import_sql2.sql }) : config.extras;
             for (const [tsKey, value] of Object.entries(extras)) {
               fieldsSelection.push({
                 tsKey,
@@ -6969,9 +7127,9 @@ var require_dialect = __commonJS({
           }
           for (const { tsKey, value } of fieldsSelection) {
             selection.push({
-              dbKey: (0, import_entity11.is)(value, import_sql22.SQL.Aliased) ? value.fieldAlias : tableConfig.columns[tsKey].name,
+              dbKey: (0, import_entity.is)(value, import_sql2.SQL.Aliased) ? value.fieldAlias : tableConfig.columns[tsKey].name,
               tsKey,
-              field: (0, import_entity11.is)(value, import_column4.Column) ? (0, import_alias.aliasedTableColumn)(value, tableAlias) : value,
+              field: (0, import_entity.is)(value, import_column.Column) ? (0, import_alias.aliasedTableColumn)(value, tableAlias) : value,
               relationTableTsKey: void 0,
               isJson: false,
               selection: []
@@ -6982,7 +7140,7 @@ var require_dialect = __commonJS({
             orderByOrig = [orderByOrig];
           }
           orderBy = orderByOrig.map((orderByValue) => {
-            if ((0, import_entity11.is)(orderByValue, import_column4.Column)) {
+            if ((0, import_entity.is)(orderByValue, import_column.Column)) {
               return (0, import_alias.aliasedTableColumn)(orderByValue, tableAlias);
             }
             return (0, import_alias.mapColumnsInSQLToAlias)(orderByValue, tableAlias);
@@ -6995,12 +7153,12 @@ var require_dialect = __commonJS({
             relation
           } of selectedRelations) {
             const normalizedRelation = (0, import_relations.normalizeRelation)(schema, tableNamesMap, relation);
-            const relationTableName = (0, import_table22.getTableUniqueName)(relation.referencedTable);
+            const relationTableName = (0, import_table2.getTableUniqueName)(relation.referencedTable);
             const relationTableTsName = tableNamesMap[relationTableName];
             const relationTableAlias = `${tableAlias}_${selectedRelationTsKey}`;
-            const joinOn2 = (0, import_sql2.and)(
+            const joinOn2 = (0, import_sql.and)(
               ...normalizedRelation.fields.map(
-                (field2, i) => (0, import_sql2.eq)(
+                (field2, i) => (0, import_sql.eq)(
                   (0, import_alias.aliasedTableColumn)(normalizedRelation.references[i], relationTableAlias),
                   (0, import_alias.aliasedTableColumn)(field2, tableAlias)
                 )
@@ -7012,15 +7170,15 @@ var require_dialect = __commonJS({
               tableNamesMap,
               table: fullSchema[relationTableTsName],
               tableConfig: schema[relationTableTsName],
-              queryConfig: (0, import_entity11.is)(relation, import_relations.One) ? selectedRelationConfigValue === true ? { limit: 1 } : { ...selectedRelationConfigValue, limit: 1 } : selectedRelationConfigValue,
+              queryConfig: (0, import_entity.is)(relation, import_relations.One) ? selectedRelationConfigValue === true ? { limit: 1 } : { ...selectedRelationConfigValue, limit: 1 } : selectedRelationConfigValue,
               tableAlias: relationTableAlias,
               joinOn: joinOn2,
               nestedQueryRelation: relation
             });
-            const field = import_sql22.sql`${import_sql22.sql.identifier(relationTableAlias)}.${import_sql22.sql.identifier("data")}`.as(selectedRelationTsKey);
+            const field = import_sql2.sql`${import_sql2.sql.identifier(relationTableAlias)}.${import_sql2.sql.identifier("data")}`.as(selectedRelationTsKey);
             joins.push({
-              on: import_sql22.sql`true`,
-              table: new import_subquery2.Subquery(builtRelation.sql, {}, relationTableAlias),
+              on: import_sql2.sql`true`,
+              table: new import_subquery.Subquery(builtRelation.sql, {}, relationTableAlias),
               alias: relationTableAlias,
               joinType: "left",
               lateral: true
@@ -7039,16 +7197,16 @@ var require_dialect = __commonJS({
           throw new import_errors.DrizzleError({ message: `No fields selected for table "${tableConfig.tsName}" ("${tableAlias}")` });
         }
         let result;
-        where = (0, import_sql2.and)(joinOn, where);
+        where = (0, import_sql.and)(joinOn, where);
         if (nestedQueryRelation) {
-          let field = import_sql22.sql`json_build_array(${import_sql22.sql.join(
+          let field = import_sql2.sql`json_build_array(${import_sql2.sql.join(
             selection.map(
-              ({ field: field2, tsKey, isJson }) => isJson ? import_sql22.sql`${import_sql22.sql.identifier(`${tableAlias}_${tsKey}`)}.${import_sql22.sql.identifier("data")}` : (0, import_entity11.is)(field2, import_sql22.SQL.Aliased) ? field2.sql : field2
+              ({ field: field2, tsKey, isJson }) => isJson ? import_sql2.sql`${import_sql2.sql.identifier(`${tableAlias}_${tsKey}`)}.${import_sql2.sql.identifier("data")}` : (0, import_entity.is)(field2, import_sql2.SQL.Aliased) ? field2.sql : field2
             ),
-            import_sql22.sql`, `
+            import_sql2.sql`, `
           )})`;
-          if ((0, import_entity11.is)(nestedQueryRelation, import_relations.Many)) {
-            field = import_sql22.sql`coalesce(json_agg(${field}${orderBy.length > 0 ? import_sql22.sql` order by ${import_sql22.sql.join(orderBy, import_sql22.sql`, `)}` : void 0}), '[]'::json)`;
+          if ((0, import_entity.is)(nestedQueryRelation, import_relations.Many)) {
+            field = import_sql2.sql`coalesce(json_agg(${field}${orderBy.length > 0 ? import_sql2.sql` order by ${import_sql2.sql.join(orderBy, import_sql2.sql`, `)}` : void 0}), '[]'::json)`;
           }
           const nestedSelection = [{
             dbKey: "data",
@@ -7065,7 +7223,7 @@ var require_dialect = __commonJS({
               fields: {},
               fieldsFlat: [{
                 path: [],
-                field: import_sql22.sql.raw("*")
+                field: import_sql2.sql.raw("*")
               }],
               where,
               limit,
@@ -7081,11 +7239,11 @@ var require_dialect = __commonJS({
             result = (0, import_alias.aliasedTable)(table, tableAlias);
           }
           result = this.buildSelectQuery({
-            table: (0, import_entity11.is)(result, import_table3.PgTable) ? result : new import_subquery2.Subquery(result, {}, tableAlias),
+            table: (0, import_entity.is)(result, import_table.PgTable) ? result : new import_subquery.Subquery(result, {}, tableAlias),
             fields: {},
             fieldsFlat: nestedSelection.map(({ field: field2 }) => ({
               path: [],
-              field: (0, import_entity11.is)(field2, import_column4.Column) ? (0, import_alias.aliasedTableColumn)(field2, tableAlias) : field2
+              field: (0, import_entity.is)(field2, import_column.Column) ? (0, import_alias.aliasedTableColumn)(field2, tableAlias) : field2
             })),
             joins,
             where,
@@ -7100,7 +7258,7 @@ var require_dialect = __commonJS({
             fields: {},
             fieldsFlat: selection.map(({ field }) => ({
               path: [],
-              field: (0, import_entity11.is)(field, import_column4.Column) ? (0, import_alias.aliasedTableColumn)(field, tableAlias) : field
+              field: (0, import_entity.is)(field, import_column.Column) ? (0, import_alias.aliasedTableColumn)(field, tableAlias) : field
             })),
             joins,
             where,
@@ -7146,9 +7304,9 @@ var require_query_builder = __commonJS({
       TypedQueryBuilder: () => TypedQueryBuilder
     });
     module2.exports = __toCommonJS2(query_builder_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var TypedQueryBuilder = class {
-      static [import_entity11.entityKind] = "TypedQueryBuilder";
+      static [import_entity.entityKind] = "TypedQueryBuilder";
       /** @internal */
       getSelectedFields() {
         return this._.selectedFields;
@@ -7191,20 +7349,20 @@ var require_select2 = __commonJS({
       unionAll: () => unionAll
     });
     module2.exports = __toCommonJS2(select_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_view_base = require_view_base();
     var import_query_builder = require_query_builder();
     var import_query_promise = require_query_promise();
     var import_selection_proxy = require_selection_proxy();
-    var import_sql2 = require_sql();
-    var import_subquery2 = require_subquery();
-    var import_table3 = require_table();
-    var import_tracing2 = require_tracing();
+    var import_sql = require_sql();
+    var import_subquery = require_subquery();
+    var import_table = require_table();
+    var import_tracing = require_tracing();
     var import_utils = require_utils();
     var import_utils2 = require_utils();
-    var import_view_common2 = require_view_common();
+    var import_view_common = require_view_common();
     var PgSelectBuilder = class {
-      static [import_entity11.entityKind] = "PgSelectBuilder";
+      static [import_entity.entityKind] = "PgSelectBuilder";
       fields;
       session;
       dialect;
@@ -7237,13 +7395,13 @@ var require_select2 = __commonJS({
         let fields;
         if (this.fields) {
           fields = this.fields;
-        } else if ((0, import_entity11.is)(src, import_subquery2.Subquery)) {
+        } else if ((0, import_entity.is)(src, import_subquery.Subquery)) {
           fields = Object.fromEntries(
             Object.keys(src._.selectedFields).map((key) => [key, src[key]])
           );
-        } else if ((0, import_entity11.is)(src, import_view_base.PgViewBase)) {
-          fields = src[import_view_common2.ViewBaseConfig].selectedFields;
-        } else if ((0, import_entity11.is)(src, import_sql2.SQL)) {
+        } else if ((0, import_entity.is)(src, import_view_base.PgViewBase)) {
+          fields = src[import_view_common.ViewBaseConfig].selectedFields;
+        } else if ((0, import_entity.is)(src, import_sql.SQL)) {
           fields = {};
         } else {
           fields = (0, import_utils.getTableColumns)(src);
@@ -7260,7 +7418,7 @@ var require_select2 = __commonJS({
       }
     };
     var PgSelectQueryBuilderBase = class extends import_query_builder.TypedQueryBuilder {
-      static [import_entity11.entityKind] = "PgSelectQueryBuilder";
+      static [import_entity.entityKind] = "PgSelectQueryBuilder";
       _;
       config;
       joinsNotNullableMap;
@@ -7299,8 +7457,8 @@ var require_select2 = __commonJS({
                 [baseTableName]: this.config.fields
               };
             }
-            if (typeof tableName === "string" && !(0, import_entity11.is)(table, import_sql2.SQL)) {
-              const selection = (0, import_entity11.is)(table, import_subquery2.Subquery) ? table._.selectedFields : (0, import_entity11.is)(table, import_sql2.View) ? table[import_view_common2.ViewBaseConfig].selectedFields : table[import_table3.Table.Symbol.Columns];
+            if (typeof tableName === "string" && !(0, import_entity.is)(table, import_sql.SQL)) {
+              const selection = (0, import_entity.is)(table, import_subquery.Subquery) ? table._.selectedFields : (0, import_entity.is)(table, import_sql.View) ? table[import_view_common.ViewBaseConfig].selectedFields : table[import_table.Table.Symbol.Columns];
               this.config.fields[tableName] = selection;
             }
           }
@@ -7845,7 +8003,7 @@ var require_select2 = __commonJS({
       }
       as(alias) {
         return new Proxy(
-          new import_subquery2.Subquery(this.getSQL(), this.config.fields, alias),
+          new import_subquery.Subquery(this.getSQL(), this.config.fields, alias),
           new import_selection_proxy.SelectionProxyHandler({ alias, sqlAliasedBehavior: "alias", sqlBehavior: "error" })
         );
       }
@@ -7861,14 +8019,14 @@ var require_select2 = __commonJS({
       }
     };
     var PgSelectBase = class extends PgSelectQueryBuilderBase {
-      static [import_entity11.entityKind] = "PgSelect";
+      static [import_entity.entityKind] = "PgSelect";
       /** @internal */
       _prepare(name) {
         const { session, config, dialect, joinsNotNullableMap, authToken } = this;
         if (!session) {
           throw new Error("Cannot execute a query on a query builder. Please use a database instance instead.");
         }
-        return import_tracing2.tracer.startActiveSpan("drizzle.prepareQuery", () => {
+        return import_tracing.tracer.startActiveSpan("drizzle.prepareQuery", () => {
           const fieldsList = (0, import_utils2.orderSelectedFields)(config.fields);
           const query = session.prepareQuery(dialect.sqlToQuery(this.getSQL()), fieldsList, name, true);
           query.joinsNotNullableMap = joinsNotNullableMap;
@@ -7892,7 +8050,7 @@ var require_select2 = __commonJS({
         return this;
       }
       execute = (placeholderValues) => {
-        return import_tracing2.tracer.startActiveSpan("drizzle.operation", () => {
+        return import_tracing.tracer.startActiveSpan("drizzle.operation", () => {
           return this._prepare().execute(placeholderValues, this.authToken);
         });
       };
@@ -7958,18 +8116,18 @@ var require_query_builder2 = __commonJS({
       QueryBuilder: () => QueryBuilder
     });
     module2.exports = __toCommonJS2(query_builder_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_dialect = require_dialect();
     var import_selection_proxy = require_selection_proxy();
-    var import_subquery2 = require_subquery();
+    var import_subquery = require_subquery();
     var import_select = require_select2();
     var QueryBuilder = class {
-      static [import_entity11.entityKind] = "PgQueryBuilder";
+      static [import_entity.entityKind] = "PgQueryBuilder";
       dialect;
       dialectConfig;
       constructor(dialect) {
-        this.dialect = (0, import_entity11.is)(dialect, import_dialect.PgDialect) ? dialect : void 0;
-        this.dialectConfig = (0, import_entity11.is)(dialect, import_dialect.PgDialect) ? void 0 : dialect;
+        this.dialect = (0, import_entity.is)(dialect, import_dialect.PgDialect) ? dialect : void 0;
+        this.dialectConfig = (0, import_entity.is)(dialect, import_dialect.PgDialect) ? void 0 : dialect;
       }
       $with = (alias, selection) => {
         const queryBuilder = this;
@@ -7978,7 +8136,7 @@ var require_query_builder2 = __commonJS({
             qb = qb(queryBuilder);
           }
           return new Proxy(
-            new import_subquery2.WithSubquery(
+            new import_subquery.WithSubquery(
               qb.getSQL(),
               selection ?? ("getSelectedFields" in qb ? qb.getSelectedFields() ?? {} : {}),
               alias,
@@ -8078,12 +8236,12 @@ var require_insert = __commonJS({
       PgInsertBuilder: () => PgInsertBuilder
     });
     module2.exports = __toCommonJS2(insert_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_query_promise = require_query_promise();
     var import_selection_proxy = require_selection_proxy();
-    var import_sql2 = require_sql();
-    var import_table3 = require_table();
-    var import_tracing2 = require_tracing();
+    var import_sql = require_sql();
+    var import_table = require_table();
+    var import_tracing = require_tracing();
     var import_utils = require_utils();
     var import_query_builder = require_query_builder2();
     var PgInsertBuilder = class {
@@ -8094,7 +8252,7 @@ var require_insert = __commonJS({
         this.withList = withList;
         this.overridingSystemValue_ = overridingSystemValue_;
       }
-      static [import_entity11.entityKind] = "PgInsertBuilder";
+      static [import_entity.entityKind] = "PgInsertBuilder";
       authToken;
       /** @internal */
       setToken(token) {
@@ -8112,10 +8270,10 @@ var require_insert = __commonJS({
         }
         const mappedValues = values.map((entry) => {
           const result = {};
-          const cols = this.table[import_table3.Table.Symbol.Columns];
+          const cols = this.table[import_table.Table.Symbol.Columns];
           for (const colKey of Object.keys(entry)) {
             const colValue = entry[colKey];
-            result[colKey] = (0, import_entity11.is)(colValue, import_sql2.SQL) ? colValue : new import_sql2.Param(colValue, cols[colKey]);
+            result[colKey] = (0, import_entity.is)(colValue, import_sql.SQL) ? colValue : new import_sql.Param(colValue, cols[colKey]);
           }
           return result;
         });
@@ -8131,7 +8289,7 @@ var require_insert = __commonJS({
       }
       select(selectQuery) {
         const select = typeof selectQuery === "function" ? selectQuery(new import_query_builder.QueryBuilder()) : selectQuery;
-        if (!(0, import_entity11.is)(select, import_sql2.SQL) && !(0, import_utils.haveSameKeys)(this.table[import_table3.Columns], select._.selectedFields)) {
+        if (!(0, import_entity.is)(select, import_sql.SQL) && !(0, import_utils.haveSameKeys)(this.table[import_table.Columns], select._.selectedFields)) {
           throw new Error(
             "Insert select error: selected fields are not the same or are in a different order compared to the table definition"
           );
@@ -8146,9 +8304,9 @@ var require_insert = __commonJS({
         this.dialect = dialect;
         this.config = { table, values, withList, select, overridingSystemValue_ };
       }
-      static [import_entity11.entityKind] = "PgInsert";
+      static [import_entity.entityKind] = "PgInsert";
       config;
-      returning(fields = this.config.table[import_table3.Table.Symbol.Columns]) {
+      returning(fields = this.config.table[import_table.Table.Symbol.Columns]) {
         this.config.returningFields = fields;
         this.config.returning = (0, import_utils.orderSelectedFields)(fields);
         return this;
@@ -8177,12 +8335,12 @@ var require_insert = __commonJS({
        */
       onConflictDoNothing(config = {}) {
         if (config.target === void 0) {
-          this.config.onConflict = import_sql2.sql`do nothing`;
+          this.config.onConflict = import_sql.sql`do nothing`;
         } else {
           let targetColumn = "";
           targetColumn = Array.isArray(config.target) ? config.target.map((it) => this.dialect.escapeName(this.dialect.casing.getColumnCasing(it))).join(",") : this.dialect.escapeName(this.dialect.casing.getColumnCasing(config.target));
-          const whereSql = config.where ? import_sql2.sql` where ${config.where}` : void 0;
-          this.config.onConflict = import_sql2.sql`(${import_sql2.sql.raw(targetColumn)})${whereSql} do nothing`;
+          const whereSql = config.where ? import_sql.sql` where ${config.where}` : void 0;
+          this.config.onConflict = import_sql.sql`(${import_sql.sql.raw(targetColumn)})${whereSql} do nothing`;
         }
         return this;
       }
@@ -8221,13 +8379,13 @@ var require_insert = __commonJS({
             'You cannot use both "where" and "targetWhere"/"setWhere" at the same time - "where" is deprecated, use "targetWhere" or "setWhere" instead.'
           );
         }
-        const whereSql = config.where ? import_sql2.sql` where ${config.where}` : void 0;
-        const targetWhereSql = config.targetWhere ? import_sql2.sql` where ${config.targetWhere}` : void 0;
-        const setWhereSql = config.setWhere ? import_sql2.sql` where ${config.setWhere}` : void 0;
+        const whereSql = config.where ? import_sql.sql` where ${config.where}` : void 0;
+        const targetWhereSql = config.targetWhere ? import_sql.sql` where ${config.targetWhere}` : void 0;
+        const setWhereSql = config.setWhere ? import_sql.sql` where ${config.setWhere}` : void 0;
         const setSql = this.dialect.buildUpdateSet(this.config.table, (0, import_utils.mapUpdateSet)(this.config.table, config.set));
         let targetColumn = "";
         targetColumn = Array.isArray(config.target) ? config.target.map((it) => this.dialect.escapeName(this.dialect.casing.getColumnCasing(it))).join(",") : this.dialect.escapeName(this.dialect.casing.getColumnCasing(config.target));
-        this.config.onConflict = import_sql2.sql`(${import_sql2.sql.raw(targetColumn)})${targetWhereSql} do update set ${setSql}${whereSql}${setWhereSql}`;
+        this.config.onConflict = import_sql.sql`(${import_sql.sql.raw(targetColumn)})${targetWhereSql} do update set ${setSql}${whereSql}${setWhereSql}`;
         return this;
       }
       /** @internal */
@@ -8240,7 +8398,7 @@ var require_insert = __commonJS({
       }
       /** @internal */
       _prepare(name) {
-        return import_tracing2.tracer.startActiveSpan("drizzle.prepareQuery", () => {
+        return import_tracing.tracer.startActiveSpan("drizzle.prepareQuery", () => {
           return this.session.prepareQuery(this.dialect.sqlToQuery(this.getSQL()), this.config.returning, name, true);
         });
       }
@@ -8254,7 +8412,7 @@ var require_insert = __commonJS({
         return this;
       }
       execute = (placeholderValues) => {
-        return import_tracing2.tracer.startActiveSpan("drizzle.operation", () => {
+        return import_tracing.tracer.startActiveSpan("drizzle.operation", () => {
           return this._prepare().execute(placeholderValues, this.authToken);
         });
       };
@@ -8263,7 +8421,7 @@ var require_insert = __commonJS({
         return this.config.returningFields ? new Proxy(
           this.config.returningFields,
           new import_selection_proxy.SelectionProxyHandler({
-            alias: (0, import_table3.getTableName)(this.config.table),
+            alias: (0, import_table.getTableName)(this.config.table),
             sqlAliasedBehavior: "alias",
             sqlBehavior: "error"
           })
@@ -8302,9 +8460,9 @@ var require_refresh_materialized_view = __commonJS({
       PgRefreshMaterializedView: () => PgRefreshMaterializedView
     });
     module2.exports = __toCommonJS2(refresh_materialized_view_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_query_promise = require_query_promise();
-    var import_tracing2 = require_tracing();
+    var import_tracing = require_tracing();
     var PgRefreshMaterializedView = class extends import_query_promise.QueryPromise {
       constructor(view, session, dialect) {
         super();
@@ -8312,7 +8470,7 @@ var require_refresh_materialized_view = __commonJS({
         this.dialect = dialect;
         this.config = { view };
       }
-      static [import_entity11.entityKind] = "PgRefreshMaterializedView";
+      static [import_entity.entityKind] = "PgRefreshMaterializedView";
       config;
       concurrently() {
         if (this.config.withNoData !== void 0) {
@@ -8338,7 +8496,7 @@ var require_refresh_materialized_view = __commonJS({
       }
       /** @internal */
       _prepare(name) {
-        return import_tracing2.tracer.startActiveSpan("drizzle.prepareQuery", () => {
+        return import_tracing.tracer.startActiveSpan("drizzle.prepareQuery", () => {
           return this.session.prepareQuery(this.dialect.sqlToQuery(this.getSQL()), void 0, name, true);
         });
       }
@@ -8352,7 +8510,7 @@ var require_refresh_materialized_view = __commonJS({
         return this;
       }
       execute = (placeholderValues) => {
-        return import_tracing2.tracer.startActiveSpan("drizzle.operation", () => {
+        return import_tracing.tracer.startActiveSpan("drizzle.operation", () => {
           return this._prepare().execute(placeholderValues, this.authToken);
         });
       };
@@ -8409,15 +8567,15 @@ var require_update = __commonJS({
       PgUpdateBuilder: () => PgUpdateBuilder
     });
     module2.exports = __toCommonJS2(update_exports);
-    var import_entity11 = require_entity();
-    var import_table3 = require_table2();
+    var import_entity = require_entity();
+    var import_table = require_table2();
     var import_query_promise = require_query_promise();
     var import_selection_proxy = require_selection_proxy();
-    var import_sql2 = require_sql();
-    var import_subquery2 = require_subquery();
-    var import_table22 = require_table();
+    var import_sql = require_sql();
+    var import_subquery = require_subquery();
+    var import_table2 = require_table();
     var import_utils = require_utils();
-    var import_view_common2 = require_view_common();
+    var import_view_common = require_view_common();
     var PgUpdateBuilder = class {
       constructor(table, session, dialect, withList) {
         this.table = table;
@@ -8425,7 +8583,7 @@ var require_update = __commonJS({
         this.dialect = dialect;
         this.withList = withList;
       }
-      static [import_entity11.entityKind] = "PgUpdateBuilder";
+      static [import_entity.entityKind] = "PgUpdateBuilder";
       authToken;
       setToken(token) {
         this.authToken = token;
@@ -8450,7 +8608,7 @@ var require_update = __commonJS({
         this.tableName = (0, import_utils.getTableLikeName)(table);
         this.joinsNotNullableMap = typeof this.tableName === "string" ? { [this.tableName]: true } : {};
       }
-      static [import_entity11.entityKind] = "PgUpdate";
+      static [import_entity.entityKind] = "PgUpdate";
       config;
       tableName;
       joinsNotNullableMap;
@@ -8464,12 +8622,12 @@ var require_update = __commonJS({
         return this;
       }
       getTableLikeFields(table) {
-        if ((0, import_entity11.is)(table, import_table3.PgTable)) {
-          return table[import_table22.Table.Symbol.Columns];
-        } else if ((0, import_entity11.is)(table, import_subquery2.Subquery)) {
+        if ((0, import_entity.is)(table, import_table.PgTable)) {
+          return table[import_table2.Table.Symbol.Columns];
+        } else if ((0, import_entity.is)(table, import_subquery.Subquery)) {
           return table._.selectedFields;
         }
-        return table[import_view_common2.ViewBaseConfig].selectedFields;
+        return table[import_view_common.ViewBaseConfig].selectedFields;
       }
       createJoin(joinType) {
         return (table, on) => {
@@ -8478,10 +8636,10 @@ var require_update = __commonJS({
             throw new Error(`Alias "${tableName}" is already used in this query`);
           }
           if (typeof on === "function") {
-            const from = this.config.from && !(0, import_entity11.is)(this.config.from, import_sql2.SQL) ? this.getTableLikeFields(this.config.from) : void 0;
+            const from = this.config.from && !(0, import_entity.is)(this.config.from, import_sql.SQL) ? this.getTableLikeFields(this.config.from) : void 0;
             on = on(
               new Proxy(
-                this.config.table[import_table22.Table.Symbol.Columns],
+                this.config.table[import_table2.Table.Symbol.Columns],
                 new import_selection_proxy.SelectionProxyHandler({ sqlAliasedBehavior: "sql", sqlBehavior: "sql" })
               ),
               from && new Proxy(
@@ -8563,16 +8721,16 @@ var require_update = __commonJS({
       }
       returning(fields) {
         if (!fields) {
-          fields = Object.assign({}, this.config.table[import_table22.Table.Symbol.Columns]);
+          fields = Object.assign({}, this.config.table[import_table2.Table.Symbol.Columns]);
           if (this.config.from) {
             const tableName = (0, import_utils.getTableLikeName)(this.config.from);
-            if (typeof tableName === "string" && this.config.from && !(0, import_entity11.is)(this.config.from, import_sql2.SQL)) {
+            if (typeof tableName === "string" && this.config.from && !(0, import_entity.is)(this.config.from, import_sql.SQL)) {
               const fromFields = this.getTableLikeFields(this.config.from);
               fields[tableName] = fromFields;
             }
             for (const join of this.config.joins) {
               const tableName2 = (0, import_utils.getTableLikeName)(join.table);
-              if (typeof tableName2 === "string" && !(0, import_entity11.is)(join.table, import_sql2.SQL)) {
+              if (typeof tableName2 === "string" && !(0, import_entity.is)(join.table, import_sql.SQL)) {
                 const fromFields = this.getTableLikeFields(join.table);
                 fields[tableName2] = fromFields;
               }
@@ -8614,7 +8772,7 @@ var require_update = __commonJS({
         return this.config.returningFields ? new Proxy(
           this.config.returningFields,
           new import_selection_proxy.SelectionProxyHandler({
-            alias: (0, import_table22.getTableName)(this.config.table),
+            alias: (0, import_table2.getTableName)(this.config.table),
             sqlAliasedBehavior: "alias",
             sqlBehavior: "error"
           })
@@ -8683,9 +8841,9 @@ var require_count = __commonJS({
       PgCountBuilder: () => PgCountBuilder
     });
     module2.exports = __toCommonJS2(count_exports);
-    var import_entity11 = require_entity();
-    var import_sql2 = require_sql();
-    var PgCountBuilder = class _PgCountBuilder extends import_sql2.SQL {
+    var import_entity = require_entity();
+    var import_sql = require_sql();
+    var PgCountBuilder = class _PgCountBuilder extends import_sql.SQL {
       constructor(params) {
         super(_PgCountBuilder.buildEmbeddedCount(params.source, params.filters).queryChunks);
         this.params = params;
@@ -8698,14 +8856,14 @@ var require_count = __commonJS({
       }
       sql;
       token;
-      static [import_entity11.entityKind] = "PgCountBuilder";
+      static [import_entity.entityKind] = "PgCountBuilder";
       [Symbol.toStringTag] = "PgCountBuilder";
       session;
       static buildEmbeddedCount(source, filters) {
-        return import_sql2.sql`(select count(*) from ${source}${import_sql2.sql.raw(" where ").if(filters)}${filters})`;
+        return import_sql.sql`(select count(*) from ${source}${import_sql.sql.raw(" where ").if(filters)}${filters})`;
       }
       static buildCount(source, filters) {
-        return import_sql2.sql`select count(*) as count from ${source}${import_sql2.sql.raw(" where ").if(filters)}${filters};`;
+        return import_sql.sql`select count(*) as count from ${source}${import_sql.sql.raw(" where ").if(filters)}${filters};`;
       }
       /** @intrnal */
       setToken(token) {
@@ -8764,10 +8922,10 @@ var require_query = __commonJS({
       RelationalQueryBuilder: () => RelationalQueryBuilder
     });
     module2.exports = __toCommonJS2(query_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_query_promise = require_query_promise();
     var import_relations = require_relations();
-    var import_tracing2 = require_tracing();
+    var import_tracing = require_tracing();
     var RelationalQueryBuilder = class {
       constructor(fullSchema, schema, tableNamesMap, table, tableConfig, dialect, session) {
         this.fullSchema = fullSchema;
@@ -8778,7 +8936,7 @@ var require_query = __commonJS({
         this.dialect = dialect;
         this.session = session;
       }
-      static [import_entity11.entityKind] = "PgRelationalQueryBuilder";
+      static [import_entity.entityKind] = "PgRelationalQueryBuilder";
       findMany(config) {
         return new PgRelationalQuery(
           this.fullSchema,
@@ -8819,10 +8977,10 @@ var require_query = __commonJS({
         this.config = config;
         this.mode = mode;
       }
-      static [import_entity11.entityKind] = "PgRelationalQuery";
+      static [import_entity.entityKind] = "PgRelationalQuery";
       /** @internal */
       _prepare(name) {
-        return import_tracing2.tracer.startActiveSpan("drizzle.prepareQuery", () => {
+        return import_tracing.tracer.startActiveSpan("drizzle.prepareQuery", () => {
           const { query, builtQuery } = this._toSQL();
           return this.session.prepareQuery(
             builtQuery,
@@ -8874,7 +9032,7 @@ var require_query = __commonJS({
         return this;
       }
       execute() {
-        return import_tracing2.tracer.startActiveSpan("drizzle.operation", () => {
+        return import_tracing.tracer.startActiveSpan("drizzle.operation", () => {
           return this._prepare().execute(void 0, this.authToken);
         });
       }
@@ -8908,17 +9066,17 @@ var require_raw = __commonJS({
       PgRaw: () => PgRaw
     });
     module2.exports = __toCommonJS2(raw_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_query_promise = require_query_promise();
     var PgRaw = class extends import_query_promise.QueryPromise {
-      constructor(execute, sql2, query, mapBatchResult) {
+      constructor(execute, sql, query, mapBatchResult) {
         super();
         this.execute = execute;
-        this.sql = sql2;
+        this.sql = sql;
         this.query = query;
         this.mapBatchResult = mapBatchResult;
       }
-      static [import_entity11.entityKind] = "PgRaw";
+      static [import_entity.entityKind] = "PgRaw";
       /** @internal */
       getSQL() {
         return this.sql;
@@ -8967,11 +9125,11 @@ var require_db = __commonJS({
       withReplicas: () => withReplicas
     });
     module2.exports = __toCommonJS2(db_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_query_builders = require_query_builders();
     var import_selection_proxy = require_selection_proxy();
-    var import_sql2 = require_sql();
-    var import_subquery2 = require_subquery();
+    var import_sql = require_sql();
+    var import_subquery = require_subquery();
     var import_count = require_count();
     var import_query = require_query();
     var import_raw = require_raw();
@@ -9006,7 +9164,7 @@ var require_db = __commonJS({
           }
         }
       }
-      static [import_entity11.entityKind] = "PgDatabase";
+      static [import_entity.entityKind] = "PgDatabase";
       query;
       /**
        * Creates a subquery that defines a temporary named result set as a CTE.
@@ -9047,7 +9205,7 @@ var require_db = __commonJS({
             qb = qb(new import_query_builders.QueryBuilder(self.dialect));
           }
           return new Proxy(
-            new import_subquery2.WithSubquery(
+            new import_subquery.WithSubquery(
               qb.getSQL(),
               selection ?? ("getSelectedFields" in qb ? qb.getSelectedFields() ?? {} : {}),
               alias,
@@ -9231,7 +9389,7 @@ var require_db = __commonJS({
       }
       authToken;
       execute(query) {
-        const sequel = typeof query === "string" ? import_sql2.sql.raw(query) : query.getSQL();
+        const sequel = typeof query === "string" ? import_sql.sql.raw(query) : query.getSQL();
         const builtQuery = this.dialect.sqlToQuery(sequel);
         const prepared = this.session.prepareQuery(
           builtQuery,
@@ -9316,19 +9474,19 @@ var require_indexes = __commonJS({
       uniqueIndex: () => uniqueIndex
     });
     module2.exports = __toCommonJS2(indexes_exports);
-    var import_sql2 = require_sql();
-    var import_entity11 = require_entity();
+    var import_sql = require_sql();
+    var import_entity = require_entity();
     var import_columns = require_columns();
     var IndexBuilderOn = class {
       constructor(unique, name) {
         this.unique = unique;
         this.name = name;
       }
-      static [import_entity11.entityKind] = "PgIndexBuilderOn";
+      static [import_entity.entityKind] = "PgIndexBuilderOn";
       on(...columns) {
         return new IndexBuilder(
           columns.map((it) => {
-            if ((0, import_entity11.is)(it, import_sql2.SQL)) {
+            if ((0, import_entity.is)(it, import_sql.SQL)) {
               return it;
             }
             it = it;
@@ -9344,7 +9502,7 @@ var require_indexes = __commonJS({
       onOnly(...columns) {
         return new IndexBuilder(
           columns.map((it) => {
-            if ((0, import_entity11.is)(it, import_sql2.SQL)) {
+            if ((0, import_entity.is)(it, import_sql.SQL)) {
               return it;
             }
             it = it;
@@ -9371,7 +9529,7 @@ var require_indexes = __commonJS({
       using(method, ...columns) {
         return new IndexBuilder(
           columns.map((it) => {
-            if ((0, import_entity11.is)(it, import_sql2.SQL)) {
+            if ((0, import_entity.is)(it, import_sql.SQL)) {
               return it;
             }
             it = it;
@@ -9387,7 +9545,7 @@ var require_indexes = __commonJS({
       }
     };
     var IndexBuilder = class {
-      static [import_entity11.entityKind] = "PgIndexBuilder";
+      static [import_entity.entityKind] = "PgIndexBuilder";
       /** @internal */
       config;
       constructor(columns, unique, only, name, method = "btree") {
@@ -9417,7 +9575,7 @@ var require_indexes = __commonJS({
       }
     };
     var Index = class {
-      static [import_entity11.entityKind] = "PgIndex";
+      static [import_entity.entityKind] = "PgIndex";
       config;
       constructor(config, table) {
         this.config = { ...config, table };
@@ -9459,7 +9617,7 @@ var require_policies = __commonJS({
       pgPolicy: () => pgPolicy
     });
     module2.exports = __toCommonJS2(policies_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var PgPolicy = class {
       constructor(name, config) {
         this.name = name;
@@ -9471,7 +9629,7 @@ var require_policies = __commonJS({
           this.withCheck = config.withCheck;
         }
       }
-      static [import_entity11.entityKind] = "PgPolicy";
+      static [import_entity.entityKind] = "PgPolicy";
       as;
       for;
       to;
@@ -9517,7 +9675,7 @@ var require_roles = __commonJS({
       pgRole: () => pgRole
     });
     module2.exports = __toCommonJS2(roles_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var PgRole = class {
       constructor(name, config) {
         this.name = name;
@@ -9527,7 +9685,7 @@ var require_roles = __commonJS({
           this.inherit = config.inherit;
         }
       }
-      static [import_entity11.entityKind] = "PgRole";
+      static [import_entity.entityKind] = "PgRole";
       /** @internal */
       _existing;
       /** @internal */
@@ -9576,14 +9734,14 @@ var require_sequence = __commonJS({
       pgSequenceWithSchema: () => pgSequenceWithSchema
     });
     module2.exports = __toCommonJS2(sequence_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var PgSequence = class {
       constructor(seqName, seqOptions, schema) {
         this.seqName = seqName;
         this.seqOptions = seqOptions;
         this.schema = schema;
       }
-      static [import_entity11.entityKind] = "PgSequence";
+      static [import_entity.entityKind] = "PgSequence";
     };
     function pgSequence(name, options) {
       return pgSequenceWithSchema(name, options, void 0);
@@ -9592,7 +9750,7 @@ var require_sequence = __commonJS({
       return new PgSequence(name, options, schema);
     }
     function isPgSequence(obj) {
-      return (0, import_entity11.is)(obj, PgSequence);
+      return (0, import_entity.is)(obj, PgSequence);
     }
   }
 });
@@ -9667,19 +9825,19 @@ var require_view = __commonJS({
       pgViewWithSchema: () => pgViewWithSchema
     });
     module2.exports = __toCommonJS2(view_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_selection_proxy = require_selection_proxy();
     var import_utils = require_utils();
     var import_query_builder = require_query_builder2();
-    var import_table3 = require_table2();
+    var import_table = require_table2();
     var import_view_base = require_view_base();
-    var import_view_common2 = require_view_common2();
+    var import_view_common = require_view_common2();
     var DefaultViewBuilderCore = class {
       constructor(name, schema) {
         this.name = name;
         this.schema = schema;
       }
-      static [import_entity11.entityKind] = "PgDefaultViewBuilderCore";
+      static [import_entity.entityKind] = "PgDefaultViewBuilderCore";
       config = {};
       with(config) {
         this.config.with = config;
@@ -9687,7 +9845,7 @@ var require_view = __commonJS({
       }
     };
     var ViewBuilder = class extends DefaultViewBuilderCore {
-      static [import_entity11.entityKind] = "PgViewBuilder";
+      static [import_entity.entityKind] = "PgViewBuilder";
       as(qb) {
         if (typeof qb === "function") {
           qb = qb(new import_query_builder.QueryBuilder());
@@ -9714,11 +9872,11 @@ var require_view = __commonJS({
       }
     };
     var ManualViewBuilder = class extends DefaultViewBuilderCore {
-      static [import_entity11.entityKind] = "PgManualViewBuilder";
+      static [import_entity.entityKind] = "PgManualViewBuilder";
       columns;
       constructor(name, columns, schema) {
         super(name, schema);
-        this.columns = (0, import_utils.getTableColumns)((0, import_table3.pgTable)(name, columns));
+        this.columns = (0, import_utils.getTableColumns)((0, import_table.pgTable)(name, columns));
       }
       existing() {
         return new Proxy(
@@ -9764,7 +9922,7 @@ var require_view = __commonJS({
         this.name = name;
         this.schema = schema;
       }
-      static [import_entity11.entityKind] = "PgMaterializedViewBuilderCore";
+      static [import_entity.entityKind] = "PgMaterializedViewBuilderCore";
       config = {};
       using(using) {
         this.config.using = using;
@@ -9784,7 +9942,7 @@ var require_view = __commonJS({
       }
     };
     var MaterializedViewBuilder = class extends MaterializedViewBuilderCore {
-      static [import_entity11.entityKind] = "PgMaterializedViewBuilder";
+      static [import_entity.entityKind] = "PgMaterializedViewBuilder";
       as(qb) {
         if (typeof qb === "function") {
           qb = qb(new import_query_builder.QueryBuilder());
@@ -9816,11 +9974,11 @@ var require_view = __commonJS({
       }
     };
     var ManualMaterializedViewBuilder = class extends MaterializedViewBuilderCore {
-      static [import_entity11.entityKind] = "PgManualMaterializedViewBuilder";
+      static [import_entity.entityKind] = "PgManualMaterializedViewBuilder";
       columns;
       constructor(name, columns, schema) {
         super(name, schema);
-        this.columns = (0, import_utils.getTableColumns)((0, import_table3.pgTable)(name, columns));
+        this.columns = (0, import_utils.getTableColumns)((0, import_table.pgTable)(name, columns));
       }
       existing() {
         return new Proxy(
@@ -9872,12 +10030,12 @@ var require_view = __commonJS({
       }
     };
     var PgView = class extends import_view_base.PgViewBase {
-      static [import_entity11.entityKind] = "PgView";
-      [import_view_common2.PgViewConfig];
+      static [import_entity.entityKind] = "PgView";
+      [import_view_common.PgViewConfig];
       constructor({ pgConfig, config }) {
         super(config);
         if (pgConfig) {
-          this[import_view_common2.PgViewConfig] = {
+          this[import_view_common.PgViewConfig] = {
             with: pgConfig.with
           };
         }
@@ -9885,7 +10043,7 @@ var require_view = __commonJS({
     };
     var PgMaterializedViewConfig = Symbol.for("drizzle:PgMaterializedViewConfig");
     var PgMaterializedView = class extends import_view_base.PgViewBase {
-      static [import_entity11.entityKind] = "PgMaterializedView";
+      static [import_entity.entityKind] = "PgMaterializedView";
       [PgMaterializedViewConfig];
       constructor({ pgConfig, config }) {
         super(config);
@@ -9916,10 +10074,10 @@ var require_view = __commonJS({
       return pgMaterializedViewWithSchema(name, columns, void 0);
     }
     function isPgView(obj) {
-      return (0, import_entity11.is)(obj, PgView);
+      return (0, import_entity.is)(obj, PgView);
     }
     function isPgMaterializedView(obj) {
-      return (0, import_entity11.is)(obj, PgMaterializedView);
+      return (0, import_entity.is)(obj, PgMaterializedView);
     }
   }
 });
@@ -9952,19 +10110,19 @@ var require_schema = __commonJS({
       pgSchema: () => pgSchema
     });
     module2.exports = __toCommonJS2(schema_exports);
-    var import_entity11 = require_entity();
-    var import_sql2 = require_sql();
-    var import_enum2 = require_enum();
+    var import_entity = require_entity();
+    var import_sql = require_sql();
+    var import_enum = require_enum();
     var import_sequence = require_sequence();
-    var import_table3 = require_table2();
+    var import_table = require_table2();
     var import_view = require_view();
     var PgSchema = class {
       constructor(schemaName) {
         this.schemaName = schemaName;
       }
-      static [import_entity11.entityKind] = "PgSchema";
+      static [import_entity.entityKind] = "PgSchema";
       table = (name, columns, extraConfig) => {
-        return (0, import_table3.pgTableWithSchema)(name, columns, extraConfig, this.schemaName);
+        return (0, import_table.pgTableWithSchema)(name, columns, extraConfig, this.schemaName);
       };
       view = (name, columns) => {
         return (0, import_view.pgViewWithSchema)(name, columns, this.schemaName);
@@ -9973,20 +10131,20 @@ var require_schema = __commonJS({
         return (0, import_view.pgMaterializedViewWithSchema)(name, columns, this.schemaName);
       };
       enum = (name, values) => {
-        return (0, import_enum2.pgEnumWithSchema)(name, values, this.schemaName);
+        return (0, import_enum.pgEnumWithSchema)(name, values, this.schemaName);
       };
       sequence = (name, options) => {
         return (0, import_sequence.pgSequenceWithSchema)(name, options, this.schemaName);
       };
       getSQL() {
-        return new import_sql2.SQL([import_sql2.sql.identifier(this.schemaName)]);
+        return new import_sql.SQL([import_sql.sql.identifier(this.schemaName)]);
       }
       shouldOmitSQLParens() {
         return true;
       }
     };
     function isPgSchema(obj) {
-      return (0, import_entity11.is)(obj, PgSchema);
+      return (0, import_entity.is)(obj, PgSchema);
     }
     function pgSchema(name) {
       if (name === "public") {
@@ -10027,10 +10185,10 @@ var require_session = __commonJS({
       PgTransaction: () => PgTransaction
     });
     module2.exports = __toCommonJS2(session_exports);
-    var import_entity11 = require_entity();
+    var import_entity = require_entity();
     var import_errors = require_errors();
-    var import_sql2 = require_sql2();
-    var import_tracing2 = require_tracing();
+    var import_sql = require_sql2();
+    var import_tracing = require_tracing();
     var import_db = require_db();
     var PgPreparedQuery = class {
       constructor(query) {
@@ -10048,7 +10206,7 @@ var require_session = __commonJS({
         this.authToken = token;
         return this;
       }
-      static [import_entity11.entityKind] = "PgPreparedQuery";
+      static [import_entity.entityKind] = "PgPreparedQuery";
       /** @internal */
       joinsNotNullableMap;
     };
@@ -10056,11 +10214,11 @@ var require_session = __commonJS({
       constructor(dialect) {
         this.dialect = dialect;
       }
-      static [import_entity11.entityKind] = "PgSession";
+      static [import_entity.entityKind] = "PgSession";
       /** @internal */
       execute(query, token) {
-        return import_tracing2.tracer.startActiveSpan("drizzle.operation", () => {
-          const prepared = import_tracing2.tracer.startActiveSpan("drizzle.prepareQuery", () => {
+        return import_tracing.tracer.startActiveSpan("drizzle.operation", () => {
+          const prepared = import_tracing.tracer.startActiveSpan("drizzle.prepareQuery", () => {
             return this.prepareQuery(
               this.dialect.sqlToQuery(query),
               void 0,
@@ -10093,7 +10251,7 @@ var require_session = __commonJS({
         this.schema = schema;
         this.nestedIndex = nestedIndex;
       }
-      static [import_entity11.entityKind] = "PgTransaction";
+      static [import_entity.entityKind] = "PgTransaction";
       rollback() {
         throw new import_errors.TransactionRollbackError();
       }
@@ -10109,10 +10267,10 @@ var require_session = __commonJS({
         if (typeof config.deferrable === "boolean") {
           chunks.push(config.deferrable ? "deferrable" : "not deferrable");
         }
-        return import_sql2.sql.raw(chunks.join(" "));
+        return import_sql.sql.raw(chunks.join(" "));
       }
       setTransaction(config) {
-        return this.session.execute(import_sql2.sql`set transaction ${this.getTransactionConfigSQL(config)}`);
+        return this.session.execute(import_sql.sql`set transaction ${this.getTransactionConfigSQL(config)}`);
       }
     };
   }
@@ -10168,45 +10326,45 @@ var require_utils3 = __commonJS({
       getViewConfig: () => getViewConfig
     });
     module2.exports = __toCommonJS2(utils_exports);
-    var import_entity11 = require_entity();
-    var import_table3 = require_table2();
-    var import_table22 = require_table();
-    var import_view_common2 = require_view_common();
+    var import_entity = require_entity();
+    var import_table = require_table2();
+    var import_table2 = require_table();
+    var import_view_common = require_view_common();
     var import_checks = require_checks();
-    var import_foreign_keys2 = require_foreign_keys();
+    var import_foreign_keys = require_foreign_keys();
     var import_indexes = require_indexes();
     var import_policies = require_policies();
     var import_primary_keys = require_primary_keys();
-    var import_unique_constraint2 = require_unique_constraint();
-    var import_view_common22 = require_view_common2();
+    var import_unique_constraint = require_unique_constraint();
+    var import_view_common2 = require_view_common2();
     var import_view = require_view();
     function getTableConfig(table) {
-      const columns = Object.values(table[import_table22.Table.Symbol.Columns]);
+      const columns = Object.values(table[import_table2.Table.Symbol.Columns]);
       const indexes = [];
       const checks = [];
       const primaryKeys = [];
-      const foreignKeys = Object.values(table[import_table3.PgTable.Symbol.InlineForeignKeys]);
+      const foreignKeys = Object.values(table[import_table.PgTable.Symbol.InlineForeignKeys]);
       const uniqueConstraints = [];
-      const name = table[import_table22.Table.Symbol.Name];
-      const schema = table[import_table22.Table.Symbol.Schema];
+      const name = table[import_table2.Table.Symbol.Name];
+      const schema = table[import_table2.Table.Symbol.Schema];
       const policies = [];
-      const enableRLS = table[import_table3.PgTable.Symbol.EnableRLS];
-      const extraConfigBuilder = table[import_table3.PgTable.Symbol.ExtraConfigBuilder];
+      const enableRLS = table[import_table.PgTable.Symbol.EnableRLS];
+      const extraConfigBuilder = table[import_table.PgTable.Symbol.ExtraConfigBuilder];
       if (extraConfigBuilder !== void 0) {
-        const extraConfig = extraConfigBuilder(table[import_table22.Table.Symbol.ExtraConfigColumns]);
+        const extraConfig = extraConfigBuilder(table[import_table2.Table.Symbol.ExtraConfigColumns]);
         const extraValues = Array.isArray(extraConfig) ? extraConfig.flat(1) : Object.values(extraConfig);
         for (const builder of extraValues) {
-          if ((0, import_entity11.is)(builder, import_indexes.IndexBuilder)) {
+          if ((0, import_entity.is)(builder, import_indexes.IndexBuilder)) {
             indexes.push(builder.build(table));
-          } else if ((0, import_entity11.is)(builder, import_checks.CheckBuilder)) {
+          } else if ((0, import_entity.is)(builder, import_checks.CheckBuilder)) {
             checks.push(builder.build(table));
-          } else if ((0, import_entity11.is)(builder, import_unique_constraint2.UniqueConstraintBuilder)) {
+          } else if ((0, import_entity.is)(builder, import_unique_constraint.UniqueConstraintBuilder)) {
             uniqueConstraints.push(builder.build(table));
-          } else if ((0, import_entity11.is)(builder, import_primary_keys.PrimaryKeyBuilder)) {
+          } else if ((0, import_entity.is)(builder, import_primary_keys.PrimaryKeyBuilder)) {
             primaryKeys.push(builder.build(table));
-          } else if ((0, import_entity11.is)(builder, import_foreign_keys2.ForeignKeyBuilder)) {
+          } else if ((0, import_entity.is)(builder, import_foreign_keys.ForeignKeyBuilder)) {
             foreignKeys.push(builder.build(table));
-          } else if ((0, import_entity11.is)(builder, import_policies.PgPolicy)) {
+          } else if ((0, import_entity.is)(builder, import_policies.PgPolicy)) {
             policies.push(builder);
           }
         }
@@ -10226,13 +10384,13 @@ var require_utils3 = __commonJS({
     }
     function getViewConfig(view) {
       return {
-        ...view[import_view_common2.ViewBaseConfig],
-        ...view[import_view_common22.PgViewConfig]
+        ...view[import_view_common.ViewBaseConfig],
+        ...view[import_view_common2.PgViewConfig]
       };
     }
     function getMaterializedViewConfig(view) {
       return {
-        ...view[import_view_common2.ViewBaseConfig],
+        ...view[import_view_common.ViewBaseConfig],
         ...view[import_view.PgMaterializedViewConfig]
       };
     }
@@ -15313,76 +15471,15 @@ var require_lib2 = __commonJS({
   }
 });
 
-// node_modules/drizzle-orm/logger.cjs
-var require_logger = __commonJS({
-  "node_modules/drizzle-orm/logger.cjs"(exports2, module2) {
-    "use strict";
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, { get: all[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var logger_exports = {};
-    __export2(logger_exports, {
-      ConsoleLogWriter: () => ConsoleLogWriter,
-      DefaultLogger: () => DefaultLogger,
-      NoopLogger: () => NoopLogger
-    });
-    module2.exports = __toCommonJS2(logger_exports);
-    var import_entity11 = require_entity();
-    var ConsoleLogWriter = class {
-      static [import_entity11.entityKind] = "ConsoleLogWriter";
-      write(message) {
-        console.log(message);
-      }
-    };
-    var DefaultLogger = class {
-      static [import_entity11.entityKind] = "DefaultLogger";
-      writer;
-      constructor(config) {
-        this.writer = config?.writer ?? new ConsoleLogWriter();
-      }
-      logQuery(query, params) {
-        const stringifiedParams = params.map((p) => {
-          try {
-            return JSON.stringify(p);
-          } catch {
-            return String(p);
-          }
-        });
-        const paramsStr = stringifiedParams.length ? ` -- params: [${stringifiedParams.join(", ")}]` : "";
-        this.writer.write(`Query: ${query}${paramsStr}`);
-      }
-    };
-    var NoopLogger = class {
-      static [import_entity11.entityKind] = "NoopLogger";
-      logQuery() {
-      }
-    };
-  }
-});
-
 // node_modules/drizzle-orm/node-postgres/session.cjs
 var require_session2 = __commonJS({
   "node_modules/drizzle-orm/node-postgres/session.cjs"(exports2, module2) {
     "use strict";
-    var __create2 = Object.create;
+    var __create = Object.create;
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
     var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __getProtoOf2 = Object.getPrototypeOf;
+    var __getProtoOf = Object.getPrototypeOf;
     var __hasOwnProp2 = Object.prototype.hasOwnProperty;
     var __export2 = (target, all) => {
       for (var name in all)
@@ -15396,7 +15493,7 @@ var require_session2 = __commonJS({
       }
       return to;
     };
-    var __toESM2 = (mod, isNodeMode, target) => (target = mod != null ? __create2(__getProtoOf2(mod)) : {}, __copyProps2(
+    var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps2(
       // If the importer is in node compatibility mode or this is not an ESM
       // file that has been converted to a CommonJS file using a Babel-
       // compatible transform (i.e. "__esModule" has not been set), then set
@@ -15412,13 +15509,13 @@ var require_session2 = __commonJS({
       NodePgTransaction: () => NodePgTransaction
     });
     module2.exports = __toCommonJS2(session_exports);
-    var import_pg = __toESM2(require_lib2(), 1);
-    var import_entity11 = require_entity();
+    var import_pg = __toESM(require_lib2(), 1);
+    var import_entity = require_entity();
     var import_logger = require_logger();
     var import_pg_core = require_pg_core();
     var import_session = require_session();
-    var import_sql2 = require_sql();
-    var import_tracing2 = require_tracing();
+    var import_sql = require_sql();
+    var import_tracing = require_tracing();
     var import_utils = require_utils();
     var { Pool, types } = import_pg.default;
     var NodePgPreparedQuery = class extends import_session.PgPreparedQuery {
@@ -15476,16 +15573,16 @@ var require_session2 = __commonJS({
           }
         };
       }
-      static [import_entity11.entityKind] = "NodePgPreparedQuery";
+      static [import_entity.entityKind] = "NodePgPreparedQuery";
       rawQueryConfig;
       queryConfig;
       async execute(placeholderValues = {}) {
-        return import_tracing2.tracer.startActiveSpan("drizzle.execute", async () => {
-          const params = (0, import_sql2.fillPlaceholders)(this.params, placeholderValues);
+        return import_tracing.tracer.startActiveSpan("drizzle.execute", async () => {
+          const params = (0, import_sql.fillPlaceholders)(this.params, placeholderValues);
           this.logger.logQuery(this.rawQueryConfig.text, params);
           const { fields, rawQueryConfig: rawQuery, client, queryConfig: query, joinsNotNullableMap, customResultMapper } = this;
           if (!fields && !customResultMapper) {
-            return import_tracing2.tracer.startActiveSpan("drizzle.driver.execute", async (span) => {
+            return import_tracing.tracer.startActiveSpan("drizzle.driver.execute", async (span) => {
               span?.setAttributes({
                 "drizzle.query.name": rawQuery.name,
                 "drizzle.query.text": rawQuery.text,
@@ -15494,7 +15591,7 @@ var require_session2 = __commonJS({
               return client.query(rawQuery, params);
             });
           }
-          const result = await import_tracing2.tracer.startActiveSpan("drizzle.driver.execute", (span) => {
+          const result = await import_tracing.tracer.startActiveSpan("drizzle.driver.execute", (span) => {
             span?.setAttributes({
               "drizzle.query.name": query.name,
               "drizzle.query.text": query.text,
@@ -15502,16 +15599,16 @@ var require_session2 = __commonJS({
             });
             return client.query(query, params);
           });
-          return import_tracing2.tracer.startActiveSpan("drizzle.mapResponse", () => {
+          return import_tracing.tracer.startActiveSpan("drizzle.mapResponse", () => {
             return customResultMapper ? customResultMapper(result.rows) : result.rows.map((row) => (0, import_utils.mapResultRow)(fields, row, joinsNotNullableMap));
           });
         });
       }
       all(placeholderValues = {}) {
-        return import_tracing2.tracer.startActiveSpan("drizzle.execute", () => {
-          const params = (0, import_sql2.fillPlaceholders)(this.params, placeholderValues);
+        return import_tracing.tracer.startActiveSpan("drizzle.execute", () => {
+          const params = (0, import_sql.fillPlaceholders)(this.params, placeholderValues);
           this.logger.logQuery(this.rawQueryConfig.text, params);
-          return import_tracing2.tracer.startActiveSpan("drizzle.driver.execute", (span) => {
+          return import_tracing.tracer.startActiveSpan("drizzle.driver.execute", (span) => {
             span?.setAttributes({
               "drizzle.query.name": this.rawQueryConfig.name,
               "drizzle.query.text": this.rawQueryConfig.text,
@@ -15534,7 +15631,7 @@ var require_session2 = __commonJS({
         this.options = options;
         this.logger = options.logger ?? new import_logger.NoopLogger();
       }
-      static [import_entity11.entityKind] = "NodePgSession";
+      static [import_entity.entityKind] = "NodePgSession";
       logger;
       prepareQuery(query, fields, name, isResponseInArrayMode, customResultMapper) {
         return new NodePgPreparedQuery(
@@ -15551,13 +15648,13 @@ var require_session2 = __commonJS({
       async transaction(transaction, config) {
         const session = this.client instanceof Pool ? new _NodePgSession(await this.client.connect(), this.dialect, this.schema, this.options) : this;
         const tx = new NodePgTransaction(this.dialect, session, this.schema);
-        await tx.execute(import_sql2.sql`begin${config ? import_sql2.sql` ${tx.getTransactionConfigSQL(config)}` : void 0}`);
+        await tx.execute(import_sql.sql`begin${config ? import_sql.sql` ${tx.getTransactionConfigSQL(config)}` : void 0}`);
         try {
           const result = await transaction(tx);
-          await tx.execute(import_sql2.sql`commit`);
+          await tx.execute(import_sql.sql`commit`);
           return result;
         } catch (error) {
-          await tx.execute(import_sql2.sql`rollback`);
+          await tx.execute(import_sql.sql`rollback`);
           throw error;
         } finally {
           if (this.client instanceof Pool) {
@@ -15573,7 +15670,7 @@ var require_session2 = __commonJS({
       }
     };
     var NodePgTransaction = class _NodePgTransaction extends import_pg_core.PgTransaction {
-      static [import_entity11.entityKind] = "NodePgTransaction";
+      static [import_entity.entityKind] = "NodePgTransaction";
       async transaction(transaction) {
         const savepointName = `sp${this.nestedIndex + 1}`;
         const tx = new _NodePgTransaction(
@@ -15582,13 +15679,13 @@ var require_session2 = __commonJS({
           this.schema,
           this.nestedIndex + 1
         );
-        await tx.execute(import_sql2.sql.raw(`savepoint ${savepointName}`));
+        await tx.execute(import_sql.sql.raw(`savepoint ${savepointName}`));
         try {
           const result = await transaction(tx);
-          await tx.execute(import_sql2.sql.raw(`release savepoint ${savepointName}`));
+          await tx.execute(import_sql.sql.raw(`release savepoint ${savepointName}`));
           return result;
         } catch (err) {
-          await tx.execute(import_sql2.sql.raw(`rollback to savepoint ${savepointName}`));
+          await tx.execute(import_sql.sql.raw(`rollback to savepoint ${savepointName}`));
           throw err;
         }
       }
@@ -15600,11 +15697,11 @@ var require_session2 = __commonJS({
 var require_driver = __commonJS({
   "node_modules/drizzle-orm/node-postgres/driver.cjs"(exports2, module2) {
     "use strict";
-    var __create2 = Object.create;
+    var __create = Object.create;
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
     var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __getProtoOf2 = Object.getPrototypeOf;
+    var __getProtoOf = Object.getPrototypeOf;
     var __hasOwnProp2 = Object.prototype.hasOwnProperty;
     var __export2 = (target, all) => {
       for (var name in all)
@@ -15618,7 +15715,7 @@ var require_driver = __commonJS({
       }
       return to;
     };
-    var __toESM2 = (mod, isNodeMode, target) => (target = mod != null ? __create2(__getProtoOf2(mod)) : {}, __copyProps2(
+    var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps2(
       // If the importer is in node compatibility mode or this is not an ESM
       // file that has been converted to a CommonJS file using a Babel-
       // compatible transform (i.e. "__esModule" has not been set), then set
@@ -15634,8 +15731,8 @@ var require_driver = __commonJS({
       drizzle: () => drizzle
     });
     module2.exports = __toCommonJS2(driver_exports);
-    var import_pg = __toESM2(require_lib2(), 1);
-    var import_entity11 = require_entity();
+    var import_pg = __toESM(require_lib2(), 1);
+    var import_entity = require_entity();
     var import_logger = require_logger();
     var import_db = require_db();
     var import_dialect = require_dialect();
@@ -15648,13 +15745,13 @@ var require_driver = __commonJS({
         this.dialect = dialect;
         this.options = options;
       }
-      static [import_entity11.entityKind] = "NodePgDriver";
+      static [import_entity.entityKind] = "NodePgDriver";
       createSession(schema) {
         return new import_session.NodePgSession(this.client, this.dialect, schema, { logger: this.options.logger });
       }
     };
     var NodePgDatabase = class extends import_db.PgDatabase {
-      static [import_entity11.entityKind] = "NodePgDatabase";
+      static [import_entity.entityKind] = "NodePgDatabase";
     };
     function construct(client, config = {}) {
       const dialect = new import_dialect.PgDialect({ casing: config.casing });
@@ -15740,1160 +15837,70 @@ var require_postgresDB = __commonJS({
     var pg = require_lib2();
     var { drizzle } = require_node_postgres();
     var { Pool } = pg;
-    var writePool = new Pool({
-      host: process.env.POSTGRES_WRITE_HOST,
-      port: process.env.POSTGRES_PORT,
-      user: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      max: 10,
-      idleTimeoutMillis: 3e4
-    });
-    var readPool = new Pool({
-      host: process.env.POSTGRES_READ_HOST,
-      port: process.env.POSTGRES_PORT,
-      user: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      max: 10,
-      idleTimeoutMillis: 3e4
-    });
-    var drizzleWriter2 = drizzle({ client: writePool });
-    var drizzleReader = drizzle({ client: readPool });
-    module2.exports = { drizzleWriter: drizzleWriter2, drizzleReader };
-  }
-});
-
-// lambda/middlewares/withCors.js
-var require_withCors = __commonJS({
-  "lambda/middlewares/withCors.js"(exports2, module2) {
-    var allowedOrigins = process.env.ALLOWED_ORIGINS.split(",");
-    var withCors2 = (handler) => {
-      return async (event, context) => {
-        const origin = event.headers?.origin || "";
-        console.log(event.headers?.origin);
-        const isAllowed = allowedOrigins.includes(origin);
-        const result = await handler(event, context);
-        return {
-          ...result,
-          headers: {
-            ...result.headers || {},
-            "Access-Control-Allow-Origin": isAllowed ? origin : "",
-            "Access-Control-Allow-Credentials": true
-          }
-        };
-      };
-    };
-    module2.exports = withCors2;
-  }
-});
-
-// node_modules/drizzle-orm/entity.js
-var entityKind = Symbol.for("drizzle:entityKind");
-var hasOwnEntityKind = Symbol.for("drizzle:hasOwnEntityKind");
-function is(value, type) {
-  if (!value || typeof value !== "object") {
-    return false;
-  }
-  if (value instanceof type) {
-    return true;
-  }
-  if (!Object.prototype.hasOwnProperty.call(type, entityKind)) {
-    throw new Error(
-      `Class "${type.name ?? "<unknown>"}" doesn't look like a Drizzle entity. If this is incorrect and the class is provided by Drizzle, please report this as a bug.`
-    );
-  }
-  let cls = Object.getPrototypeOf(value).constructor;
-  if (cls) {
-    while (cls) {
-      if (entityKind in cls && cls[entityKind] === type[entityKind]) {
-        return true;
-      }
-      cls = Object.getPrototypeOf(cls);
-    }
-  }
-  return false;
-}
-
-// node_modules/drizzle-orm/column.js
-var Column = class {
-  constructor(table, config) {
-    this.table = table;
-    this.config = config;
-    this.name = config.name;
-    this.keyAsName = config.keyAsName;
-    this.notNull = config.notNull;
-    this.default = config.default;
-    this.defaultFn = config.defaultFn;
-    this.onUpdateFn = config.onUpdateFn;
-    this.hasDefault = config.hasDefault;
-    this.primary = config.primaryKey;
-    this.isUnique = config.isUnique;
-    this.uniqueName = config.uniqueName;
-    this.uniqueType = config.uniqueType;
-    this.dataType = config.dataType;
-    this.columnType = config.columnType;
-    this.generated = config.generated;
-    this.generatedIdentity = config.generatedIdentity;
-  }
-  static [entityKind] = "Column";
-  name;
-  keyAsName;
-  primary;
-  notNull;
-  default;
-  defaultFn;
-  onUpdateFn;
-  hasDefault;
-  isUnique;
-  uniqueName;
-  uniqueType;
-  dataType;
-  columnType;
-  enumValues = void 0;
-  generated = void 0;
-  generatedIdentity = void 0;
-  config;
-  mapFromDriverValue(value) {
-    return value;
-  }
-  mapToDriverValue(value) {
-    return value;
-  }
-  // ** @internal */
-  shouldDisableInsert() {
-    return this.config.generated !== void 0 && this.config.generated.type !== "byDefault";
-  }
-};
-
-// node_modules/drizzle-orm/column-builder.js
-var ColumnBuilder = class {
-  static [entityKind] = "ColumnBuilder";
-  config;
-  constructor(name, dataType, columnType) {
-    this.config = {
-      name,
-      keyAsName: name === "",
-      notNull: false,
-      default: void 0,
-      hasDefault: false,
-      primaryKey: false,
-      isUnique: false,
-      uniqueName: void 0,
-      uniqueType: void 0,
-      dataType,
-      columnType,
-      generated: void 0
-    };
-  }
-  /**
-   * Changes the data type of the column. Commonly used with `json` columns. Also, useful for branded types.
-   *
-   * @example
-   * ```ts
-   * const users = pgTable('users', {
-   * 	id: integer('id').$type<UserId>().primaryKey(),
-   * 	details: json('details').$type<UserDetails>().notNull(),
-   * });
-   * ```
-   */
-  $type() {
-    return this;
-  }
-  /**
-   * Adds a `not null` clause to the column definition.
-   *
-   * Affects the `select` model of the table - columns *without* `not null` will be nullable on select.
-   */
-  notNull() {
-    this.config.notNull = true;
-    return this;
-  }
-  /**
-   * Adds a `default <value>` clause to the column definition.
-   *
-   * Affects the `insert` model of the table - columns *with* `default` are optional on insert.
-   *
-   * If you need to set a dynamic default value, use {@link $defaultFn} instead.
-   */
-  default(value) {
-    this.config.default = value;
-    this.config.hasDefault = true;
-    return this;
-  }
-  /**
-   * Adds a dynamic default value to the column.
-   * The function will be called when the row is inserted, and the returned value will be used as the column value.
-   *
-   * **Note:** This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`.
-   */
-  $defaultFn(fn) {
-    this.config.defaultFn = fn;
-    this.config.hasDefault = true;
-    return this;
-  }
-  /**
-   * Alias for {@link $defaultFn}.
-   */
-  $default = this.$defaultFn;
-  /**
-   * Adds a dynamic update value to the column.
-   * The function will be called when the row is updated, and the returned value will be used as the column value if none is provided.
-   * If no `default` (or `$defaultFn`) value is provided, the function will be called when the row is inserted as well, and the returned value will be used as the column value.
-   *
-   * **Note:** This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`.
-   */
-  $onUpdateFn(fn) {
-    this.config.onUpdateFn = fn;
-    this.config.hasDefault = true;
-    return this;
-  }
-  /**
-   * Alias for {@link $onUpdateFn}.
-   */
-  $onUpdate = this.$onUpdateFn;
-  /**
-   * Adds a `primary key` clause to the column definition. This implicitly makes the column `not null`.
-   *
-   * In SQLite, `integer primary key` implicitly makes the column auto-incrementing.
-   */
-  primaryKey() {
-    this.config.primaryKey = true;
-    this.config.notNull = true;
-    return this;
-  }
-  /** @internal Sets the name of the column to the key within the table definition if a name was not given. */
-  setName(name) {
-    if (this.config.name !== "")
-      return;
-    this.config.name = name;
-  }
-};
-
-// node_modules/drizzle-orm/table.utils.js
-var TableName = Symbol.for("drizzle:Name");
-
-// node_modules/drizzle-orm/pg-core/foreign-keys.js
-var ForeignKeyBuilder = class {
-  static [entityKind] = "PgForeignKeyBuilder";
-  /** @internal */
-  reference;
-  /** @internal */
-  _onUpdate = "no action";
-  /** @internal */
-  _onDelete = "no action";
-  constructor(config, actions) {
-    this.reference = () => {
-      const { name, columns, foreignColumns } = config();
-      return { name, columns, foreignTable: foreignColumns[0].table, foreignColumns };
-    };
-    if (actions) {
-      this._onUpdate = actions.onUpdate;
-      this._onDelete = actions.onDelete;
-    }
-  }
-  onUpdate(action) {
-    this._onUpdate = action === void 0 ? "no action" : action;
-    return this;
-  }
-  onDelete(action) {
-    this._onDelete = action === void 0 ? "no action" : action;
-    return this;
-  }
-  /** @internal */
-  build(table) {
-    return new ForeignKey(table, this);
-  }
-};
-var ForeignKey = class {
-  constructor(table, builder) {
-    this.table = table;
-    this.reference = builder.reference;
-    this.onUpdate = builder._onUpdate;
-    this.onDelete = builder._onDelete;
-  }
-  static [entityKind] = "PgForeignKey";
-  reference;
-  onUpdate;
-  onDelete;
-  getName() {
-    const { name, columns, foreignColumns } = this.reference();
-    const columnNames = columns.map((column) => column.name);
-    const foreignColumnNames = foreignColumns.map((column) => column.name);
-    const chunks = [
-      this.table[TableName],
-      ...columnNames,
-      foreignColumns[0].table[TableName],
-      ...foreignColumnNames
-    ];
-    return name ?? `${chunks.join("_")}_fk`;
-  }
-};
-
-// node_modules/drizzle-orm/tracing-utils.js
-function iife(fn, ...args) {
-  return fn(...args);
-}
-
-// node_modules/drizzle-orm/pg-core/unique-constraint.js
-function uniqueKeyName(table, columns) {
-  return `${table[TableName]}_${columns.join("_")}_unique`;
-}
-var UniqueConstraintBuilder = class {
-  constructor(columns, name) {
-    this.name = name;
-    this.columns = columns;
-  }
-  static [entityKind] = "PgUniqueConstraintBuilder";
-  /** @internal */
-  columns;
-  /** @internal */
-  nullsNotDistinctConfig = false;
-  nullsNotDistinct() {
-    this.nullsNotDistinctConfig = true;
-    return this;
-  }
-  /** @internal */
-  build(table) {
-    return new UniqueConstraint(table, this.columns, this.nullsNotDistinctConfig, this.name);
-  }
-};
-var UniqueOnConstraintBuilder = class {
-  static [entityKind] = "PgUniqueOnConstraintBuilder";
-  /** @internal */
-  name;
-  constructor(name) {
-    this.name = name;
-  }
-  on(...columns) {
-    return new UniqueConstraintBuilder(columns, this.name);
-  }
-};
-var UniqueConstraint = class {
-  constructor(table, columns, nullsNotDistinct, name) {
-    this.table = table;
-    this.columns = columns;
-    this.name = name ?? uniqueKeyName(this.table, this.columns.map((column) => column.name));
-    this.nullsNotDistinct = nullsNotDistinct;
-  }
-  static [entityKind] = "PgUniqueConstraint";
-  columns;
-  name;
-  nullsNotDistinct = false;
-  getName() {
-    return this.name;
-  }
-};
-
-// node_modules/drizzle-orm/pg-core/utils/array.js
-function parsePgArrayValue(arrayString, startFrom, inQuotes) {
-  for (let i = startFrom; i < arrayString.length; i++) {
-    const char = arrayString[i];
-    if (char === "\\") {
-      i++;
-      continue;
-    }
-    if (char === '"') {
-      return [arrayString.slice(startFrom, i).replace(/\\/g, ""), i + 1];
-    }
-    if (inQuotes) {
-      continue;
-    }
-    if (char === "," || char === "}") {
-      return [arrayString.slice(startFrom, i).replace(/\\/g, ""), i];
-    }
-  }
-  return [arrayString.slice(startFrom).replace(/\\/g, ""), arrayString.length];
-}
-function parsePgNestedArray(arrayString, startFrom = 0) {
-  const result = [];
-  let i = startFrom;
-  let lastCharIsComma = false;
-  while (i < arrayString.length) {
-    const char = arrayString[i];
-    if (char === ",") {
-      if (lastCharIsComma || i === startFrom) {
-        result.push("");
-      }
-      lastCharIsComma = true;
-      i++;
-      continue;
-    }
-    lastCharIsComma = false;
-    if (char === "\\") {
-      i += 2;
-      continue;
-    }
-    if (char === '"') {
-      const [value2, startFrom2] = parsePgArrayValue(arrayString, i + 1, true);
-      result.push(value2);
-      i = startFrom2;
-      continue;
-    }
-    if (char === "}") {
-      return [result, i + 1];
-    }
-    if (char === "{") {
-      const [value2, startFrom2] = parsePgNestedArray(arrayString, i + 1);
-      result.push(value2);
-      i = startFrom2;
-      continue;
-    }
-    const [value, newStartFrom] = parsePgArrayValue(arrayString, i, false);
-    result.push(value);
-    i = newStartFrom;
-  }
-  return [result, i];
-}
-function parsePgArray(arrayString) {
-  const [result] = parsePgNestedArray(arrayString, 1);
-  return result;
-}
-function makePgArray(array) {
-  return `{${array.map((item) => {
-    if (Array.isArray(item)) {
-      return makePgArray(item);
-    }
-    if (typeof item === "string") {
-      return `"${item.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
-    }
-    return `${item}`;
-  }).join(",")}}`;
-}
-
-// node_modules/drizzle-orm/pg-core/columns/common.js
-var PgColumnBuilder = class extends ColumnBuilder {
-  foreignKeyConfigs = [];
-  static [entityKind] = "PgColumnBuilder";
-  array(size) {
-    return new PgArrayBuilder(this.config.name, this, size);
-  }
-  references(ref, actions = {}) {
-    this.foreignKeyConfigs.push({ ref, actions });
-    return this;
-  }
-  unique(name, config) {
-    this.config.isUnique = true;
-    this.config.uniqueName = name;
-    this.config.uniqueType = config?.nulls;
-    return this;
-  }
-  generatedAlwaysAs(as) {
-    this.config.generated = {
-      as,
-      type: "always",
-      mode: "stored"
-    };
-    return this;
-  }
-  /** @internal */
-  buildForeignKeys(column, table) {
-    return this.foreignKeyConfigs.map(({ ref, actions }) => {
-      return iife(
-        (ref2, actions2) => {
-          const builder = new ForeignKeyBuilder(() => {
-            const foreignColumn = ref2();
-            return { columns: [column], foreignColumns: [foreignColumn] };
-          });
-          if (actions2.onUpdate) {
-            builder.onUpdate(actions2.onUpdate);
-          }
-          if (actions2.onDelete) {
-            builder.onDelete(actions2.onDelete);
-          }
-          return builder.build(table);
-        },
-        ref,
-        actions
-      );
-    });
-  }
-  /** @internal */
-  buildExtraConfigColumn(table) {
-    return new ExtraConfigColumn(table, this.config);
-  }
-};
-var PgColumn = class extends Column {
-  constructor(table, config) {
-    if (!config.uniqueName) {
-      config.uniqueName = uniqueKeyName(table, [config.name]);
-    }
-    super(table, config);
-    this.table = table;
-  }
-  static [entityKind] = "PgColumn";
-};
-var ExtraConfigColumn = class extends PgColumn {
-  static [entityKind] = "ExtraConfigColumn";
-  getSQLType() {
-    return this.getSQLType();
-  }
-  indexConfig = {
-    order: this.config.order ?? "asc",
-    nulls: this.config.nulls ?? "last",
-    opClass: this.config.opClass
-  };
-  defaultConfig = {
-    order: "asc",
-    nulls: "last",
-    opClass: void 0
-  };
-  asc() {
-    this.indexConfig.order = "asc";
-    return this;
-  }
-  desc() {
-    this.indexConfig.order = "desc";
-    return this;
-  }
-  nullsFirst() {
-    this.indexConfig.nulls = "first";
-    return this;
-  }
-  nullsLast() {
-    this.indexConfig.nulls = "last";
-    return this;
-  }
-  /**
-   * ### PostgreSQL documentation quote
-   *
-   * > An operator class with optional parameters can be specified for each column of an index.
-   * The operator class identifies the operators to be used by the index for that column.
-   * For example, a B-tree index on four-byte integers would use the int4_ops class;
-   * this operator class includes comparison functions for four-byte integers.
-   * In practice the default operator class for the column's data type is usually sufficient.
-   * The main point of having operator classes is that for some data types, there could be more than one meaningful ordering.
-   * For example, we might want to sort a complex-number data type either by absolute value or by real part.
-   * We could do this by defining two operator classes for the data type and then selecting the proper class when creating an index.
-   * More information about operator classes check:
-   *
-   * ### Useful links
-   * https://www.postgresql.org/docs/current/sql-createindex.html
-   *
-   * https://www.postgresql.org/docs/current/indexes-opclass.html
-   *
-   * https://www.postgresql.org/docs/current/xindex.html
-   *
-   * ### Additional types
-   * If you have the `pg_vector` extension installed in your database, you can use the
-   * `vector_l2_ops`, `vector_ip_ops`, `vector_cosine_ops`, `vector_l1_ops`, `bit_hamming_ops`, `bit_jaccard_ops`, `halfvec_l2_ops`, `sparsevec_l2_ops` options, which are predefined types.
-   *
-   * **You can always specify any string you want in the operator class, in case Drizzle doesn't have it natively in its types**
-   *
-   * @param opClass
-   * @returns
-   */
-  op(opClass) {
-    this.indexConfig.opClass = opClass;
-    return this;
-  }
-};
-var IndexedColumn = class {
-  static [entityKind] = "IndexedColumn";
-  constructor(name, keyAsName, type, indexConfig) {
-    this.name = name;
-    this.keyAsName = keyAsName;
-    this.type = type;
-    this.indexConfig = indexConfig;
-  }
-  name;
-  keyAsName;
-  type;
-  indexConfig;
-};
-var PgArrayBuilder = class extends PgColumnBuilder {
-  static [entityKind] = "PgArrayBuilder";
-  constructor(name, baseBuilder, size) {
-    super(name, "array", "PgArray");
-    this.config.baseBuilder = baseBuilder;
-    this.config.size = size;
-  }
-  /** @internal */
-  build(table) {
-    const baseColumn = this.config.baseBuilder.build(table);
-    return new PgArray(
-      table,
-      this.config,
-      baseColumn
-    );
-  }
-};
-var PgArray = class _PgArray extends PgColumn {
-  constructor(table, config, baseColumn, range) {
-    super(table, config);
-    this.baseColumn = baseColumn;
-    this.range = range;
-    this.size = config.size;
-  }
-  size;
-  static [entityKind] = "PgArray";
-  getSQLType() {
-    return `${this.baseColumn.getSQLType()}[${typeof this.size === "number" ? this.size : ""}]`;
-  }
-  mapFromDriverValue(value) {
-    if (typeof value === "string") {
-      value = parsePgArray(value);
-    }
-    return value.map((v) => this.baseColumn.mapFromDriverValue(v));
-  }
-  mapToDriverValue(value, isNestedArray = false) {
-    const a = value.map(
-      (v) => v === null ? null : is(this.baseColumn, _PgArray) ? this.baseColumn.mapToDriverValue(v, true) : this.baseColumn.mapToDriverValue(v)
-    );
-    if (isNestedArray)
-      return a;
-    return makePgArray(a);
-  }
-};
-
-// node_modules/drizzle-orm/pg-core/columns/enum.js
-var isPgEnumSym = Symbol.for("drizzle:isPgEnum");
-function isPgEnum(obj) {
-  return !!obj && typeof obj === "function" && isPgEnumSym in obj && obj[isPgEnumSym] === true;
-}
-var PgEnumColumnBuilder = class extends PgColumnBuilder {
-  static [entityKind] = "PgEnumColumnBuilder";
-  constructor(name, enumInstance) {
-    super(name, "string", "PgEnumColumn");
-    this.config.enum = enumInstance;
-  }
-  /** @internal */
-  build(table) {
-    return new PgEnumColumn(
-      table,
-      this.config
-    );
-  }
-};
-var PgEnumColumn = class extends PgColumn {
-  static [entityKind] = "PgEnumColumn";
-  enum = this.config.enum;
-  enumValues = this.config.enum.enumValues;
-  constructor(table, config) {
-    super(table, config);
-    this.enum = config.enum;
-  }
-  getSQLType() {
-    return this.enum.enumName;
-  }
-};
-
-// node_modules/drizzle-orm/subquery.js
-var Subquery = class {
-  static [entityKind] = "Subquery";
-  constructor(sql2, selection, alias, isWith = false) {
-    this._ = {
-      brand: "Subquery",
-      sql: sql2,
-      selectedFields: selection,
-      alias,
-      isWith
-    };
-  }
-  // getSQL(): SQL<unknown> {
-  // 	return new SQL([this]);
-  // }
-};
-var WithSubquery = class extends Subquery {
-  static [entityKind] = "WithSubquery";
-};
-
-// node_modules/drizzle-orm/version.js
-var version = "0.40.1";
-
-// node_modules/drizzle-orm/tracing.js
-var otel;
-var rawTracer;
-var tracer = {
-  startActiveSpan(name, fn) {
-    if (!otel) {
-      return fn();
-    }
-    if (!rawTracer) {
-      rawTracer = otel.trace.getTracer("drizzle-orm", version);
-    }
-    return iife(
-      (otel2, rawTracer2) => rawTracer2.startActiveSpan(
-        name,
-        (span) => {
-          try {
-            return fn(span);
-          } catch (e) {
-            span.setStatus({
-              code: otel2.SpanStatusCode.ERROR,
-              message: e instanceof Error ? e.message : "Unknown error"
-              // eslint-disable-line no-instanceof/no-instanceof
-            });
-            throw e;
-          } finally {
-            span.end();
-          }
-        }
-      ),
-      otel,
-      rawTracer
-    );
-  }
-};
-
-// node_modules/drizzle-orm/view-common.js
-var ViewBaseConfig = Symbol.for("drizzle:ViewBaseConfig");
-
-// node_modules/drizzle-orm/table.js
-var Schema = Symbol.for("drizzle:Schema");
-var Columns = Symbol.for("drizzle:Columns");
-var ExtraConfigColumns = Symbol.for("drizzle:ExtraConfigColumns");
-var OriginalName = Symbol.for("drizzle:OriginalName");
-var BaseName = Symbol.for("drizzle:BaseName");
-var IsAlias = Symbol.for("drizzle:IsAlias");
-var ExtraConfigBuilder = Symbol.for("drizzle:ExtraConfigBuilder");
-var IsDrizzleTable = Symbol.for("drizzle:IsDrizzleTable");
-var Table = class {
-  static [entityKind] = "Table";
-  /** @internal */
-  static Symbol = {
-    Name: TableName,
-    Schema,
-    OriginalName,
-    Columns,
-    ExtraConfigColumns,
-    BaseName,
-    IsAlias,
-    ExtraConfigBuilder
-  };
-  /**
-   * @internal
-   * Can be changed if the table is aliased.
-   */
-  [TableName];
-  /**
-   * @internal
-   * Used to store the original name of the table, before any aliasing.
-   */
-  [OriginalName];
-  /** @internal */
-  [Schema];
-  /** @internal */
-  [Columns];
-  /** @internal */
-  [ExtraConfigColumns];
-  /**
-   *  @internal
-   * Used to store the table name before the transformation via the `tableCreator` functions.
-   */
-  [BaseName];
-  /** @internal */
-  [IsAlias] = false;
-  /** @internal */
-  [IsDrizzleTable] = true;
-  /** @internal */
-  [ExtraConfigBuilder] = void 0;
-  constructor(name, schema, baseName) {
-    this[TableName] = this[OriginalName] = name;
-    this[Schema] = schema;
-    this[BaseName] = baseName;
-  }
-};
-
-// node_modules/drizzle-orm/sql/sql.js
-var FakePrimitiveParam = class {
-  static [entityKind] = "FakePrimitiveParam";
-};
-function isSQLWrapper(value) {
-  return value !== null && value !== void 0 && typeof value.getSQL === "function";
-}
-function mergeQueries(queries) {
-  const result = { sql: "", params: [] };
-  for (const query of queries) {
-    result.sql += query.sql;
-    result.params.push(...query.params);
-    if (query.typings?.length) {
-      if (!result.typings) {
-        result.typings = [];
-      }
-      result.typings.push(...query.typings);
-    }
-  }
-  return result;
-}
-var StringChunk = class {
-  static [entityKind] = "StringChunk";
-  value;
-  constructor(value) {
-    this.value = Array.isArray(value) ? value : [value];
-  }
-  getSQL() {
-    return new SQL([this]);
-  }
-};
-var SQL = class _SQL {
-  constructor(queryChunks) {
-    this.queryChunks = queryChunks;
-  }
-  static [entityKind] = "SQL";
-  /** @internal */
-  decoder = noopDecoder;
-  shouldInlineParams = false;
-  append(query) {
-    this.queryChunks.push(...query.queryChunks);
-    return this;
-  }
-  toQuery(config) {
-    return tracer.startActiveSpan("drizzle.buildSQL", (span) => {
-      const query = this.buildQueryFromSourceParams(this.queryChunks, config);
-      span?.setAttributes({
-        "drizzle.query.text": query.sql,
-        "drizzle.query.params": JSON.stringify(query.params)
-      });
-      return query;
-    });
-  }
-  buildQueryFromSourceParams(chunks, _config) {
-    const config = Object.assign({}, _config, {
-      inlineParams: _config.inlineParams || this.shouldInlineParams,
-      paramStartIndex: _config.paramStartIndex || { value: 0 }
-    });
-    const {
-      casing,
-      escapeName,
-      escapeParam,
-      prepareTyping,
-      inlineParams,
-      paramStartIndex
-    } = config;
-    return mergeQueries(chunks.map((chunk) => {
-      if (is(chunk, StringChunk)) {
-        return { sql: chunk.value.join(""), params: [] };
-      }
-      if (is(chunk, Name)) {
-        return { sql: escapeName(chunk.value), params: [] };
-      }
-      if (chunk === void 0) {
-        return { sql: "", params: [] };
-      }
-      if (Array.isArray(chunk)) {
-        const result = [new StringChunk("(")];
-        for (const [i, p] of chunk.entries()) {
-          result.push(p);
-          if (i < chunk.length - 1) {
-            result.push(new StringChunk(", "));
-          }
-        }
-        result.push(new StringChunk(")"));
-        return this.buildQueryFromSourceParams(result, config);
-      }
-      if (is(chunk, _SQL)) {
-        return this.buildQueryFromSourceParams(chunk.queryChunks, {
-          ...config,
-          inlineParams: inlineParams || chunk.shouldInlineParams
+    var drizzleWriter2;
+    var drizzleReader;
+    var getDrizzleWriter2 = () => {
+      if (!drizzleWriter2) {
+        const writePool = new Pool({
+          host: process.env.POSTGRES_WRITE_HOST,
+          port: process.env.POSTGRES_PORT,
+          user: process.env.POSTGRES_USER,
+          password: process.env.POSTGRES_PASSWORD,
+          database: process.env.POSTGRES_DB,
+          max: 10,
+          idleTimeoutMillis: 3e4
         });
+        drizzleWriter2 = drizzle({ client: writePool });
       }
-      if (is(chunk, Table)) {
-        const schemaName = chunk[Table.Symbol.Schema];
-        const tableName = chunk[Table.Symbol.Name];
-        return {
-          sql: schemaName === void 0 || chunk[IsAlias] ? escapeName(tableName) : escapeName(schemaName) + "." + escapeName(tableName),
-          params: []
-        };
-      }
-      if (is(chunk, Column)) {
-        const columnName = casing.getColumnCasing(chunk);
-        if (_config.invokeSource === "indexes") {
-          return { sql: escapeName(columnName), params: [] };
-        }
-        const schemaName = chunk.table[Table.Symbol.Schema];
-        return {
-          sql: chunk.table[IsAlias] || schemaName === void 0 ? escapeName(chunk.table[Table.Symbol.Name]) + "." + escapeName(columnName) : escapeName(schemaName) + "." + escapeName(chunk.table[Table.Symbol.Name]) + "." + escapeName(columnName),
-          params: []
-        };
-      }
-      if (is(chunk, View)) {
-        const schemaName = chunk[ViewBaseConfig].schema;
-        const viewName = chunk[ViewBaseConfig].name;
-        return {
-          sql: schemaName === void 0 || chunk[ViewBaseConfig].isAlias ? escapeName(viewName) : escapeName(schemaName) + "." + escapeName(viewName),
-          params: []
-        };
-      }
-      if (is(chunk, Param)) {
-        if (is(chunk.value, Placeholder)) {
-          return { sql: escapeParam(paramStartIndex.value++, chunk), params: [chunk], typings: ["none"] };
-        }
-        const mappedValue = chunk.value === null ? null : chunk.encoder.mapToDriverValue(chunk.value);
-        if (is(mappedValue, _SQL)) {
-          return this.buildQueryFromSourceParams([mappedValue], config);
-        }
-        if (inlineParams) {
-          return { sql: this.mapInlineParam(mappedValue, config), params: [] };
-        }
-        let typings = ["none"];
-        if (prepareTyping) {
-          typings = [prepareTyping(chunk.encoder)];
-        }
-        return { sql: escapeParam(paramStartIndex.value++, mappedValue), params: [mappedValue], typings };
-      }
-      if (is(chunk, Placeholder)) {
-        return { sql: escapeParam(paramStartIndex.value++, chunk), params: [chunk], typings: ["none"] };
-      }
-      if (is(chunk, _SQL.Aliased) && chunk.fieldAlias !== void 0) {
-        return { sql: escapeName(chunk.fieldAlias), params: [] };
-      }
-      if (is(chunk, Subquery)) {
-        if (chunk._.isWith) {
-          return { sql: escapeName(chunk._.alias), params: [] };
-        }
-        return this.buildQueryFromSourceParams([
-          new StringChunk("("),
-          chunk._.sql,
-          new StringChunk(") "),
-          new Name(chunk._.alias)
-        ], config);
-      }
-      if (isPgEnum(chunk)) {
-        if (chunk.schema) {
-          return { sql: escapeName(chunk.schema) + "." + escapeName(chunk.enumName), params: [] };
-        }
-        return { sql: escapeName(chunk.enumName), params: [] };
-      }
-      if (isSQLWrapper(chunk)) {
-        if (chunk.shouldOmitSQLParens?.()) {
-          return this.buildQueryFromSourceParams([chunk.getSQL()], config);
-        }
-        return this.buildQueryFromSourceParams([
-          new StringChunk("("),
-          chunk.getSQL(),
-          new StringChunk(")")
-        ], config);
-      }
-      if (inlineParams) {
-        return { sql: this.mapInlineParam(chunk, config), params: [] };
-      }
-      return { sql: escapeParam(paramStartIndex.value++, chunk), params: [chunk], typings: ["none"] };
-    }));
-  }
-  mapInlineParam(chunk, { escapeString }) {
-    if (chunk === null) {
-      return "null";
-    }
-    if (typeof chunk === "number" || typeof chunk === "boolean") {
-      return chunk.toString();
-    }
-    if (typeof chunk === "string") {
-      return escapeString(chunk);
-    }
-    if (typeof chunk === "object") {
-      const mappedValueAsString = chunk.toString();
-      if (mappedValueAsString === "[object Object]") {
-        return escapeString(JSON.stringify(chunk));
-      }
-      return escapeString(mappedValueAsString);
-    }
-    throw new Error("Unexpected param value: " + chunk);
-  }
-  getSQL() {
-    return this;
-  }
-  as(alias) {
-    if (alias === void 0) {
-      return this;
-    }
-    return new _SQL.Aliased(this, alias);
-  }
-  mapWith(decoder) {
-    this.decoder = typeof decoder === "function" ? { mapFromDriverValue: decoder } : decoder;
-    return this;
-  }
-  inlineParams() {
-    this.shouldInlineParams = true;
-    return this;
-  }
-  /**
-   * This method is used to conditionally include a part of the query.
-   *
-   * @param condition - Condition to check
-   * @returns itself if the condition is `true`, otherwise `undefined`
-   */
-  if(condition) {
-    return condition ? this : void 0;
-  }
-};
-var Name = class {
-  constructor(value) {
-    this.value = value;
-  }
-  static [entityKind] = "Name";
-  brand;
-  getSQL() {
-    return new SQL([this]);
-  }
-};
-function isDriverValueEncoder(value) {
-  return typeof value === "object" && value !== null && "mapToDriverValue" in value && typeof value.mapToDriverValue === "function";
-}
-var noopDecoder = {
-  mapFromDriverValue: (value) => value
-};
-var noopEncoder = {
-  mapToDriverValue: (value) => value
-};
-var noopMapper = {
-  ...noopDecoder,
-  ...noopEncoder
-};
-var Param = class {
-  /**
-   * @param value - Parameter value
-   * @param encoder - Encoder to convert the value to a driver parameter
-   */
-  constructor(value, encoder = noopEncoder) {
-    this.value = value;
-    this.encoder = encoder;
-  }
-  static [entityKind] = "Param";
-  brand;
-  getSQL() {
-    return new SQL([this]);
-  }
-};
-function sql(strings, ...params) {
-  const queryChunks = [];
-  if (params.length > 0 || strings.length > 0 && strings[0] !== "") {
-    queryChunks.push(new StringChunk(strings[0]));
-  }
-  for (const [paramIndex, param2] of params.entries()) {
-    queryChunks.push(param2, new StringChunk(strings[paramIndex + 1]));
-  }
-  return new SQL(queryChunks);
-}
-((sql2) => {
-  function empty() {
-    return new SQL([]);
-  }
-  sql2.empty = empty;
-  function fromList(list) {
-    return new SQL(list);
-  }
-  sql2.fromList = fromList;
-  function raw(str) {
-    return new SQL([new StringChunk(str)]);
-  }
-  sql2.raw = raw;
-  function join(chunks, separator) {
-    const result = [];
-    for (const [i, chunk] of chunks.entries()) {
-      if (i > 0 && separator !== void 0) {
-        result.push(separator);
-      }
-      result.push(chunk);
-    }
-    return new SQL(result);
-  }
-  sql2.join = join;
-  function identifier(value) {
-    return new Name(value);
-  }
-  sql2.identifier = identifier;
-  function placeholder2(name2) {
-    return new Placeholder(name2);
-  }
-  sql2.placeholder = placeholder2;
-  function param2(value, encoder) {
-    return new Param(value, encoder);
-  }
-  sql2.param = param2;
-})(sql || (sql = {}));
-((SQL2) => {
-  class Aliased {
-    constructor(sql2, fieldAlias) {
-      this.sql = sql2;
-      this.fieldAlias = fieldAlias;
-    }
-    static [entityKind] = "SQL.Aliased";
-    /** @internal */
-    isSelectionField = false;
-    getSQL() {
-      return this.sql;
-    }
-    /** @internal */
-    clone() {
-      return new Aliased(this.sql, this.fieldAlias);
-    }
-  }
-  SQL2.Aliased = Aliased;
-})(SQL || (SQL = {}));
-var Placeholder = class {
-  constructor(name2) {
-    this.name = name2;
-  }
-  static [entityKind] = "Placeholder";
-  getSQL() {
-    return new SQL([this]);
-  }
-};
-var IsDrizzleView = Symbol.for("drizzle:IsDrizzleView");
-var View = class {
-  static [entityKind] = "View";
-  /** @internal */
-  [ViewBaseConfig];
-  /** @internal */
-  [IsDrizzleView] = true;
-  constructor({ name: name2, schema, selectedFields, query }) {
-    this[ViewBaseConfig] = {
-      name: name2,
-      originalName: name2,
-      schema,
-      selectedFields,
-      query,
-      isExisting: !query,
-      isAlias: false
+      return drizzleWriter2;
     };
+    var getDrizzleReader = () => {
+      if (!drizzleReader) {
+        const readPool = new Pool({
+          host: process.env.POSTGRES_READ_HOST,
+          port: process.env.POSTGRES_PORT,
+          user: process.env.POSTGRES_USER,
+          password: process.env.POSTGRES_PASSWORD,
+          database: process.env.POSTGRES_DB,
+          max: 10,
+          idleTimeoutMillis: 3e4
+        });
+        drizzleReader = drizzle({ client: readPool });
+      }
+      return drizzleReader;
+    };
+    module2.exports = { getDrizzleWriter: getDrizzleWriter2, getDrizzleReader };
   }
-  getSQL() {
-    return new SQL([this]);
-  }
-};
-Column.prototype.getSQL = function() {
-  return new SQL([this]);
-};
-Table.prototype.getSQL = function() {
-  return new SQL([this]);
-};
-Subquery.prototype.getSQL = function() {
-  return new SQL([this]);
-};
-
-// node_modules/drizzle-orm/sql/expressions/conditions.js
-function bindIfParam(value, column) {
-  if (isDriverValueEncoder(column) && !isSQLWrapper(value) && !is(value, Param) && !is(value, Placeholder) && !is(value, Column) && !is(value, Table) && !is(value, View)) {
-    return new Param(value, column);
-  }
-  return value;
-}
-var eq = (left, right) => {
-  return sql`${left} = ${bindIfParam(right, left)}`;
-};
+});
 
 // lambda/handlers/updateHomeDoc.js
-var import_homeDocModel = __toESM(require_homeDocModel());
-var import_postgresDB = __toESM(require_postgresDB());
 var withCors = require_withCors();
+var { eq } = require_drizzle_orm();
+var {
+  ChattelsSpecsAttributes,
+  HomeDocs,
+  HomeDocsDimensions,
+  ResidenceSpecsAttributes
+} = require_homeDocModel();
+var { getDrizzleWriter } = require_postgresDB();
+var drizzleWriter = getDrizzleWriter();
 exports.handler = withCors(async (event) => {
   const { id, pageType } = event.pathParameters || {};
   const body = JSON.parse(event.body || {});
   try {
-    const updatedHomeDoc = await import_postgresDB.drizzleWriter.update(import_homeDocModel.HomeDocs).set(body).where(eq(import_homeDocModel.HomeDocs.id, id)).returning().then((rows) => rows[0]);
-    const updatedHomeDocsDimensions = await import_postgresDB.drizzleWriter.insert(import_homeDocModel.HomeDocsDimensions).values({ ...body, homeDocId: id }).onConflictDoUpdate({
-      target: import_homeDocModel.HomeDocsDimensions.homeDocId,
+    const updatedHomeDoc = await drizzleWriter.update(HomeDocs).set(body).where(eq(HomeDocs.id, id)).returning().then((rows) => rows[0]);
+    const updatedHomeDocsDimensions = await drizzleWriter.insert(HomeDocsDimensions).values({ ...body, homeDocId: id }).onConflictDoUpdate({
+      target: HomeDocsDimensions.homeDocId,
       set: body
     }).returning().then((rows) => rows[0]);
     const { id: dimId, homeDocId, ...dimensions } = updatedHomeDocsDimensions;
     let specsAttributes;
     switch (pageType) {
       case "Chattels":
-        specsAttributes = import_homeDocModel.ChattelsSpecsAttributes;
+        specsAttributes = ChattelsSpecsAttributes;
         break;
       case "Residence":
-        specsAttributes = import_homeDocModel.ResidenceSpecsAttributes;
+        specsAttributes = ResidenceSpecsAttributes;
         break;
       default:
         return {
@@ -16906,7 +15913,7 @@ exports.handler = withCors(async (event) => {
     }
     const specsAttributesKeys = Object.keys(specsAttributes);
     const filteredBody = Object.keys(body).filter((key) => specsAttributesKeys.includes(key)).reduce((obj, key) => ({ ...obj, [key]: body[key] }), {});
-    const updatedSpecAttributes = await import_postgresDB.drizzleWriter.insert(specsAttributes).values({ ...filteredBody, homeDocId: id }).onConflictDoUpdate({
+    const updatedSpecAttributes = await drizzleWriter.insert(specsAttributes).values({ ...filteredBody, homeDocId: id }).onConflictDoUpdate({
       target: specsAttributes.homeDocId,
       set: filteredBody
     }).returning().then((rows) => rows[0]);

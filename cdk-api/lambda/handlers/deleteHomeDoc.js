@@ -1,6 +1,7 @@
 const { eq } = require("drizzle-orm");
 const { HomeDocs } = require("../models/homeDocModel");
-const { drizzleWriter } = require("../postgresDB");
+const { getDrizzleWriter } = require("../postgresDB");
+const drizzleWriter = getDrizzleWriter();
 
 exports.handler = async (event) => {
   try {

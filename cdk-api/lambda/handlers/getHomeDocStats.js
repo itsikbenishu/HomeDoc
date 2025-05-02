@@ -1,4 +1,5 @@
-const { drizzleReader } = require("../postgresDB");
+const { getDrizzleReader } = require("../postgresDB");
+const drizzleReader = getDrizzleReader();
 
 exports.handler = async (event) => {
   try {

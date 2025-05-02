@@ -29,7 +29,6 @@ var require_withCors = __commonJS({
     var withCors2 = (handler) => {
       return async (event, context) => {
         const origin = event.headers?.origin || "";
-        console.log(event.headers?.origin);
         const isAllowed = allowedOrigins.includes(origin);
         const result = await handler(event, context);
         return {
@@ -49,7 +48,7 @@ var require_withCors = __commonJS({
 // lambda/utils/apiSqlFeatures.js
 var require_apiSqlFeatures = __commonJS({
   "lambda/utils/apiSqlFeatures.js"(exports2, module2) {
-    var APISQLFeatures2 = class {
+    var APISQLFeatures = class {
       constructor(DB, table, queryString) {
         this.DB = DB;
         this.table = table;
@@ -154,7 +153,7 @@ var require_apiSqlFeatures = __commonJS({
         return this;
       }
     };
-    module2.exports = APISQLFeatures2;
+    module2.exports = APISQLFeatures;
   }
 });
 
@@ -15680,38 +15679,48 @@ var require_postgresDB = __commonJS({
     var pg = require_lib2();
     var { drizzle } = require_node_postgres();
     var { Pool } = pg;
-    var writePool = new Pool({
-      host: process.env.POSTGRES_WRITE_HOST,
-      port: process.env.POSTGRES_PORT,
-      user: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      max: 10,
-      idleTimeoutMillis: 3e4
-    });
-    var readPool = new Pool({
-      host: process.env.POSTGRES_READ_HOST,
-      port: process.env.POSTGRES_PORT,
-      user: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      max: 10,
-      idleTimeoutMillis: 3e4
-    });
-    var drizzleWriter = drizzle({ client: writePool });
-    var drizzleReader2 = drizzle({ client: readPool });
-    module2.exports = { drizzleWriter, drizzleReader: drizzleReader2 };
+    var drizzleWriter;
+    var drizzleReader;
+    var getDrizzleWriter = () => {
+      if (!drizzleWriter) {
+        const writePool = new Pool({
+          host: process.env.POSTGRES_WRITE_HOST,
+          port: process.env.POSTGRES_PORT,
+          user: process.env.POSTGRES_USER,
+          password: process.env.POSTGRES_PASSWORD,
+          database: process.env.POSTGRES_DB,
+          max: 10,
+          idleTimeoutMillis: 3e4
+        });
+        drizzleWriter = drizzle({ client: writePool });
+      }
+      return drizzleWriter;
+    };
+    var getDrizzleReader = () => {
+      if (!drizzleReader) {
+        const readPool = new Pool({
+          host: process.env.POSTGRES_READ_HOST,
+          port: process.env.POSTGRES_PORT,
+          user: process.env.POSTGRES_USER,
+          password: process.env.POSTGRES_PASSWORD,
+          database: process.env.POSTGRES_DB,
+          max: 10,
+          idleTimeoutMillis: 3e4
+        });
+        drizzleReader = drizzle({ client: readPool });
+      }
+      return drizzleReader;
+    };
+    module2.exports = { getDrizzleWriter, getDrizzleReader };
   }
 });
 
 // lambda/handlers/getAllHomeDocs.js
 var withCors = require_withCors();
-var APISQLFeatures = require_apiSqlFeatures();
-var { drizzleReader } = require_postgresDB();
 exports.handler = withCors(async (event) => {
   try {
-    const query = event.queryStringParameters || {};
-    if (query.source === "warm-up") {
+    console.log(`BDIKA: ` + event);
+    if (event?.source === "warm-up") {
       return {
         statusCode: 200,
         body: JSON.stringify({
@@ -15720,6 +15729,10 @@ exports.handler = withCors(async (event) => {
         })
       };
     }
+    const APISQLFeatures = require_apiSqlFeatures();
+    const { getDrizzleReader } = require_postgresDB();
+    const drizzleReader = getDrizzleReader();
+    const query = event.queryStringParameters || {};
     const features = new APISQLFeatures(drizzleReader, "home_docs", query).filter().sort().limitFields().paginate().makeQuery();
     const entities = await features.execute();
     const homeDocs = entities.rows || [];

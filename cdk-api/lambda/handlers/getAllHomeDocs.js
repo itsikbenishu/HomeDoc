@@ -1,11 +1,8 @@
-const APISQLFeatures = require("../utils/apiSqlFeatures.js");
-const { drizzleReader } = require("../postgresDB.js");
-
 exports.handler = async (event) => {
   try {
-    const query = event.queryStringParameters || {};
+    console.log(`BDIKA: ` + event);
 
-    if (query.source === "warm-up") {
+    if (event?.source === "warm-up") {
       return {
         statusCode: 200,
         body: JSON.stringify({
@@ -14,6 +11,12 @@ exports.handler = async (event) => {
         }),
       };
     }
+
+    const APISQLFeatures = require("../utils/apiSqlFeatures.js");
+    const { getDrizzleReader } = require("../postgresDB");
+    const drizzleReader = getDrizzleReader();
+
+    const query = event.queryStringParameters || {};
 
     const features = new APISQLFeatures(drizzleReader, "home_docs", query)
       .filter()

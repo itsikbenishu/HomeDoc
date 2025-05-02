@@ -1,4 +1,5 @@
-const { drizzleWriter } = require("../postgresDB");
+const { getDrizzleWriter } = require("../postgresDB");
+const drizzleWriter = getDrizzleWriter();
 const { HomeDocs } = require("../models/homeDocModel");
 
 exports.handler = async (event) => {
