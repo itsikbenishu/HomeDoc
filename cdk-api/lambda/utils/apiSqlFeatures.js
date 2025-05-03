@@ -26,11 +26,6 @@ class APISQLFeatures {
     return result;
   }
 
-  #formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toISOString();
-  }
-
   filter() {
     const operators = {
       gte: ">=",
@@ -68,7 +63,24 @@ class APISQLFeatures {
           let wildcardPosition = queryObject[`${field}[$wildcard]`] || "both";
 
           if (datePosition === "true") {
-            fieldValue = formatDate(fieldValue);
+            if (operatorKey === "eq") {
+              const isDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(value); //"YYYY-MM-DD"
+
+              if (isDateOnly) {
+                const startOfDayStr = `'${value} 00:00:00'`;
+                const endOfDayStr = `'${value} 23:59:59'`;
+                const dayRangeCondition = `"${field}" >= ${startOfDayStr} AND "${field}" <= ${endOfDayStr} AND`;
+                return acc + dayRangeCondition;
+              } else {
+                //"YYYY-MM-DDTHH:mm:ss" or "YYYY-MM-DD HH:mm:ss"
+                const startTime = `'${value}'`;
+                const endTime = `('${value}'::timestamp + interval '1 second')`;
+                const exactSecondRange = `"${field}" >= ${startTime} AND "${field}" < ${endTime} AND`;
+                return acc + exactSecondRange;
+              }
+            }
+
+            fieldValue = `'${value}'`;
           }
 
           if (
@@ -138,8 +150,12 @@ class APISQLFeatures {
 
   paginate() {
     const defaultPaginateLimit = 25;
+    const maxLimit = 100;
     const page = this.queryString.page * 1 || 1;
-    const limit = this.queryString.limit * 1 || defaultPaginateLimit;
+    const limit = Math.min(
+      this.queryString.limit * 1 || defaultPaginateLimit,
+      maxLimit
+    );
     const offset = (page - 1) * limit;
 
     this.offset = `OFFSET ${offset}`;

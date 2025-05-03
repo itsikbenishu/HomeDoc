@@ -72,10 +72,6 @@ var require_apiSqlFeatures = __commonJS({
         const result = await this.DB.execute(this.query);
         return result;
       }
-      #formatDate(dateString) {
-        const date = new Date(dateString);
-        return date.toISOString();
-      }
       filter() {
         const operators = {
           gte: ">=",
@@ -105,7 +101,21 @@ var require_apiSqlFeatures = __commonJS({
             let datePosition = queryObject[`${field}[$date]`] || "";
             let wildcardPosition = queryObject[`${field}[$wildcard]`] || "both";
             if (datePosition === "true") {
-              fieldValue = formatDate(fieldValue);
+              if (operatorKey === "eq") {
+                const isDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(value);
+                if (isDateOnly) {
+                  const startOfDayStr = `'${value} 00:00:00'`;
+                  const endOfDayStr = `'${value} 23:59:59'`;
+                  const dayRangeCondition = `"${field}" >= ${startOfDayStr} AND "${field}" <= ${endOfDayStr} AND`;
+                  return acc + dayRangeCondition;
+                } else {
+                  const startTime = `'${value}'`;
+                  const endTime = `('${value}'::timestamp + interval '1 second')`;
+                  const exactSecondRange = `"${field}" >= ${startTime} AND "${field}" < ${endTime} AND`;
+                  return acc + exactSecondRange;
+                }
+              }
+              fieldValue = `'${value}'`;
             }
             if ((operator === "ILIKE" || operator === "LIKE") && !fieldValue.includes("%")) {
               if (wildcardPosition === "start") {
@@ -155,8 +165,12 @@ var require_apiSqlFeatures = __commonJS({
       }
       paginate() {
         const defaultPaginateLimit = 25;
+        const maxLimit = 100;
         const page = this.queryString.page * 1 || 1;
-        const limit = this.queryString.limit * 1 || defaultPaginateLimit;
+        const limit = Math.min(
+          this.queryString.limit * 1 || defaultPaginateLimit,
+          maxLimit
+        );
         const offset = (page - 1) * limit;
         this.offset = `OFFSET ${offset}`;
         this.page = `LIMIT ${limit}`;
