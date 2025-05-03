@@ -120,8 +120,8 @@ const CreateHomeDialog = () => {
         <DialogContent>
           <DialogContentText
             sx={{
-              mb: (theme) => theme.spacing(0.5),
-              mt: (theme) => theme.spacing(-0.25),
+              mb: 0.5,
+              mt: -0.25,
             }}
           >
             כדי לצור תיעוד ביתי, אנא הזן את הכתובת של הנכס ואת סוג הנכס אותו אתה

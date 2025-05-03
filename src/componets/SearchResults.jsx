@@ -104,7 +104,7 @@ const SearchResults = ({
                 <Box
                   key={`header-${index}`}
                   sx={{
-                    paddingTop: (theme) => theme.spacing(0.5),
+                    pt: 0.5,
                     flexGrow: columnRatios[index],
                     flexBasis: 0,
                     textAlign: "center",
@@ -116,11 +116,7 @@ const SearchResults = ({
                   {header}
                 </Box>
               ))}
-              {isLinkable && (
-                <Box
-                  sx={{ flexShrink: 0, width: (theme) => theme.spacing(2.5) }}
-                />
-              )}
+              {isLinkable && <Box sx={{ flexShrink: 0, width: 2.5 }} />}
             </Stack>
           </Card>
         )}

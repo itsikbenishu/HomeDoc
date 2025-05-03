@@ -25,9 +25,8 @@ const SearchResultsLineSkeleton = ({ columns = 3, columnRatios = [] }) => {
     <Card
       className={classes.card}
       sx={{
-        padding: (theme) => theme.spacing(0.5),
-        marginTop: (theme) => theme.spacing(0.5),
-        marginBottom: (theme) => theme.spacing(0.5),
+        p: 0.5,
+        my: 0.5,
       }}
     >
       <Stack direction="row" alignItems="center" spacing={1}>

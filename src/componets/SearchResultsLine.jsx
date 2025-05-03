@@ -36,10 +36,8 @@ const SearchResultsLine = ({
     <Card
       className={classes.card}
       sx={{
-        paddingLeft: (theme) => theme.spacing(1),
-        paddingRight: (theme) => theme.spacing(1),
-        marginTop: (theme) => theme.spacing(0.5),
-        marginBottom: (theme) => theme.spacing(0.5),
+        px: 1,
+        my: 0.5,
       }}
     >
       <Stack direction="row" alignItems="center" spacing={1}>
