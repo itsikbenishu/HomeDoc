@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import {
   Paper,
+  Box,
   Card,
   Typography,
   Stack,
@@ -15,6 +16,7 @@ const useStyles = makeStyles(() => ({
     textAlign: "center",
     width: "100%",
   },
+  box: { display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 2 },
   categoryCard: {
     padding: 1,
     textAlign: "center",
@@ -44,55 +46,59 @@ const HomePage = () => {
       spacing={5}
       sx={{
         bgcolor: (theme) => theme.palette.primary.main,
-        ml: "4rem",
-        mr: "4rem",
-        mt: "1rem",
-        p: "1rem",
-        alignItems: "center",
+        pl: { xs: 2, sm: 4 },
+        pr: { xs: 2, sm: 4 },
+        mt: 1,
+        p: 1,
       }}
     >
-      <Typography
-        variant="h4"
+      <Paper
+        elevation={0}
         sx={{
           bgcolor: (theme) => theme.palette.primary.main,
-          color: (theme) => theme.palette.primary.contrastText,
+          alignItems: "center",
         }}
-        className={classes.header}
       >
-        בחר סוג נכס
-      </Typography>
+        <Typography
+          variant="h3"
+          sx={{
+            bgcolor: (theme) => theme.palette.primary.main,
+            color: (theme) => theme.palette.primary.contrastText,
+          }}
+          className={classes.header}
+        >
+          בחר סוג נכס
+        </Typography>
+      </Paper>
 
       <Paper
         elevation={0}
         sx={{ bgcolor: (theme) => theme.palette.primary.main }}
       >
-        <Grid
-          container
-          spacing={2}
+        <Box
           sx={{
-            alignItems: "center",
+            display: "flex",
+            flexWrap: "wrap",
             justifyContent: "center",
+            gap: 2,
           }}
         >
           {Object.entries(HOME_DOC_CATEGORIES).map(
             ([category, categoryText]) => (
-              <Grid item xs={12} sm={6} md={4} key={category}>
-                <Card
-                  className={classes.categoryCard}
-                  onClick={() =>
-                    navigate(
-                      `/Results?category=${category}&${BASIC_PAGINATION}`
-                    )
-                  }
-                >
-                  <CardContent className={classes.categoryCardContent}>
-                    {categoryText}
-                  </CardContent>
-                </Card>
-              </Grid>
+              <Card
+                key={category}
+                className={classes.categoryCard}
+                onClick={() =>
+                  navigate(`/Results?category=${category}&${BASIC_PAGINATION}`)
+                }
+              >
+                <CardContent className={classes.categoryCardContent}>
+                  {categoryText}
+                </CardContent>
+              </Card>
             )
           )}
-        </Grid>
+        </Box>
       </Paper>
     </Stack>
   );
