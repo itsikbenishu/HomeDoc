@@ -64,11 +64,9 @@ const SearchResults = ({
     <Paper
       elevation={12}
       sx={(theme) => ({
-        backgroundColor: (theme) => theme.palette.secondary.main,
-        marginLeft: theme.spacing(3),
-        marginRight: theme.spacing(3),
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(2),
+        backgroundColor: theme.palette.secondary.main,
+        mx: 3,
+        px: 2,
       })}
     >
       <Stack spacing={2} alignItems="center">

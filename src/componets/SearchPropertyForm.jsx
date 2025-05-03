@@ -130,6 +130,7 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
     <Box
       sx={{
         bgcolor: (theme) => theme.palette.secondary.main,
+        mx: { xs: 0.5, sm: 1 },
         display: "flex",
         alignItems: "center",
         gap: 1,
@@ -137,7 +138,7 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
     >
       <Box
         sx={{
-          pr: (theme) => theme.spacing(0.5),
+          pr: 0.5,
           flexShrink: 0,
         }}
       >
@@ -178,7 +179,7 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
         </FormControl>
       </Box>
 
-      <Box sx={{ pt: (theme) => theme.spacing(2) }}>
+      <Box sx={{ pt: 2 }}>
         <FormControl
           sx={{ bgcolor: (theme) => theme.palette.primary.contrastText }}
           variant="standard"
@@ -188,7 +189,7 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
           </IconButton>
         </FormControl>
       </Box>
-      <Box sx={{ pb: (theme) => theme.spacing(1) }}>
+      <Box sx={{ pb: 1 }}>
         <CreateHomeDialog />
       </Box>
     </Box>
