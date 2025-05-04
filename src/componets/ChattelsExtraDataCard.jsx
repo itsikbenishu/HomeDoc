@@ -4,6 +4,7 @@ import ExtraDataList from "./ExtraDataList";
 import ExtraDataField from "./ExtraDataField";
 import ChipsList from "./ChipsList";
 import { useFormikContext } from "formik";
+import LabeledExtraDataFields from "./LabeledExtraDataFields";
 
 const useStyles = makeStyles(() => ({
   gridItem: {
@@ -81,16 +82,15 @@ const ChattelsExtraDataCard = () => {
           className={classes.paper}
           sx={{
             backgroundColor: "transparent",
-            borderColor: "grey",
           }}
         >
           <Card
             className={classes.card}
             sx={{
               backgroundColor: "transparent",
-              borderColor: "grey",
+
               marginTop: "3px",
-              marginRight: "4px",
+              mr: 0.25,
             }}
           >
             <Grid container spacing={0.25}>
@@ -139,53 +139,24 @@ const ChattelsExtraDataCard = () => {
           className={classes.paper}
           sx={{
             backgroundColor: "transparent",
-            borderColor: "grey",
-            marginRight: "4px",
+            mr: 0.25,
           }}
         >
           <Card
             className={classes.card}
-            sx={{ backgroundColor: "transparent", borderColor: "grey" }}
+            sx={{ backgroundColor: "transparent" }}
           >
-            <Grid container spacing={0.25}>
-              <Grid
-                item
-                xs={2}
-                justifyContent="flex-start"
-                alignItems="center"
-                sx={{ pl: "0.5rem" }}
-              >
-                <Typography
-                  variant="subtitle1"
-                  className={classes.typographyText}
-                >
-                  כמות הפריטים:
-                </Typography>
-              </Grid>
-              <Grid item xs={2} className={classes.textFieldContainer}>
-                <ExtraDataField
-                  label="quantity"
-                  className={classes.textField}
-                />
-              </Grid>
-              <Grid
-                item
-                xs={2}
-                justifyContent="flex-start"
-                alignItems="center"
-                sx={{ pl: "0.5rem" }}
-              >
-                <Typography
-                  variant="subtitle1"
-                  className={classes.typographyText}
-                >
-                  משקל (ק"ג):
-                </Typography>
-              </Grid>
-              <Grid item xs={1} className={classes.textFieldContainer}>
-                <ExtraDataField label="weight" className={classes.textField} />
-              </Grid>
-            </Grid>
+            <LabeledExtraDataFields
+              className={classes.textField}
+              columnsPerRow={3}
+              labels={[
+                {
+                  text: "כמות הפריטים:",
+                  formik: "quantity",
+                },
+                { text: 'משקל (ק"ג):', formik: "weight" },
+              ]}
+            />
           </Card>
         </Paper>
       </Grid>
@@ -195,51 +166,22 @@ const ChattelsExtraDataCard = () => {
           elevation={0}
           className={classes.paper}
           sx={{
-            marginRight: "4px",
+            mr: 0.25,
             backgroundColor: "transparent",
-            borderColor: "grey",
           }}
         >
           <Card
             className={classes.card}
-            sx={{ backgroundColor: "transparent", borderColor: "grey" }}
+            sx={{ backgroundColor: "transparent" }}
           >
-            <Grid container spacing={0.25}>
-              <Grid
-                item
-                xs={2}
-                justifyContent="flex-start"
-                alignItems="center"
-                sx={{ pl: "0.5rem" }}
-              >
-                <Typography
-                  variant="subtitle1"
-                  className={classes.typographyText}
-                >
-                  רוחב (מטרים):
-                </Typography>
-              </Grid>
-              <Grid item xs={2} className={classes.textFieldContainer}>
-                <ExtraDataField label="width" className={classes.textField} />
-              </Grid>
-              <Grid
-                item
-                xs={2}
-                justifyContent="flex-start"
-                alignItems="center"
-                sx={{ pl: "0.5rem" }}
-              >
-                <Typography
-                  variant="subtitle1"
-                  className={classes.typographyText}
-                >
-                  אורך (מטרים):
-                </Typography>
-              </Grid>
-              <Grid item xs={1} className={classes.textFieldContainer}>
-                <ExtraDataField label="length" className={classes.textField} />
-              </Grid>
-            </Grid>
+            <LabeledExtraDataFields
+              className={classes.textField}
+              columnsPerRow={3}
+              labels={[
+                { text: "אורך (מטרים):", formik: "length" },
+                { text: "רוחב (מטרים):", formik: "width" },
+              ]}
+            />
           </Card>
         </Paper>
       </Grid>
@@ -250,16 +192,15 @@ const ChattelsExtraDataCard = () => {
           className={classes.paper}
           sx={{
             backgroundColor: "transparent",
-            borderColor: "grey",
           }}
         >
           <Card
             className={classes.card}
             sx={{
               backgroundColor: "transparent",
-              borderColor: "grey",
+
               marginTop: "3px",
-              marginRight: "4px",
+              mr: 0.25,
             }}
           >
             <Grid container spacing={0.25}>
@@ -312,16 +253,14 @@ const ChattelsExtraDataCard = () => {
           elevation={0}
           className={classes.paper}
           sx={{
-            marginRight: "4px",
+            mr: 0.25,
             backgroundColor: "transparent",
-            borderColor: "grey",
           }}
         >
           <Card
             className={classes.card}
             sx={{
               backgroundColor: "transparent",
-              borderColor: "grey",
             }}
           >
             <ExtraDataList

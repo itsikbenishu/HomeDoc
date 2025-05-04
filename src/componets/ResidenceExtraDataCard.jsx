@@ -1,8 +1,9 @@
-import { Box, Grid, Typography, Card } from "@mui/material";
+import { Box, Grid, Typography, Card, Stack } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { SUB_HOME_DOC_LIST, SUB_HOME_DOC_TYPE } from "../../Constants";
 import ExtraDataList from "./ExtraDataList";
 import ExtraDataField from "./ExtraDataField";
+import LabeledExtraDataFields from "./LabeledExtraDataFields";
 
 const useStyles = makeStyles(() => ({
   gridItem: {
@@ -20,22 +21,15 @@ const useStyles = makeStyles(() => ({
     marginBottom: "0",
     width: "100%",
   },
-  typographyText: {
-    color: "#130b65",
-  },
   textField: {
     padding: 0.5,
-    marginBottom: 2,
+    marginBottom: 3,
     width: "8rem",
     height: "1.5rem",
     "& .MuiInputBase-root": {
       padding: 0,
       height: "1.9rem",
     },
-  },
-  textFieldContainer: {
-    padding: 0,
-    marginBottom: 0,
   },
   multilineTextFieldContainer: {
     padding: 0,
@@ -59,6 +53,13 @@ const useStyles = makeStyles(() => ({
 
 const ResidenceExtraDataCard = ({ residence }) => {
   const classes = useStyles();
+  const subEntitiesQuantityLable = !SUB_HOME_DOC_LIST[
+    SUB_HOME_DOC_TYPE[residence.category][residence.type]
+  ]
+    ? `כמות הפריטים:`
+    : `כמות ה${
+        SUB_HOME_DOC_LIST[SUB_HOME_DOC_TYPE[residence.category][residence.type]]
+      }:`;
 
   return (
     <Grid container spacing={1} direction="column" sx={{ mb: -10 }}>
@@ -85,12 +86,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                 alignItems="center"
                 sx={{ pl: 0.5 }}
               >
-                <Typography
-                  variant="subtitle1"
-                  className={classes.typographyText}
-                >
-                  תיאור:
-                </Typography>
+                <Typography variant="subtitle1">תיאור:</Typography>
               </Grid>
               <Grid
                 item
@@ -126,74 +122,18 @@ const ResidenceExtraDataCard = ({ residence }) => {
           }}
         >
           <Card className={classes.card} sx={{ bgcolor: "transparent" }}>
-            <Grid container spacing={0.25}>
-              <Grid
-                item
-                xs={2}
-                justifyContent="flex-start"
-                alignItems="center"
-                sx={{ pl: 0.5 }}
-              >
-                <Typography
-                  variant="subtitle1"
-                  className={classes.typographyText}
-                >
-                  {!SUB_HOME_DOC_LIST[
-                    SUB_HOME_DOC_TYPE[residence.category][residence.type]
-                  ]
-                    ? `כמות הפריטים:`
-                    : `כמות ה${
-                        SUB_HOME_DOC_LIST[
-                          SUB_HOME_DOC_TYPE[residence.category][residence.type]
-                        ]
-                      }:`}
-                </Typography>
-              </Grid>
-              <Grid item xs={2} className={classes.textFieldContainer}>
-                <ExtraDataField
-                  label="subEntitiesQuantity"
-                  className={classes.textField}
-                />
-              </Grid>
-              <Grid
-                item
-                xs={1}
-                container
-                justifyContent="flex-start"
-                alignItems="center"
-                sx={{ pl: 0.5 }}
-              >
-                <Typography
-                  variant="subtitle1"
-                  className={classes.typographyText}
-                >
-                  שנת בנייה:
-                </Typography>
-              </Grid>
-              <Grid item xs={2} className={classes.textFieldContainer}>
-                <ExtraDataField
-                  label="constructionYear"
-                  className={classes.textField}
-                />
-              </Grid>
-              <Grid
-                item
-                xs={2}
-                justifyContent="flex-start"
-                alignItems="center"
-                sx={{ pl: 0.5 }}
-              >
-                <Typography
-                  variant="subtitle1"
-                  className={classes.typographyText}
-                >
-                  שטח (קמ"ר):
-                </Typography>
-              </Grid>
-              <Grid item xs={1} className={classes.textFieldContainer}>
-                <ExtraDataField label="area" className={classes.textField} />
-              </Grid>
-            </Grid>
+            <LabeledExtraDataFields
+              className={classes.textField}
+              columnsPerRow={3}
+              labels={[
+                {
+                  text: subEntitiesQuantityLable,
+                  formik: "subEntitiesQuantity",
+                },
+                { text: "שנת בנייה:", formik: "constructionYear" },
+                { text: 'שטח (קמ"ר):', formik: "area" },
+              ]}
+            />
           </Card>
         </Box>
       </Grid>
@@ -208,47 +148,14 @@ const ResidenceExtraDataCard = ({ residence }) => {
             }}
           >
             <Card className={classes.card} sx={{ bgcolor: "transparent" }}>
-              <Grid container spacing={0.25}>
-                <Grid
-                  item
-                  xs={2}
-                  container
-                  justifyContent="flex-start"
-                  alignItems="center"
-                  sx={{ pl: 0.5 }}
-                >
-                  <Typography
-                    variant="subtitle1"
-                    className={classes.typographyText}
-                  >
-                    רוחב (מטרים):
-                  </Typography>
-                </Grid>
-                <Grid item xs={2} className={classes.textFieldContainer}>
-                  <ExtraDataField label="width" className={classes.textField} />
-                </Grid>
-                <Grid
-                  item
-                  xs={2}
-                  container
-                  justifyContent="flex-start"
-                  alignItems="center"
-                  sx={{ pl: 0.5 }}
-                >
-                  <Typography
-                    variant="subtitle1"
-                    className={classes.typographyText}
-                  >
-                    אורך (מטרים):
-                  </Typography>
-                </Grid>
-                <Grid item xs={1} className={classes.textFieldContainer}>
-                  <ExtraDataField
-                    label="length"
-                    className={classes.textField}
-                  />
-                </Grid>
-              </Grid>
+              <LabeledExtraDataFields
+                className={classes.textField}
+                columnsPerRow={3}
+                labels={[
+                  { text: "אורך (מטרים):", formik: "length" },
+                  { text: "רוחב (מטרים):", formik: "width" },
+                ]}
+              />
             </Card>
           </Box>
         </Grid>
