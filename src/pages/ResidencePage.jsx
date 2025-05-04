@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Grid, Paper } from "@mui/material";
+import { Grid, Paper, useMediaQuery, useTheme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Formik } from "formik";
 import {
@@ -42,6 +42,8 @@ const HomeDocResidencePage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const params = useParams();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const residence = useSelector(selectHomeDoc);
   const residenceType = useSelector(selectHomeDocEntityType);
   const homeDocStatus = useSelector(selectHomeDocStatus);
@@ -80,27 +82,27 @@ const HomeDocResidencePage = () => {
           validationSchema={extraHomeDocFormik.validationSchema}
           onSubmit={extraHomeDocFormik.onSubmit}
         >
-          <Card
+          <Paper
             sx={{
               bgcolor: (theme) => theme.palette.primary.main,
               height: "90vh",
+              mx: 1,
             }}
           >
             <Grid
               container
               spacing={0.5}
-              sx={{ height: " 100vh" }}
-              direction="column"
+              sx={{ height: "100%" }}
+              direction={isMobile ? "row" : "column"}
             >
-              <Grid item xs={6} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={3}>
                 <Paper
                   elevation={1}
                   className={classes.paper}
-                  sx={{
-                    backgroundColor: "rgb(205 213 225)",
-                    borderColor: "rgb(205 213 225)",
-                    marginBottom: "-0.5rem",
-                  }}
+                  sx={(theme) => ({
+                    bgcolor: theme.palette.secondary.main,
+                    mb: -0.5,
+                  })}
                 >
                   <ResidenceBasicDataCard
                     entityTitle={entityTitle}
@@ -111,41 +113,44 @@ const HomeDocResidencePage = () => {
                     }}
                     entityType={residence.type}
                     subEntities={residence.subEntities}
-                  ></ResidenceBasicDataCard>
+                  />
                 </Paper>
               </Grid>
-              <Grid item xs={6} sm={6} md={residenceType === "ROOM" ? 7.9 : 9}>
+              <Grid item xs={12} sm={6} md={residenceType === "ROOM" ? 7.9 : 9}>
                 <Paper
                   elevation={1}
                   className={classes.paper}
-                  sx={{
-                    backgroundColor: "rgb(205 213 225)",
-                    borderColor: "rgb(205 213 225)",
-                  }}
+                  sx={(theme) => ({
+                    bgcolor: theme.palette.secondary.main,
+                  })}
                 >
                   <ResidenceExtraDataCard residence={residence} />
                 </Paper>
               </Grid>
-              <Grid item xs={6} sm={6} sx={{ paddingTop: "0.5rem" }}>
-                <LabeledContainer lableName={"תמונות"}>
-                  <div>בפיתוח</div>
-                </LabeledContainer>
-              </Grid>
-              <Grid item xs={6} sm={6} sx={{ paddingTop: "0.5rem" }}>
-                {residenceType === "PROPERTY" ? (
-                  <Paper
-                    elevation={2}
-                    className={classes.paper}
-                    sx={{ backgroundColor: "#130b65" }}
-                  ></Paper>
-                ) : (
-                  <LabeledContainer lableName="מבט על">
-                    <div>בפיתוח</div>
-                  </LabeledContainer>
-                )}
-              </Grid>
+              {!isMobile && (
+                <>
+                  <Grid item xs={12} sm={6} sx={{ pt: 0.5 }}>
+                    <LabeledContainer lableName={"תמונות"}>
+                      <div>בפיתוח</div>
+                    </LabeledContainer>
+                  </Grid>
+                  <Grid item xs={12} sm={6} sx={{ pt: 0.5 }}>
+                    {residenceType === "PROPERTY" ? (
+                      <Paper
+                        elevation={2}
+                        className={classes.paper}
+                        sx={{ bgcolor: (theme) => theme.palette.primary.main }}
+                      ></Paper>
+                    ) : (
+                      <LabeledContainer lableName="מבט על">
+                        <div>בפיתוח</div>
+                      </LabeledContainer>
+                    )}
+                  </Grid>
+                </>
+              )}
             </Grid>
-          </Card>
+          </Paper>
         </Formik>
       )}
     </EditModeContext.Provider>

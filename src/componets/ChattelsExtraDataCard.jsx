@@ -69,7 +69,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ChattelsExtraDataCard = ({ chattels }) => {
+const ChattelsExtraDataCard = () => {
   const classes = useStyles();
   const { values, setFieldValue } = useFormikContext();
 
@@ -99,7 +99,7 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                sx={{ paddingLeft: "0.5rem" }}
+                sx={{ pl: "0.5rem" }}
               >
                 <Typography
                   variant="subtitle1"
@@ -153,7 +153,7 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                sx={{ paddingLeft: "0.5rem" }}
+                sx={{ pl: "0.5rem" }}
               >
                 <Typography
                   variant="subtitle1"
@@ -173,7 +173,7 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                sx={{ paddingLeft: "0.5rem" }}
+                sx={{ pl: "0.5rem" }}
               >
                 <Typography
                   variant="subtitle1"
@@ -210,7 +210,7 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                sx={{ paddingLeft: "0.5rem" }}
+                sx={{ pl: "0.5rem" }}
               >
                 <Typography
                   variant="subtitle1"
@@ -227,7 +227,7 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                sx={{ paddingLeft: "0.5rem" }}
+                sx={{ pl: "0.5rem" }}
               >
                 <Typography
                   variant="subtitle1"
@@ -268,7 +268,7 @@ const ChattelsExtraDataCard = ({ chattels }) => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                sx={{ paddingLeft: "0.5rem" }}
+                sx={{ pl: "0.5rem" }}
               >
                 <Typography
                   variant="subtitle1"

@@ -77,9 +77,9 @@ const SubEntitiesDialog = ({
           </AppBar>
           <List>
             {subEntitiesList.map((subEntity) => (
-              <React.Fragment key={`listItemButton-${subEntity._id}`}>
+              <React.Fragment key={`listItemButton-${subEntity.id}`}>
                 <ListItemButton
-                  key={`listItemButton-${subEntity._id}`}
+                  key={`listItemButton-${subEntity.id}`}
                   sx={{
                     backgroundColor: "#130b65",
                     "&:hover": {
@@ -89,13 +89,13 @@ const SubEntitiesDialog = ({
                   onClick={() =>
                     handleItemClick(
                       `/Results/${HOME_DOC_PAGE_TYPE[subEntity.type]}/${
-                        subEntity._id
+                        subEntity.id
                       }`
                     )
                   }
                 >
                   <ListItemText
-                    key={`listItemText-${subEntity._id}`}
+                    key={`listItemText-${subEntity.id}`}
                     primary={`${subEntityPreName}${subEntity.interiorEntityKey}`}
                     secondary={
                       <span style={{ color: "white" }}>
@@ -106,7 +106,7 @@ const SubEntitiesDialog = ({
                   />
                 </ListItemButton>
                 <Divider
-                  key={`divider-${subEntity._id}`}
+                  key={`divider-${subEntity.id}`}
                   style={{ backgroundColor: "white" }}
                 />
               </React.Fragment>

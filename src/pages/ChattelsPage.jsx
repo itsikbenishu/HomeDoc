@@ -79,14 +79,14 @@ const ChattelsPage = () => {
               sx={{ height: " 100vh" }}
               direction="column"
             >
-              <Grid item xs={6} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={3}>
                 <Paper
                   elevation={1}
                   className={classes.paper}
                   sx={{
                     backgroundColor: "rgb(205 213 225)",
                     borderColor: "rgb(205 213 225)",
-                    marginBottom: "-0.5rem",
+                    mb: "-0.5rem",
                   }}
                 >
                   <ChattelsBasicDataCard
@@ -100,7 +100,7 @@ const ChattelsPage = () => {
                   />
                 </Paper>
               </Grid>
-              <Grid item xs={6} sm={6} md={9}>
+              <Grid item xs={12} sm={6} md={9}>
                 <Paper
                   elevation={1}
                   className={classes.paper}
@@ -109,10 +109,10 @@ const ChattelsPage = () => {
                     borderColor: "rgb(205 213 225)",
                   }}
                 >
-                  <ChattelsExtraDataCard chattels={chattels} />
+                  <ChattelsExtraDataCard />
                 </Paper>
               </Grid>
-              <Grid item xs={6} sm={12} sx={{ paddingTop: "0.5rem" }}>
+              <Grid item xs={12} sm={12} sx={{ pt: "0.5rem" }}>
                 <LabeledContainer lableName={"תמונות"}>
                   <div>בפיתוח</div>
                 </LabeledContainer>

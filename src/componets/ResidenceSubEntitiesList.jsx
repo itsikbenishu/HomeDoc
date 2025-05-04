@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Paper, Card, Grid, Typography } from "@mui/material";
+import { Box, Card, Grid, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
 import { selectHomeDocEntityCategory } from "../slices/HomeDocSlice";
@@ -35,12 +35,13 @@ const useStyles = makeStyles(() => ({
 const ResidenceSubEntitiesList = ({
   subEntityType,
   subEntitiesList,
+  subEntitiesMax = 5,
   entityType,
 }) => {
   const classes = useStyles();
   const category = useSelector(selectHomeDocEntityCategory);
-  const isExpand = subEntitiesList.length <= 5;
-  const firstFiveElemnts = subEntitiesList.slice(0, 5);
+  const isExpand = subEntitiesList.length <= subEntitiesMax;
+  const firstElemnts = subEntitiesList.slice(0, subEntitiesMax);
   const subEntityName = `${
     SUB_HOME_DOC_LIST[SUB_HOME_DOC_TYPE[category][subEntityType]]
   }`;
@@ -54,15 +55,19 @@ const ResidenceSubEntitiesList = ({
   return (
     <Card
       className={classes.card}
-      style={{
-        backgroundColor: "transparent",
-        borderColor: "grey",
+      sx={{
+        bgcolor: "transparent",
       }}
     >
-      <Grid container spacing={0.5}>
+      <Grid
+        container
+        spacing={{
+          xs: 6,
+          sm: 0.5,
+        }}
+      >
         <Grid item xs={1}>
-          <Paper
-            elevation={0}
+          <Box
             style={{
               padding: 0,
               marginTop: 1,
@@ -73,13 +78,12 @@ const ResidenceSubEntitiesList = ({
               variant="body1"
               className={classes.typographyText}
             >{`${subEntityName}:`}</Typography>
-          </Paper>
+          </Box>
         </Grid>
 
-        {firstFiveElemnts.map((subEntity) => (
+        {firstElemnts.map((subEntity) => (
           <Grid item xs={1} key={subEntity.id}>
-            <Paper
-              elevation={0}
+            <Box
               className={classes.subEntity}
               style={{
                 backgroundColor: "transparent",
@@ -96,12 +100,11 @@ const ResidenceSubEntitiesList = ({
                   {subEntity.interiorEntityKey}
                 </Link>
               </Typography>
-            </Paper>
+            </Box>
           </Grid>
         ))}
         <Grid item xs={1}>
-          <Paper
-            elevation={0}
+          <Box
             className={classes.subEntity}
             style={{
               backgroundColor: "transparent",
@@ -110,12 +113,11 @@ const ResidenceSubEntitiesList = ({
             <CreateSubHomeDialog
               homeDocType={subEntityType}
             ></CreateSubHomeDialog>
-          </Paper>
+          </Box>
         </Grid>
         <Grid item xs={1}>
           {!isExpand && (
-            <Paper
-              elevation={0}
+            <Box
               className={classes.subEntity}
               style={{
                 backgroundColor: "transparent",
@@ -127,7 +129,7 @@ const ResidenceSubEntitiesList = ({
                 subEntitiesList={subEntitiesList}
                 entityType={entityType}
               ></SubEntitiesDialog>
-            </Paper>
+            </Box>
           )}
         </Grid>
       </Grid>

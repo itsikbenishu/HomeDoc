@@ -1,4 +1,4 @@
-import { Paper, Grid, Typography, Card } from "@mui/material";
+import { Box, Grid, Typography, Card } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { SUB_HOME_DOC_LIST, SUB_HOME_DOC_TYPE } from "../../Constants";
 import ExtraDataList from "./ExtraDataList";
@@ -9,11 +9,10 @@ const useStyles = makeStyles(() => ({
     alignItems: "stretch",
     width: "100%",
   },
-  paper: {
+  Box: {
     height: "100%",
     display: "flex",
-    boxShadow: "none",
-    marginLeft: "4px",
+    marginLeft: "0.25rem",
   },
   card: {
     padding: "0.75rem",
@@ -62,23 +61,20 @@ const ResidenceExtraDataCard = ({ residence }) => {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={1} direction="column" sx={{ marginBottom: -10 }}>
+    <Grid container spacing={1} direction="column" sx={{ mb: -10 }}>
       <Grid item xs={12} sm={3} className={classes.gridItem}>
-        <Paper
-          elevation={0}
-          className={classes.paper}
+        <Box
+          className={classes.Box}
           sx={{
-            backgroundColor: "transparent",
-            borderColor: "grey",
+            bgcolor: "transparent",
           }}
         >
           <Card
             className={classes.card}
             sx={{
-              backgroundColor: "transparent",
-              borderColor: "grey",
-              marginTop: "3px",
-              marginRight: "4px",
+              bgcolor: "transparent",
+              mt: 0.25,
+              mr: 0.25,
             }}
           >
             <Grid container spacing={0.25}>
@@ -87,7 +83,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                sx={{ paddingLeft: "0.5rem" }}
+                sx={{ pl: 0.5 }}
               >
                 <Typography
                   variant="subtitle1"
@@ -118,30 +114,25 @@ const ResidenceExtraDataCard = ({ residence }) => {
               </Grid>
             </Grid>
           </Card>
-        </Paper>
+        </Box>
       </Grid>
 
       <Grid item xs={12} sm={3} className={classes.gridItem}>
-        <Paper
-          elevation={0}
-          className={classes.paper}
+        <Box
+          className={classes.Box}
           sx={{
-            backgroundColor: "transparent",
-            borderColor: "grey",
-            marginRight: "4px",
+            bgcolor: "transparent",
+            mr: 0.25,
           }}
         >
-          <Card
-            className={classes.card}
-            sx={{ backgroundColor: "transparent", borderColor: "grey" }}
-          >
+          <Card className={classes.card} sx={{ bgcolor: "transparent" }}>
             <Grid container spacing={0.25}>
               <Grid
                 item
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                sx={{ paddingLeft: "0.5rem" }}
+                sx={{ pl: 0.5 }}
               >
                 <Typography
                   variant="subtitle1"
@@ -170,7 +161,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                 container
                 justifyContent="flex-start"
                 alignItems="center"
-                sx={{ paddingLeft: "0.5rem" }}
+                sx={{ pl: 0.5 }}
               >
                 <Typography
                   variant="subtitle1"
@@ -190,7 +181,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                sx={{ paddingLeft: "0.5rem" }}
+                sx={{ pl: 0.5 }}
               >
                 <Typography
                   variant="subtitle1"
@@ -204,24 +195,19 @@ const ResidenceExtraDataCard = ({ residence }) => {
               </Grid>
             </Grid>
           </Card>
-        </Paper>
+        </Box>
       </Grid>
 
       {residence.type !== "PROPERTY" && (
         <Grid item xs={12} sm={3} className={classes.gridItem}>
-          <Paper
-            elevation={0}
-            className={classes.paper}
+          <Box
+            className={classes.Box}
             sx={{
-              marginRight: "4px",
-              backgroundColor: "transparent",
-              borderColor: "grey",
+              bgcolor: "transparent",
+              mr: 0.25,
             }}
           >
-            <Card
-              className={classes.card}
-              sx={{ backgroundColor: "transparent", borderColor: "grey" }}
-            >
+            <Card className={classes.card} sx={{ bgcolor: "transparent" }}>
               <Grid container spacing={0.25}>
                 <Grid
                   item
@@ -229,7 +215,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                   container
                   justifyContent="flex-start"
                   alignItems="center"
-                  sx={{ paddingLeft: "0.5rem" }}
+                  sx={{ pl: 0.5 }}
                 >
                   <Typography
                     variant="subtitle1"
@@ -247,7 +233,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                   container
                   justifyContent="flex-start"
                   alignItems="center"
-                  sx={{ paddingLeft: "0.5rem" }}
+                  sx={{ pl: 0.5 }}
                 >
                   <Typography
                     variant="subtitle1"
@@ -264,32 +250,29 @@ const ResidenceExtraDataCard = ({ residence }) => {
                 </Grid>
               </Grid>
             </Card>
-          </Paper>
+          </Box>
         </Grid>
       )}
       <Grid item xs={12} sm={3} className={classes.gridItem}>
-        <Paper
-          elevation={0}
-          className={classes.paper}
+        <Box
+          className={classes.Box}
           sx={{
-            marginRight: "4px",
-            backgroundColor: "transparent",
-            borderColor: "grey",
+            mr: 0.25,
+            bgcolor: "transparent",
           }}
         >
           <Card
             className={classes.card}
             sx={{
-              backgroundColor: "transparent",
-              borderColor: "grey",
+              bgcolor: "transparent",
             }}
           >
             <ExtraDataList
-              count={residence.type !== "PROPERTY" ? 3 : 5} //זה טוב עם בניין, מה עושים עם קרקע?
+              count={residence.type !== "PROPERTY" ? 3 : 5}
               addMessage="?האם אתה בטוח שהינך מעוניין להוסיף את התכונה הזו"
             />
           </Card>
-        </Paper>
+        </Box>
       </Grid>
     </Grid>
   );

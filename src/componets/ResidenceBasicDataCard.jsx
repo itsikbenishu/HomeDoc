@@ -2,7 +2,14 @@ import { useMemo } from "react";
 import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormikContext } from "formik";
-import { Paper, Grid, Typography, Card } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  Card,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { HOME_DOC_RESIDENCE_TYPE, SUB_HOME_DOC_TYPE } from "../../Constants";
 import {
@@ -14,7 +21,7 @@ import ButtonsLine from "./ButtonsLine";
 import getButtonsLineComps from "./getButtonsLineComps";
 
 const useStyles = makeStyles(() => ({
-  paper: {
+  Box: {
     height: "100%",
     display: "flex",
     boxShadow: "none",
@@ -40,6 +47,9 @@ const ResidenceBasicDataCard = ({
   const location = useLocation();
   const formik = useFormikContext();
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const residenceId = useParams().id;
   const category = useSelector(selectHomeDocEntityCategory);
 
@@ -64,14 +74,13 @@ const ResidenceBasicDataCard = ({
   return (
     <Grid container spacing={0.75} direction="column">
       <Grid item xs={12} sm={3}>
-        <Paper
-          elevation={0}
-          className={classes.paper}
-          style={{
-            backgroundColor: "rgb(205 213 225)",
-            borderColor: "rgb(205 213 225)",
-            marginRight: "4px",
-          }}
+        <Box
+          className={classes.Box}
+          sx={(theme) => ({
+            bgcolor: theme.palette.secondary.main,
+            borderColor: theme.palette.secondary.main,
+            ml: 0.25,
+          })}
         >
           <Grid
             container
@@ -87,8 +96,8 @@ const ResidenceBasicDataCard = ({
             <Grid
               item
               xs={9}
-              style={{
-                paddingLeft: "0.2rem",
+              sx={{
+                pl: 0.2,
                 display: "flex",
                 justifyContent: "flex-end",
               }}
@@ -96,34 +105,20 @@ const ResidenceBasicDataCard = ({
               <ButtonsLine buttons={buttons} />
             </Grid>
           </Grid>
-        </Paper>
+        </Box>
       </Grid>
       <Grid item xs={12} sm={3}>
-        <Paper
-          elevation={0}
-          className={classes.paper}
-          style={{
-            backgroundColor: "rgb(205 213 225)",
-            borderColor: "rgb(205 213 225)",
-            marginLeft: "4px",
-          }}
+        <Box
+          className={classes.Box}
+          sx={(theme) => ({
+            bgcolor: theme.palette.secondary.main,
+            ml: 0.25,
+          })}
         >
-          <Card
-            className={classes.card}
-            style={{
-              backgroundColor: "transparent",
-              borderColor: "grey",
-            }}
-          >
+          <Card className={classes.card} sx={{ bgcolor: "transparent" }}>
             <Grid container spacing={0.5}>
               <Grid item xs={0.5}>
-                <Paper
-                  elevation={0}
-                  style={{
-                    backgroundColor: "transparent",
-                    marginLeft: "4px",
-                  }}
-                >
+                <Box sx={{ bgcolor: "transparent", ml: 0.25 }}>
                   <Typography
                     variant="subtitle1"
                     className={classes.typographyText}
@@ -132,16 +127,10 @@ const ResidenceBasicDataCard = ({
                       ? " כתובת:"
                       : HOME_DOC_RESIDENCE_TYPE[entitySubTitle.type]}
                   </Typography>
-                </Paper>
+                </Box>
               </Grid>
               <Grid item xs={11.5}>
-                <Paper
-                  elevation={0}
-                  style={{
-                    backgroundColor: "transparent",
-                    marginRight: "20px",
-                  }}
-                >
+                <Box sx={{ bgcolor: "transparent", mr: 5 }}>
                   {entitySubTitle.fatherId ? (
                     <Typography
                       variant="subtitle1"
@@ -161,24 +150,23 @@ const ResidenceBasicDataCard = ({
                       {entitySubTitle.title}
                     </Typography>
                   )}
-                </Paper>
+                </Box>
               </Grid>
             </Grid>
           </Card>
-        </Paper>
+        </Box>
       </Grid>
       {Object.keys(SUB_HOME_DOC_TYPE[category])
         .filter((subtype) => subtype.includes(entityType))
         .map((filterdSubType) => (
           <Grid item xs={12} sm={3} key={`${filterdSubType}`}>
-            <Paper
-              elevation={0}
-              className={classes.paper}
-              style={{
-                backgroundColor: "rgb(205 213 225)",
-                borderColor: "rgb(205 213 225)",
-                marginLeft: "4px",
-              }}
+            <Box
+              className={classes.Box}
+              sx={(theme) => ({
+                backgroundColor: theme.palette.secondary.main,
+                borderColor: theme.palette.secondary.main,
+                ml: 0.25,
+              })}
             >
               <ResidenceSubEntitiesList
                 subEntityType={`${filterdSubType}`}
@@ -189,9 +177,10 @@ const ResidenceBasicDataCard = ({
                     : subEntity.type ===
                       SUB_HOME_DOC_TYPE[category][filterdSubType]
                 )}
+                subEntitiesMax={isMobile ? 2 : 5}
                 entityType={entityType}
               />
-            </Paper>
+            </Box>
           </Grid>
         ))}
     </Grid>

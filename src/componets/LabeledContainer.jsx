@@ -37,7 +37,7 @@ const LabeledContainer = ({ lableName, children }) => {
     <Paper
       elevation={1}
       className={classes.paper}
-      style={{ backgroundColor: "#130b58", paddingTop: "0.1rem" }}
+      sx={{ bgcolor: (theme) => theme.palette.primary.main }}
     >
       <div className={classes.label}>
         <Typography variant="body2">{lableName}</Typography>

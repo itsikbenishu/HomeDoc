@@ -116,7 +116,7 @@ const SearchResults = ({
                   {header}
                 </Box>
               ))}
-              {isLinkable && <Box sx={{ flexShrink: 0, width: 2.5 }} />}
+              {isLinkable && <Box sx={{ flexShrink: 0, width: "2.5rem" }} />}
             </Stack>
           </Card>
         )}
