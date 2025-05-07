@@ -76,7 +76,6 @@ const ChattelsPage = () => {
           >
             <Grid
               container
-              spacing={0.5}
               sx={{ height: "100%" }}
               direction={isMobile ? "row" : "column"}
             >
@@ -86,6 +85,7 @@ const ChattelsPage = () => {
                   className={classes.paper}
                   sx={{
                     bgcolor: theme.palette.secondary.main,
+                    height: "calc(100% - 4px)",
                     mb: -0.5,
                   }}
                 >
@@ -106,6 +106,7 @@ const ChattelsPage = () => {
                   className={classes.paper}
                   sx={{
                     bgcolor: theme.palette.secondary.main,
+                    height: "calc(100% - 5px)",
                   }}
                 >
                   <ChattelsExtraDataCard />

@@ -85,13 +85,12 @@ const HomeDocResidencePage = () => {
             sx={{
               bgcolor: (theme) => theme.palette.primary.main,
               height: "90vh",
-              overflow: "auto",
+              overflowY: "auto",
               mx: 1,
             }}
           >
             <Grid
               container
-              spacing={isMobile ? 0 : 0.5}
               sx={{ height: "100%" }}
               direction={isMobile ? "row" : "column"}
             >
@@ -106,7 +105,7 @@ const HomeDocResidencePage = () => {
                       residenceType === "PROPERTY"
                         ? -0.5
                         : residenceType === "ROOM"
-                        ? 3.3
+                        ? 4
                         : 1,
                   })}
                 >
@@ -131,7 +130,7 @@ const HomeDocResidencePage = () => {
                     height:
                       residenceType === "PROPERTY"
                         ? "calc(100% - 5px)"
-                        : "calc(100% - 4px)",
+                        : "100%",
                   })}
                 >
                   <ResidenceExtraDataCard residence={residence} />
