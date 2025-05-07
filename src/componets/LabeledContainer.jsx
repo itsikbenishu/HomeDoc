@@ -3,9 +3,9 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(() => ({
   paper: {
-    height: "100%",
+    height: "calc(100% - 0.5rem)",
     padding: "0.2rem",
-    marginTop: "1rem",
+    marginTop: "0.5rem",
     display: "flex",
     alignItems: "flex-start",
     justifyContent: "flex-start",
@@ -44,9 +44,8 @@ const LabeledContainer = ({ lableName, children }) => {
       </div>
       <Card
         className={classes.card}
-        style={{
-          backgroundColor: "rgb(205 213 225)",
-          borderColor: "rgb(205 213 225)",
+        sx={{
+          bgcolor: (theme) => theme.palette.secondary.main,
         }}
       >
         {children}

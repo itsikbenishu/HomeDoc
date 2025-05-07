@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Grid, Paper } from "@mui/material";
+import { Card, Grid, Paper, useMediaQuery, useTheme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Formik } from "formik";
 import {
@@ -24,10 +24,6 @@ const useStyles = makeStyles(() => ({
   paper: {
     height: "100%",
     padding: "0.2rem",
-    marginTop: "1rem",
-    display: "flex",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
     position: "relative",
   },
 }));
@@ -36,6 +32,9 @@ const ChattelsPage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const params = useParams();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const chattels = useSelector(selectHomeDoc);
   const homeDocStatus = useSelector(selectHomeDocStatus);
   const chattelsEntityId = params.id;
@@ -71,22 +70,23 @@ const ChattelsPage = () => {
             sx={{
               bgcolor: (theme) => theme.palette.primary.main,
               height: "90vh",
+              overflow: "auto",
+              mx: 1,
             }}
           >
             <Grid
               container
               spacing={0.5}
-              sx={{ height: " 100vh" }}
-              direction="column"
+              sx={{ height: "100%" }}
+              direction={isMobile ? "row" : "column"}
             >
               <Grid item xs={12} sm={6} md={3}>
                 <Paper
                   elevation={1}
                   className={classes.paper}
                   sx={{
-                    backgroundColor: "rgb(205 213 225)",
-                    borderColor: "rgb(205 213 225)",
-                    mb: "-0.5rem",
+                    bgcolor: theme.palette.secondary.main,
+                    mb: -0.5,
                   }}
                 >
                   <ChattelsBasicDataCard
@@ -105,18 +105,21 @@ const ChattelsPage = () => {
                   elevation={1}
                   className={classes.paper}
                   sx={{
-                    backgroundColor: "rgb(205 213 225)",
-                    borderColor: "rgb(205 213 225)",
+                    bgcolor: theme.palette.secondary.main,
                   }}
                 >
                   <ChattelsExtraDataCard />
                 </Paper>
               </Grid>
-              <Grid item xs={12} sm={12} sx={{ pt: "0.5rem" }}>
-                <LabeledContainer lableName={"תמונות"}>
-                  <div>בפיתוח</div>
-                </LabeledContainer>
-              </Grid>
+              {!isMobile && (
+                <>
+                  <Grid item xs={12} sm={12} sx={{ pt: 0.5 }}>
+                    <LabeledContainer lableName="תמונות">
+                      <div>בפיתוח</div>
+                    </LabeledContainer>
+                  </Grid>
+                </>
+              )}
             </Grid>
           </Card>
         </Formik>

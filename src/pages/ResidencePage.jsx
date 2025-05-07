@@ -28,9 +28,8 @@ const useStyles = makeStyles(() => ({
     margin: "0 0rem 2rem 0rem",
   },
   paper: {
-    height: "100%",
     padding: "0.2rem",
-    marginTop: "1rem",
+    //  marginTop: "0.5rem",
     display: "flex",
     alignItems: "flex-start",
     justifyContent: "flex-start",
@@ -86,12 +85,13 @@ const HomeDocResidencePage = () => {
             sx={{
               bgcolor: (theme) => theme.palette.primary.main,
               height: "90vh",
+              overflow: "auto",
               mx: 1,
             }}
           >
             <Grid
               container
-              spacing={0.5}
+              spacing={isMobile ? 0 : 0.5}
               sx={{ height: "100%" }}
               direction={isMobile ? "row" : "column"}
             >
@@ -101,7 +101,13 @@ const HomeDocResidencePage = () => {
                   className={classes.paper}
                   sx={(theme) => ({
                     bgcolor: theme.palette.secondary.main,
-                    mb: -0.5,
+                    height: "calc(100% - 4px)",
+                    mb:
+                      residenceType === "PROPERTY"
+                        ? -0.5
+                        : residenceType === "ROOM"
+                        ? 3.3
+                        : 1,
                   })}
                 >
                   <ResidenceBasicDataCard
@@ -122,6 +128,10 @@ const HomeDocResidencePage = () => {
                   className={classes.paper}
                   sx={(theme) => ({
                     bgcolor: theme.palette.secondary.main,
+                    height:
+                      residenceType === "PROPERTY"
+                        ? "calc(100% - 5px)"
+                        : "calc(100% - 4px)",
                   })}
                 >
                   <ResidenceExtraDataCard residence={residence} />
@@ -139,7 +149,13 @@ const HomeDocResidencePage = () => {
                       <Paper
                         elevation={2}
                         className={classes.paper}
-                        sx={{ bgcolor: (theme) => theme.palette.primary.main }}
+                        sx={{
+                          bgcolor: (theme) => theme.palette.primary.main,
+                          height:
+                            residenceType === "PROPERTY"
+                              ? "100%"
+                              : "calc(100% - 4px)",
+                        }}
                       ></Paper>
                     ) : (
                       <LabeledContainer lableName="מבט על">
