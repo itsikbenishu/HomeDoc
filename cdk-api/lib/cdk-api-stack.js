@@ -128,15 +128,15 @@ class CdkApiStack extends Stack {
 
     const lambdaKeepWarmTarget = new LambdaFunction(lambdaKeepWarm);
 
-    new Rule(this, "KeepWarmRule", {
-      ruleName: "KeepLambdaWarmSchedule",
-      schedule: Schedule.cron({
-        minute: "0/5",
-        hour: "6-17", // 9-20 Israel time (UTC+3)
-        weekDay: "MON-FRI",
-      }),
-      targets: [lambdaKeepWarmTarget],
-    });
+    // new Rule(this, "KeepWarmRule", {
+    //   ruleName: "KeepLambdaWarmSchedule",
+    //   schedule: Schedule.cron({
+    //     minute: "0/5",
+    //     hour: "6-17", // 9-20 Israel time (UTC+3)
+    //     weekDay: "MON-FRI",
+    //   }),
+    //   targets: [lambdaKeepWarmTarget],
+    // });
   }
 }
 

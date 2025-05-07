@@ -10450,8 +10450,8 @@ var require_homeDocModel = __commonJS({
       fatherId: integer().references("home_docs", "id", {
         onDelete: "cascade"
       }),
-      fatherInteriorEntityKey: text(),
       interiorEntityKey: text(),
+      fatherInteriorEntityKey: text(),
       createdAt: timestamp().defaultNow(),
       updatedAt: timestamp().defaultNow(),
       category: CategoriesEnum(),
