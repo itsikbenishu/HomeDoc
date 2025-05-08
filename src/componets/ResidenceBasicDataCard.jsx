@@ -162,11 +162,10 @@ const ResidenceBasicDataCard = ({
           <Grid item xs={12} sm={3} key={`${filterdSubType}`}>
             <Box
               className={classes.Box}
-              sx={(theme) => ({
-                backgroundColor: theme.palette.secondary.main,
-                borderColor: theme.palette.secondary.main,
+              sx={{
+                backgroundColor: (theme) => theme.palette.secondary.main,
                 ml: 0.25,
-              })}
+              }}
             >
               <ResidenceSubEntitiesList
                 subEntityType={`${filterdSubType}`}

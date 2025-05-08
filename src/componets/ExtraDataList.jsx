@@ -50,7 +50,6 @@ const ExtraDataList = ({ count = 0 }) => {
   const classes = useStyles();
   const { values, errors, setFieldValue, validateField } = useFormikContext();
   const isEditMode = useIsEditMode();
-  const editOpacity = { opacity: isEditMode ? 1 : 0 };
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const dataListWithIds = toItemsWithIds(values.extraData);
@@ -58,6 +57,7 @@ const ExtraDataList = ({ count = 0 }) => {
   const [newCharacteristic, setNewCharacteristic] = useState("");
   const [newValue, setNewValaue] = useState("");
   const elementsByCount = elements.slice(0, count);
+  const editOpacity = { opacity: isEditMode ? 1 : 0 };
 
   useEffect(() => {
     if (!isEditMode && !isEqual(elements, dataListWithIds)) {
@@ -67,69 +67,53 @@ const ExtraDataList = ({ count = 0 }) => {
 
   const handleAdd = () => {
     if (newCharacteristic || newValue) {
-      setElements([
-        toItemWithId({ characteristic: newCharacteristic, value: newValue }),
-        ...elements,
-      ]);
-      setFieldValue("extraData", [
-        { characteristic: newCharacteristic, value: newValue },
-        ...values.extraData,
-      ]);
+      const newItem = toItemWithId({
+        characteristic: newCharacteristic,
+        value: newValue,
+      });
+      const updated = [newItem, ...elements];
+      setElements(updated);
+      setFieldValue(
+        "extraData",
+        updated.map(({ characteristic, value }) => ({ characteristic, value }))
+      );
       validateField("extraData");
-
       setNewCharacteristic("");
       setNewValaue("");
     }
   };
 
   const handleRemove = (elem) => {
-    const newElements = elements.filter((e) => e.id !== elem.id);
-
-    setElements(newElements);
-
+    const updated = elements.filter((e) => e.id !== elem.id);
+    setElements(updated);
     setFieldValue(
       "extraData",
-      newElements.map((e) => {
-        return { characteristic: e.characteristic, value: e.value };
-      })
+      updated.map(({ characteristic, value }) => ({ characteristic, value }))
     );
     validateField("extraData");
   };
 
   const handleChange = ({ target }, index) => {
     const { name, value } = target;
-    const updatedElements = [...elements];
-    updatedElements.splice(index, 1, {
-      ...updatedElements[index],
-      [name]: value,
-    });
-
-    setElements(updatedElements);
+    const updated = [...elements];
+    updated[index] = { ...updated[index], [name]: value };
+    setElements(updated);
   };
 
   const handleBlur = ({ target }, index) => {
     const { name, value } = target;
-    const updatedElements = [...elements];
-    updatedElements.splice(index, 1, {
-      ...updatedElements[index],
-      [name]: value,
-    });
-
-    setElements(updatedElements);
-
+    const updated = [...elements];
+    updated[index] = { ...updated[index], [name]: value };
+    setElements(updated);
     setFieldValue(
       "extraData",
-      updatedElements.map((e) => ({
-        characteristic: e.characteristic,
-        value: e.value,
-      }))
+      updated.map(({ characteristic, value }) => ({ characteristic, value }))
     );
   };
 
   return (
     <Grid
       container
-      spacing={0}
       direction="column"
       className={classes.extraDataListContainer}
     >
@@ -139,34 +123,24 @@ const ExtraDataList = ({ count = 0 }) => {
           handleRemove={handleRemove}
         />
       </Grid>
+
       {isMobile && (
-        <Grid
-          item
-          // xs={2}
-          justifyContent="flex-start"
-          alignItems="center"
-        >
+        <Grid item sx={{ mb: 0.2 }}>
           <Typography variant="subtitle1" className={classes.typographyText}>
             מידע נוסף:
           </Typography>
         </Grid>
       )}
-      <Grid container spacing={1.5}>
+
+      <Grid container spacing={1.5} alignItems="center">
         {!isMobile && (
-          <Grid item xs={2} justifyContent="flex-start" alignItems="center">
+          <Grid item xs={12} sm={2}>
             <Typography variant="subtitle1" className={classes.typographyText}>
               מידע נוסף:
             </Typography>
           </Grid>
         )}
-        <Grid
-          item
-          xs={6}
-          sm={4}
-          className={classes.textFieldContainer}
-          alignItems="center"
-          style={editOpacity}
-        >
+        <Grid item xs sm={4}>
           <TextField
             onChange={(e) => setNewCharacteristic(e.target.value)}
             value={newCharacteristic}
@@ -174,57 +148,31 @@ const ExtraDataList = ({ count = 0 }) => {
             placeholder="שם מאפיין"
             className={classes.textField}
             disabled={!isEditMode}
-            style={editOpacity}
             fullWidth
+            style={editOpacity}
           />
         </Grid>
-        <Grid
-          item
-          xs={6}
-          sm={4}
-          className={classes.textFieldContainer}
-          disabled={!isEditMode}
-          style={editOpacity}
-          alignItems="center"
-        >
+        <Grid item xs sm={4}>
           <TextField
             onChange={(e) => setNewValaue(e.target.value)}
-            variant="outlined"
             value={newValue}
+            variant="outlined"
             placeholder="נתון"
             className={classes.textField}
             disabled={!isEditMode}
-            style={editOpacity}
             fullWidth
+            style={editOpacity}
           />
         </Grid>
-        <Grid
-          item
-          xs={0.5}
-          container
-          justifyContent="flex-start"
-          alignItems="center"
-        >
+        <Grid item sm="auto">
           {isEditMode && (
-            <>
-              <Tooltip
-                title="הוסף"
-                placement="bottom"
-                PopperProps={{
-                  modifiers: [{ name: "offset", options: { offset: [0, 5] } }],
-                }}
-                style={editOpacity}
-              >
-                <AddBoxRoundedIcon
-                  onClick={handleAdd}
-                  fontSize="small"
-                  style={{
-                    verticalAlign: "middle",
-                    marginTop: 5,
-                  }}
-                />
-              </Tooltip>
-            </>
+            <Tooltip title="הוסף" placement="bottom">
+              <AddBoxRoundedIcon
+                onClick={handleAdd}
+                fontSize="small"
+                style={{ verticalAlign: "middle", marginTop: 5 }}
+              />
+            </Tooltip>
           )}
         </Grid>
       </Grid>
@@ -232,19 +180,16 @@ const ExtraDataList = ({ count = 0 }) => {
       {elementsByCount.map((elem, index) => (
         <Grid
           container
-          spacing={1.5}
           key={elem.id}
+          spacing={1.5}
+          sx={{ mt: index === 0 ? 0.2 : 0.1 }}
           alignItems="center"
-          style={{ marginTop: 1 }}
         >
-          <Grid item xs={2} container />
-          <Grid item xs={6} sm={4} className={classes.textFieldContainer}>
+          {!isMobile && <Grid item xs={12} sm={2} />}
+          <Grid item xs sm={4}>
             <Tooltip
-              title={errors?.extraData?.[index]?.characteristic}
+              title={errors?.extraData?.[index]?.characteristic || ""}
               open={!!errors?.extraData?.[index]?.characteristic}
-              PopperProps={{
-                modifiers: [{ name: "offset", options: { offset: [0, 3] } }],
-              }}
               arrow
             >
               <TextField
@@ -252,82 +197,42 @@ const ExtraDataList = ({ count = 0 }) => {
                 name="characteristic"
                 value={elem.characteristic}
                 onChange={(e) => handleChange(e, index)}
-                onBlur={(e) => {
-                  handleBlur(e, index);
-                }}
+                onBlur={(e) => handleBlur(e, index)}
                 disabled={!isEditMode}
                 className={classes.textField}
                 error={!!errors?.extraData?.[index]?.characteristic}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&.Mui-error": {
-                      borderColor: "red",
-                    },
-                  },
-                }}
                 fullWidth
               />
             </Tooltip>
           </Grid>
-          <Grid item xs={6} sm={4} className={classes.textFieldContainer}>
+          <Grid item xs sm={4}>
             <Tooltip
-              title={errors?.extraData?.[index]?.value}
+              title={errors?.extraData?.[index]?.value || ""}
               open={!!errors?.extraData?.[index]?.value}
-              PopperProps={{
-                modifiers: [{ name: "offset", options: { offset: [0, 3] } }],
-              }}
               arrow
             >
               <TextField
                 variant="outlined"
                 name="value"
-                onChange={(e) => handleChange(e, index)}
-                onBlur={(e) => {
-                  handleBlur(e, index);
-                }}
                 value={elem.value}
+                onChange={(e) => handleChange(e, index)}
+                onBlur={(e) => handleBlur(e, index)}
                 disabled={!isEditMode}
                 className={classes.textField}
-                error={Boolean(errors?.extraData?.[index]?.value)}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&.Mui-error": {
-                      borderColor: "red",
-                    },
-                  },
-                }}
+                error={!!errors?.extraData?.[index]?.value}
                 fullWidth
               />
             </Tooltip>
           </Grid>
-          <Grid
-            item
-            xs={0.5}
-            container
-            justifyContent="flex-start"
-            alignItems="center"
-          >
+          <Grid item xs="auto">
             {isEditMode && (
-              <>
-                <Tooltip
-                  title="הסר"
-                  placement="bottom"
-                  PopperProps={{
-                    modifiers: [
-                      { name: "offset", options: { offset: [0, 5] } },
-                    ],
-                  }}
-                >
-                  <DeleteIcon
-                    onClick={() => handleRemove(elem)}
-                    fontSize="small"
-                    style={{
-                      verticalAlign: "middle",
-                      marginTop: 5,
-                    }}
-                  />
-                </Tooltip>
-              </>
+              <Tooltip title="הסר" placement="bottom">
+                <DeleteIcon
+                  onClick={() => handleRemove(elem)}
+                  fontSize="small"
+                  style={{ verticalAlign: "middle", marginTop: 5 }}
+                />
+              </Tooltip>
             )}
           </Grid>
         </Grid>

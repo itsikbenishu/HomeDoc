@@ -1,4 +1,12 @@
-import { Box, Grid, Typography, Card, Stack } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  Card,
+  Stack,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { SUB_HOME_DOC_LIST, SUB_HOME_DOC_TYPE } from "../../Constants";
 import ExtraDataList from "./ExtraDataList";
@@ -53,6 +61,9 @@ const useStyles = makeStyles(() => ({
 
 const ResidenceExtraDataCard = ({ residence }) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const subEntitiesQuantityLable = !SUB_HOME_DOC_LIST[
     SUB_HOME_DOC_TYPE[residence.category][residence.type]
   ]
@@ -175,7 +186,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
             }}
           >
             <ExtraDataList
-              count={residence.type !== "PROPERTY" ? 3 : 5}
+              count={isMobile ? 1 : residence.type !== "PROPERTY" ? 3 : 5}
               addMessage="?האם אתה בטוח שהינך מעוניין להוסיף את התכונה הזו"
             />
           </Card>

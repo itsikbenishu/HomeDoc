@@ -68,10 +68,9 @@ const ResidenceSubEntitiesList = ({
       >
         <Grid item xs={1}>
           <Box
-            style={{
-              padding: 0,
-              marginTop: 1,
-              backgroundColor: "transparent",
+            sx={{
+              p: 0,
+              bgcolor: "transparent",
             }}
           >
             <Typography

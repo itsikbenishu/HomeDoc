@@ -264,7 +264,7 @@ const ChattelsExtraDataCard = () => {
             }}
           >
             <ExtraDataList
-              count={3} //זה טוב עם בניין, מה עושים עם קרקע?
+              count={3}
               addMessage="?האם אתה בטוח שהינך מעוניין להוסיף את התכונה הזו"
             />
           </Card>
