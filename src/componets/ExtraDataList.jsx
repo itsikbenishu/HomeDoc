@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { isEqual } from "lodash";
-import { Grid, Typography, TextField, Tooltip } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  TextField,
+  Tooltip,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -44,6 +51,8 @@ const ExtraDataList = ({ count = 0 }) => {
   const { values, errors, setFieldValue, validateField } = useFormikContext();
   const isEditMode = useIsEditMode();
   const editOpacity = { opacity: isEditMode ? 1 : 0 };
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const dataListWithIds = toItemsWithIds(values.extraData);
   const [elements, setElements] = useState(dataListWithIds);
   const [newCharacteristic, setNewCharacteristic] = useState("");
@@ -130,11 +139,10 @@ const ExtraDataList = ({ count = 0 }) => {
           handleRemove={handleRemove}
         />
       </Grid>
-      <Grid container spacing={1.5}>
+      {isMobile && (
         <Grid
           item
-          xs={2}
-          container
+          // xs={2}
           justifyContent="flex-start"
           alignItems="center"
         >
@@ -142,9 +150,18 @@ const ExtraDataList = ({ count = 0 }) => {
             מידע נוסף:
           </Typography>
         </Grid>
+      )}
+      <Grid container spacing={1.5}>
+        {!isMobile && (
+          <Grid item xs={2} justifyContent="flex-start" alignItems="center">
+            <Typography variant="subtitle1" className={classes.typographyText}>
+              מידע נוסף:
+            </Typography>
+          </Grid>
+        )}
         <Grid
           item
-          xs={3.75}
+          xs={isMobile ? 5.75 : 3.75}
           className={classes.textFieldContainer}
           alignItems="center"
           style={editOpacity}
@@ -162,7 +179,7 @@ const ExtraDataList = ({ count = 0 }) => {
         </Grid>
         <Grid
           item
-          xs={3.75}
+          xs={isMobile ? 5.75 : 3.75}
           className={classes.textFieldContainer}
           disabled={!isEditMode}
           style={editOpacity}
@@ -219,7 +236,11 @@ const ExtraDataList = ({ count = 0 }) => {
           style={{ marginTop: 1 }}
         >
           <Grid item xs={2} container />
-          <Grid item xs={3.75} className={classes.textFieldContainer}>
+          <Grid
+            item
+            xs={isMobile ? 5.75 : 3.75}
+            className={classes.textFieldContainer}
+          >
             <Tooltip
               title={errors?.extraData?.[index]?.characteristic}
               open={!!errors?.extraData?.[index]?.characteristic}
@@ -250,7 +271,11 @@ const ExtraDataList = ({ count = 0 }) => {
               />
             </Tooltip>
           </Grid>
-          <Grid item xs={3.75} className={classes.textFieldContainer}>
+          <Grid
+            item
+            xs={isMobile ? 5.75 : 3.75}
+            className={classes.textFieldContainer}
+          >
             <Tooltip
               title={errors?.extraData?.[index]?.value}
               open={!!errors?.extraData?.[index]?.value}

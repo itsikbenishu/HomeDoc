@@ -29,7 +29,6 @@ const useStyles = makeStyles(() => ({
   },
   paper: {
     padding: "0.2rem",
-    //  marginTop: "0.5rem",
     display: "flex",
     alignItems: "flex-start",
     justifyContent: "flex-start",
