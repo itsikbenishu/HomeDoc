@@ -161,7 +161,8 @@ const ExtraDataList = ({ count = 0 }) => {
         )}
         <Grid
           item
-          xs={isMobile ? 5.75 : 3.75}
+          xs={6}
+          sm={4}
           className={classes.textFieldContainer}
           alignItems="center"
           style={editOpacity}
@@ -179,7 +180,8 @@ const ExtraDataList = ({ count = 0 }) => {
         </Grid>
         <Grid
           item
-          xs={isMobile ? 5.75 : 3.75}
+          xs={6}
+          sm={4}
           className={classes.textFieldContainer}
           disabled={!isEditMode}
           style={editOpacity}
@@ -236,11 +238,7 @@ const ExtraDataList = ({ count = 0 }) => {
           style={{ marginTop: 1 }}
         >
           <Grid item xs={2} container />
-          <Grid
-            item
-            xs={isMobile ? 5.75 : 3.75}
-            className={classes.textFieldContainer}
-          >
+          <Grid item xs={6} sm={4} className={classes.textFieldContainer}>
             <Tooltip
               title={errors?.extraData?.[index]?.characteristic}
               open={!!errors?.extraData?.[index]?.characteristic}
@@ -271,11 +269,7 @@ const ExtraDataList = ({ count = 0 }) => {
               />
             </Tooltip>
           </Grid>
-          <Grid
-            item
-            xs={isMobile ? 5.75 : 3.75}
-            className={classes.textFieldContainer}
-          >
+          <Grid item xs={6} sm={4} className={classes.textFieldContainer}>
             <Tooltip
               title={errors?.extraData?.[index]?.value}
               open={!!errors?.extraData?.[index]?.value}
