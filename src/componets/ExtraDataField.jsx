@@ -21,6 +21,7 @@ const ExtraDataField = ({ className, label, ...others }) => {
       arrow
     >
       <TextField
+        autoComplete="off"
         variant="outlined"
         id={label}
         name={label}

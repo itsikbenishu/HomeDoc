@@ -56,6 +56,7 @@ const ChipsList = ({
         options={options}
         renderInput={(params) => (
           <TextField
+            autoComplete="off"
             variant="outlined"
             {...params}
             inputProps={{

@@ -142,6 +142,7 @@ const ExtraDataList = ({ count = 0 }) => {
         )}
         <Grid item xs sm={4}>
           <TextField
+            autoComplete="off"
             onChange={(e) => setNewCharacteristic(e.target.value)}
             value={newCharacteristic}
             variant="outlined"
@@ -154,6 +155,7 @@ const ExtraDataList = ({ count = 0 }) => {
         </Grid>
         <Grid item xs sm={4}>
           <TextField
+            autoComplete="off"
             onChange={(e) => setNewValaue(e.target.value)}
             value={newValue}
             variant="outlined"
@@ -193,6 +195,7 @@ const ExtraDataList = ({ count = 0 }) => {
               arrow
             >
               <TextField
+                autoComplete="off"
                 variant="outlined"
                 name="characteristic"
                 value={elem.characteristic}
@@ -212,6 +215,7 @@ const ExtraDataList = ({ count = 0 }) => {
               arrow
             >
               <TextField
+                autoComplete="off"
                 variant="outlined"
                 name="value"
                 value={elem.value}
