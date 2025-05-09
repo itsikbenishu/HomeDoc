@@ -8,13 +8,13 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { makeStyles } from "@mui/styles";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ExtraDataListDialog from "./ExtraDataListDialog";
 import { toItemsWithIds, toItemWithId } from "../utils/appTools";
 import { useFormikContext } from "formik";
 import { useIsEditMode } from "../hooks/useIsEditMode";
+import ExtraDataListDialog from "./ExtraDataListDialog";
 
 const useStyles = makeStyles(() => ({
   typographyText: {
@@ -118,10 +118,12 @@ const ExtraDataList = ({ count = 0 }) => {
       className={classes.extraDataListContainer}
     >
       <Grid item className={classes.moreIconContainer}>
-        <ExtraDataListDialog
-          extraDataList={elements}
-          handleRemove={handleRemove}
-        />
+        {elementsByCount.length > 0 && (
+          <ExtraDataListDialog
+            extraDataList={elements}
+            handleRemove={handleRemove}
+          />
+        )}
       </Grid>
 
       {isMobile && (

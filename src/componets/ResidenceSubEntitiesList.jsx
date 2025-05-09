@@ -66,7 +66,7 @@ const ResidenceSubEntitiesList = ({
           sm: 0.5,
         }}
       >
-        <Grid item xs={1}>
+        <Grid item xs={2} sm={1}>
           <Box
             sx={{
               p: 0,
