@@ -116,6 +116,7 @@ const ExtraDataList = ({ count = 0 }) => {
       container
       direction="column"
       className={classes.extraDataListContainer}
+      sx={{ height: "100%" }}
     >
       <Grid item className={classes.moreIconContainer}>
         {elementsByCount.length > 0 && (
