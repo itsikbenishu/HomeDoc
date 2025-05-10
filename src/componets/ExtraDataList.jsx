@@ -8,8 +8,8 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { makeStyles } from "@mui/styles";
+import DeleteIcon from "@mui/icons-material/Delete";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
 import { toItemsWithIds, toItemWithId } from "../utils/appTools";
 import { useFormikContext } from "formik";
