@@ -168,7 +168,7 @@ const ExtraDataList = ({ count = 0 }) => {
             sx={editOpacity}
           />
         </Grid>
-        <Grid item sm="auto">
+        <Grid item xs="auto" sx={{ display: "flex", alignItems: "center" }}>
           {isEditMode && (
             <Tooltip title="הוסף" placement="bottom">
               <AddBoxRoundedIcon
