@@ -266,7 +266,7 @@ const ChattelsExtraDataCard = () => {
             }}
           >
             <ExtraDataList
-              count={isMobile ? 1 : 3}
+              count={isMobile ? 2 : 3}
               addMessage="?האם אתה בטוח שהינך מעוניין להוסיף את התכונה הזו"
             />
           </Card>
