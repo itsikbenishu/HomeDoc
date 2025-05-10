@@ -186,6 +186,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
             className={classes.card}
             sx={{
               bgcolor: "transparent",
+              height: "100%",
             }}
           >
             <ExtraDataList
