@@ -41,7 +41,7 @@ const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
       <Tooltip title="תכונות נוספות" placement="bottom">
         <ReadMoreIcon
           fontSize="medium"
-          style={{ verticalAlign: "middle" }}
+          sx={{ verticalAlign: "middle" }}
           onClick={handleClickOpen}
         />
       </Tooltip>

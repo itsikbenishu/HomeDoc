@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
     alignItems: "stretch",
     width: "100%",
   },
-  Box: {
+  box: {
     height: "100%",
     display: "flex",
     marginLeft: "0.25rem",
@@ -76,7 +76,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
     <Grid container spacing={1} direction="column" sx={{ mb: -10 }}>
       <Grid item xs={12} sm={3} className={classes.gridItem}>
         <Box
-          className={classes.Box}
+          className={classes.box}
           sx={{
             bgcolor: "transparent",
           }}
@@ -108,13 +108,16 @@ const ResidenceExtraDataCard = ({ residence }) => {
                   label="description"
                   className={classes.multilineTextField}
                   minRows={3}
-                  maxRows={5}
+                  maxRows={3}
                   multiline
                   fullWidth
                   sx={{
-                    padding: "6px",
+                    p: "6px",
                     "& .MuiInputBase-root": {
-                      padding: 0.2,
+                      p: 0.2,
+                      "& textarea": {
+                        scrollbarColor: `${theme.palette.grey[500]} ${theme.palette.secondary.main}`,
+                      },
                     },
                   }}
                 />
@@ -126,7 +129,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
 
       <Grid item xs={12} sm={3} className={classes.gridItem}>
         <Box
-          className={classes.Box}
+          className={classes.box}
           sx={{
             bgcolor: "transparent",
             mr: 0.25,
@@ -152,7 +155,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
       {residence.type !== "PROPERTY" && (
         <Grid item xs={12} sm={3} className={classes.gridItem}>
           <Box
-            className={classes.Box}
+            className={classes.box}
             sx={{
               bgcolor: "transparent",
               mr: 0.25,
@@ -173,7 +176,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
       )}
       <Grid item xs={12} sm={3} className={classes.gridItem}>
         <Box
-          className={classes.Box}
+          className={classes.box}
           sx={{
             mr: 0.25,
             bgcolor: "transparent",

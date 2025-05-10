@@ -29,7 +29,7 @@ const ButtonsLine = ({ buttons, lineStyle }) => {
   };
 
   return (
-    <Box style={lineStyle}>
+    <Box sx={lineStyle}>
       {buttons.map((button) => (
         <React.Fragment key={button.key}>
           <Tooltip title={button.label} placement="bottom">

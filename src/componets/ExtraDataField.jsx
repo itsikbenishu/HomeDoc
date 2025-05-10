@@ -9,7 +9,9 @@ const ExtraDataField = ({ className, label, ...others }) => {
     useFormikContext();
 
   const displayValue =
-    values[label] < 0 ? `${Math.abs(values[label])}-` : values[label];
+    typeof values[label] === "number" && values[label] < 0
+      ? `${Math.abs(values[label])}-`
+      : values[label];
 
   return (
     <Tooltip

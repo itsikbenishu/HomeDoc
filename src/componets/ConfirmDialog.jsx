@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
 import DialogButton from "./DialogButton";
@@ -23,9 +23,6 @@ const useStyles = makeStyles(() => ({
     textAlign: "center",
     zIndex: "1001",
   },
-  typographyText: {
-    color: "#130b65",
-  },
 }));
 
 const ConfirmDialog = ({ dialog, isOpen, onClose, onConfirm }) => {
@@ -34,19 +31,22 @@ const ConfirmDialog = ({ dialog, isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
 
   return (
-    <div className={classes.dialogOverlay}>
-      <div className={classes.dialog}>
-        <div style={{ marginBottom: "10px" }}>
-          <Typography variant="h6" className={classes.typographyText}>
+    <Box className={classes.dialogOverlay}>
+      <Box className={classes.dialog}>
+        <Box sx={{ mb: "10px" }}>
+          <Typography
+            variant="h6"
+            sx={{ color: (theme) => theme.palette.primary.main }}
+          >
             {dialog}
           </Typography>
-        </div>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
           <DialogButton onClick={onConfirm}>כן</DialogButton>
           <DialogButton onClick={onClose}>לא</DialogButton>
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

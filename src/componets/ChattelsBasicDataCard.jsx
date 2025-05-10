@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormikContext } from "formik";
-import { Paper, Grid, Typography, Card } from "@mui/material";
+import { Box, Grid, Typography, Card } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { HOME_DOC_CHATTELS_TYPE, SUB_HOME_DOC_TYPE } from "../../Constants";
 import {
@@ -13,7 +13,7 @@ import ButtonsLine from "./ButtonsLine";
 import getButtonsLineComps from "./getButtonsLineComps";
 
 const useStyles = makeStyles(() => ({
-  paper: {
+  Box: {
     height: "100%",
     display: "flex",
     boxShadow: "none",
@@ -58,16 +58,14 @@ const ChattelsBasicDataCard = ({ entityTitle, entitySubTitle, entityType }) => {
   return (
     <Grid container spacing={0.75} direction="column">
       <Grid item xs={12} sm={3}>
-        <Paper
-          elevation={0}
-          className={classes.paper}
-          style={{
-            backgroundColor: "rgb(205 213 225)",
-            borderColor: "rgb(205 213 225)",
-            marginRight: "4px",
+        <Box
+          className={classes.Box}
+          sx={{
+            bgcolor: (theme) => theme.palette.secondary.main,
+            ml: 0.25,
           }}
         >
-          <Grid container direction="column" style={{ marginBottom: "-2rem" }}>
+          <Grid container direction="column" sx={{ mb: "-2rem" }}>
             <Grid item xs={3}>
               <Typography variant="h5" className={classes.typographyText}>
                 {entityTitle}
@@ -76,7 +74,7 @@ const ChattelsBasicDataCard = ({ entityTitle, entitySubTitle, entityType }) => {
             <Grid
               item
               xs={9}
-              style={{
+              sx={{
                 paddingLeft: "0.2rem",
                 display: "flex",
                 justifyContent: "flex-end",
@@ -85,32 +83,28 @@ const ChattelsBasicDataCard = ({ entityTitle, entitySubTitle, entityType }) => {
               <ButtonsLine buttons={buttons} />
             </Grid>
           </Grid>
-        </Paper>
+        </Box>
       </Grid>
       <Grid item xs={12} sm={3}>
-        <Paper
-          elevation={0}
-          className={classes.paper}
-          style={{
-            backgroundColor: "rgb(205 213 225)",
-            borderColor: "rgb(205 213 225)",
-            marginLeft: "4px",
+        <Box
+          className={classes.Box}
+          sx={{
+            bgcolor: (theme) => theme.palette.secondary.main,
+            ml: 0.25,
           }}
         >
           <Card
             className={classes.card}
-            style={{
-              backgroundColor: "transparent",
-              borderColor: "grey",
+            sx={{
+              bgcolor: "transparent",
             }}
           >
             <Grid container spacing={0.5}>
               <Grid item xs={2}>
-                <Paper
-                  elevation={0}
-                  style={{
-                    backgroundColor: "transparent",
-                    marginLeft: "4px",
+                <Box
+                  sx={{
+                    bgcolor: "transparent",
+                    ml: "4px",
                   }}
                 >
                   <Typography
@@ -119,14 +113,13 @@ const ChattelsBasicDataCard = ({ entityTitle, entitySubTitle, entityType }) => {
                   >
                     סוג:
                   </Typography>
-                </Paper>
+                </Box>
               </Grid>
               <Grid item xs={10}>
-                <Paper
-                  elevation={0}
-                  style={{
-                    backgroundColor: "transparent",
-                    marginRight: "20px",
+                <Box
+                  sx={{
+                    bgcolor: "transparent",
+                    mr: 1.25,
                   }}
                 >
                   <Typography
@@ -139,53 +132,43 @@ const ChattelsBasicDataCard = ({ entityTitle, entitySubTitle, entityType }) => {
                       ]
                     }
                   </Typography>
-                </Paper>
+                </Box>
               </Grid>
             </Grid>
           </Card>
-        </Paper>
+        </Box>
       </Grid>
 
       <Grid item xs={12} sm={3}>
-        <Paper
-          elevation={0}
-          className={classes.paper}
-          style={{
-            backgroundColor: "rgb(205 213 225)",
-            borderColor: "rgb(205 213 225)",
-            marginLeft: "4px",
-          }}
+        <Box
+          className={classes.Box}
+          sx={(theme) => ({
+            bgcolor: theme.palette.secondary.main,
+            ml: 0.25,
+          })}
         >
           <Card
             className={classes.card}
-            style={{
-              backgroundColor: "transparent",
-              borderColor: "grey",
+            sx={{
+              bgcolor: "transparent",
             }}
           >
             <Grid container spacing={0.5}>
               <Grid item xs={2}>
-                <Paper
-                  elevation={0}
-                  style={{
-                    backgroundColor: "transparent",
-                    marginLeft: "4px",
-                  }}
-                >
+                <Box sx={{ bgcolor: "transparent", ml: 0.25 }}>
                   <Typography
                     variant="subtitle1"
                     className={classes.typographyText}
                   >
                     חדר:
                   </Typography>
-                </Paper>
+                </Box>
               </Grid>
               <Grid item xs={10}>
-                <Paper
-                  elevation={0}
-                  style={{
-                    backgroundColor: "transparent",
-                    marginRight: "20px",
+                <Box
+                  sx={{
+                    bgcolor: "transparent",
+                    mr: 1.25,
                   }}
                 >
                   <Typography
@@ -196,11 +179,11 @@ const ChattelsBasicDataCard = ({ entityTitle, entitySubTitle, entityType }) => {
                       {entitySubTitle.title}
                     </Link>
                   </Typography>
-                </Paper>
+                </Box>
               </Grid>
             </Grid>
           </Card>
-        </Paper>
+        </Box>
       </Grid>
     </Grid>
   );

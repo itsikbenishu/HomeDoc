@@ -336,7 +336,7 @@ const homeDocSlice = createSlice({
         state.status = STATUSES.PENDING;
       })
       .addCase(deleteHomeDoc.fulfilled, (state, action) => {
-        state.entity = action.payload.data;
+        state.entity = null;
         state.success = true;
         state.status = STATUSES.FULFILLED;
         toast(" מחיקה בהצלחה! ", "success");
@@ -355,13 +355,13 @@ export const selectHomeDocStats = (state) => state.home.stats;
 export const selectHomeDocResults = (state) => state.home.searchEntityResults;
 export const selectHomeDocStatus = (state) => state.home.status;
 export const selectHomeDocIsSuccess = (state) => state.home.success;
-export const selectHomeDocEntityType = (state) => state.home.entity.type;
+export const selectHomeDocEntityType = (state) => state.home.entity?.type;
 export const selectHomeDocEntityCategory = (state) =>
-  state.home.entity.category;
+  state.home.entity?.category;
 export const selectHomeDocsubEntities = (state) =>
-  state.home.entity.subEntities;
+  state.home.entity?.subEntities;
 export const selectHomeDocInteriorEntityKey = (state) =>
-  state.home.entity.interiorEntityKey;
+  state.home.entity?.interiorEntityKey;
 
 export const { clearSucces } = homeDocSlice.actions;
 

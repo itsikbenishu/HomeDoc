@@ -68,7 +68,7 @@ const ChattelsPage = () => {
         >
           <Card
             sx={{
-              bgcolor: (theme) => theme.palette.primary.main,
+              bgcolor: theme.palette.primary.main,
               height: "90vh",
               overflow: "auto",
               mx: 1,

@@ -16,7 +16,6 @@ const useStyles = makeStyles(() => ({
   card: {
     padding: 0,
     backgroundColor: "transparent",
-    borderColor: "grey",
     width: "calc(100% - 4px)",
     marginRight: "4px",
     paddingRight: "4px",
@@ -66,7 +65,7 @@ const ResidenceSubEntitiesList = ({
           sm: 0.5,
         }}
       >
-        <Grid item xs={2} sm={1}>
+        <Grid item xs={2}>
           <Box
             sx={{
               p: 0,
@@ -84,8 +83,8 @@ const ResidenceSubEntitiesList = ({
           <Grid item xs={1} key={subEntity.id}>
             <Box
               className={classes.subEntity}
-              style={{
-                backgroundColor: "transparent",
+              sx={{
+                bgcolor: "transparent",
               }}
               key={subEntity.id}
             >
@@ -105,8 +104,8 @@ const ResidenceSubEntitiesList = ({
         <Grid item xs={1}>
           <Box
             className={classes.subEntity}
-            style={{
-              backgroundColor: "transparent",
+            sx={{
+              bgcolor: "transparent",
             }}
           >
             <CreateSubHomeDialog

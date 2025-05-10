@@ -122,14 +122,14 @@ const CreateSubHomeDialog = ({
               <AddBoxRoundedIcon
                 onClick={handleClickOpen}
                 fontSize="small"
-                style={{ verticalAlign: "middle" }}
+                sx={{ verticalAlign: "middle" }}
               />
             </Tooltip>
           )}
-      <Dialog open={openDialog} onClose={handleClose} dir="rtl">
+      <Dialog open={openDialog} onClose={handleClose}>
         <DialogTitle>צור</DialogTitle>
         <DialogContent>
-          <DialogContentText style={{ marginBottom: 10 }}>
+          <DialogContentText sx={{ mb: 2 }}>
             {dialogContentText === ""
               ? `לצורך הרחבת התיעוד הביתי, אנא הזן את ${
                   SUB_HOME_DOC_KEY[SUB_HOME_DOC_TYPE[category][homeDocType]]

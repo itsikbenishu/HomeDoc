@@ -1,4 +1,11 @@
-import { Paper, Grid, Typography, Card } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  Card,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import ExtraDataList from "./ExtraDataList";
 import ExtraDataField from "./ExtraDataField";
@@ -11,10 +18,9 @@ const useStyles = makeStyles(() => ({
     alignItems: "stretch",
     width: "100%",
   },
-  paper: {
+  box: {
     height: "100%",
     display: "flex",
-    boxShadow: "none",
     marginLeft: "4px",
   },
   card: {
@@ -72,24 +78,24 @@ const useStyles = makeStyles(() => ({
 
 const ChattelsExtraDataCard = () => {
   const classes = useStyles();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { values, setFieldValue } = useFormikContext();
 
   return (
-    <Grid container spacing={1} direction="column" sx={{ marginBottom: -10 }}>
+    <Grid container spacing={1} direction="column" sx={{ mb: -10 }}>
       <Grid item xs={12} sm={3} className={classes.gridItem}>
-        <Paper
-          elevation={0}
-          className={classes.paper}
+        <Box
+          className={classes.box}
           sx={{
-            backgroundColor: "transparent",
+            bgcolor: "transparent",
           }}
         >
           <Card
             className={classes.card}
             sx={{
-              backgroundColor: "transparent",
-
-              marginTop: "3px",
+              bgcolor: "transparent",
+              mt: "3px",
               mr: 0.25,
             }}
           >
@@ -99,7 +105,7 @@ const ChattelsExtraDataCard = () => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                sx={{ pl: "0.5rem" }}
+                sx={{ pl: 2 }}
               >
                 <Typography
                   variant="subtitle1"
@@ -117,35 +123,34 @@ const ChattelsExtraDataCard = () => {
                   label="description"
                   className={classes.multilineTextField}
                   minRows={3}
-                  maxRows={5}
+                  maxRows={3}
                   multiline
                   fullWidth
                   sx={{
-                    padding: "6px",
+                    p: "6px",
                     "& .MuiInputBase-root": {
-                      padding: 0.2,
+                      p: 0.2,
+                      "& textarea": {
+                        scrollbarColor: `${theme.palette.grey[500]} ${theme.palette.secondary.main}`,
+                      },
                     },
                   }}
                 />
               </Grid>
             </Grid>
           </Card>
-        </Paper>
+        </Box>
       </Grid>
 
       <Grid item xs={12} sm={3} className={classes.gridItem}>
-        <Paper
-          elevation={0}
-          className={classes.paper}
+        <Box
+          className={classes.box}
           sx={{
-            backgroundColor: "transparent",
+            bgcolor: "transparent",
             mr: 0.25,
           }}
         >
-          <Card
-            className={classes.card}
-            sx={{ backgroundColor: "transparent" }}
-          >
+          <Card className={classes.card} sx={{ bgcolor: "transparent" }}>
             <LabeledExtraDataFields
               className={classes.textField}
               columnsPerRow={3}
@@ -158,13 +163,12 @@ const ChattelsExtraDataCard = () => {
               ]}
             />
           </Card>
-        </Paper>
+        </Box>
       </Grid>
 
       <Grid item xs={12} sm={3} className={classes.gridItem}>
-        <Paper
-          elevation={0}
-          className={classes.paper}
+        <Box
+          className={classes.box}
           sx={{
             mr: 0.25,
             backgroundColor: "transparent",
@@ -183,13 +187,12 @@ const ChattelsExtraDataCard = () => {
               ]}
             />
           </Card>
-        </Paper>
+        </Box>
       </Grid>
 
       <Grid item xs={12} sm={3} className={classes.gridItem}>
-        <Paper
-          elevation={0}
-          className={classes.paper}
+        <Box
+          className={classes.box}
           sx={{
             backgroundColor: "transparent",
           }}
@@ -198,8 +201,7 @@ const ChattelsExtraDataCard = () => {
             className={classes.card}
             sx={{
               backgroundColor: "transparent",
-
-              marginTop: "3px",
+              mt: "3px",
               mr: 0.25,
             }}
           >
@@ -209,7 +211,7 @@ const ChattelsExtraDataCard = () => {
                 xs={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                sx={{ pl: "0.5rem" }}
+                sx={{ pl: 0.5 }}
               >
                 <Typography
                   variant="subtitle1"
@@ -222,6 +224,7 @@ const ChattelsExtraDataCard = () => {
                 <ChipsList
                   className={classes.colorsChips}
                   items={values["colors"]}
+                  firstChipsNumber={isMobile ? 1 : 4}
                   handleChangeChips={(newValue) => {
                     setFieldValue("colors", newValue);
                   }}
@@ -233,25 +236,24 @@ const ChattelsExtraDataCard = () => {
                   }}
                   sx={{
                     "& .MuiOutlinedInput-root .MuiAutocomplete-input": {
-                      marginTop: "-12px",
+                      mt: -1.5,
                     },
                     "& .MuiAutocomplete-tag": {
-                      marginTop: "-10px",
-                      marginRight: 0.1,
-                      marginBottom: 0.5,
+                      mt: -1,
+                      mr: 0.1,
+                      mb: 0.5,
                     },
                   }}
                 />
               </Grid>
             </Grid>
           </Card>
-        </Paper>
+        </Box>
       </Grid>
 
       <Grid item xs={12} sm={3} className={classes.gridItem}>
-        <Paper
-          elevation={0}
-          className={classes.paper}
+        <Box
+          className={classes.box}
           sx={{
             mr: 0.25,
             backgroundColor: "transparent",
@@ -268,7 +270,7 @@ const ChattelsExtraDataCard = () => {
               addMessage="?האם אתה בטוח שהינך מעוניין להוסיף את התכונה הזו"
             />
           </Card>
-        </Paper>
+        </Box>
       </Grid>
     </Grid>
   );

@@ -98,7 +98,7 @@ const ChipsList = ({
                 onClick={handleOpenPopover}
                 size="small"
                 sx={{
-                  marginLeft: 1,
+                  ml: 1,
                   "&:hover": {
                     color: (theme) => theme.palette.grey[600],
                   },
@@ -134,7 +134,7 @@ const ChipsList = ({
               onDelete={() => handleDelete(value)}
               size="small"
               sx={{
-                margin: 0.3,
+                m: 0.3,
                 color: (theme) => theme.palette.primary.main,
               }}
             />

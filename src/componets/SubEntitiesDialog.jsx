@@ -12,6 +12,7 @@ import {
   Slide,
   IconButton,
   Typography,
+  Box,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
@@ -48,7 +49,7 @@ const SubEntitiesDialog = ({
       <Tooltip title={`עוד ${subEntitesName}`} placement="bottom">
         <MoreHorizRoundedIcon
           fontSize="small"
-          style={{ verticalAlign: "middle" }}
+          sx={{ verticalAlign: "middle" }}
           onClick={handleClickOpen}
         />
       </Tooltip>
@@ -57,9 +58,9 @@ const SubEntitiesDialog = ({
         open={open}
         onClose={handleClose}
         TransitionComponent={Transition}
-        style={{ backgroundColor: "#130b65" }}
+        sx={{ bgcolor: (theme) => theme.palette.primary.main }}
       >
-        <div style={{ backgroundColor: "#130b65", height: "100vh" }}>
+        <Box sx={{ backgroundColor: "#130b65", height: "100vh" }}>
           <AppBar sx={{ position: "relative" }}>
             <Toolbar>
               <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
@@ -81,9 +82,9 @@ const SubEntitiesDialog = ({
                 <ListItemButton
                   key={`listItemButton-${subEntity.id}`}
                   sx={{
-                    backgroundColor: "#130b65",
+                    bgcolor: (theme) => theme.palette.primary.main,
                     "&:hover": {
-                      backgroundColor: "#133365",
+                      bgcolor: "#133365",
                     },
                   }}
                   onClick={() =>
@@ -102,24 +103,32 @@ const SubEntitiesDialog = ({
                         {subEntity?.description}
                       </span>
                     }
-                    sx={{ textAlign: "right", color: "white" }}
+                    sx={{
+                      textAlign: "right",
+                      color: (theme) => theme.palette.primary.contrastText,
+                    }}
                   />
                 </ListItemButton>
                 <Divider
                   key={`divider-${subEntity.id}`}
-                  style={{ backgroundColor: "white" }}
+                  sx={{
+                    bgcolor: (theme) => theme.palette.primary.contrastText,
+                  }}
                 />
               </React.Fragment>
             ))}
-            <div style={{ backgroundColor: "#130b65" }}>
+            <Box sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
               <CreateSubHomeDialog
                 homeDocType={entityType}
                 isExpaned={true}
               ></CreateSubHomeDialog>
-              <Divider key="addDivider" style={{ backgroundColor: "white" }} />
-            </div>
+              <Divider
+                key="addDivider"
+                sx={{ bgcolor: (theme) => theme.palette.primary.contrastText }}
+              />
+            </Box>
           </List>
-        </div>
+        </Box>
       </Dialog>
     </>
   );

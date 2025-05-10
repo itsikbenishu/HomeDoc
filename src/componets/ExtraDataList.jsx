@@ -152,7 +152,7 @@ const ExtraDataList = ({ count = 0 }) => {
             className={classes.textField}
             disabled={!isEditMode}
             fullWidth
-            style={editOpacity}
+            sx={editOpacity}
           />
         </Grid>
         <Grid item xs sm={4}>
@@ -165,7 +165,7 @@ const ExtraDataList = ({ count = 0 }) => {
             className={classes.textField}
             disabled={!isEditMode}
             fullWidth
-            style={editOpacity}
+            sx={editOpacity}
           />
         </Grid>
         <Grid item sm="auto">
@@ -174,7 +174,7 @@ const ExtraDataList = ({ count = 0 }) => {
               <AddBoxRoundedIcon
                 onClick={handleAdd}
                 fontSize="small"
-                style={{ verticalAlign: "middle", marginTop: 5 }}
+                sx={{ verticalAlign: "middle", mt: 5 }}
               />
             </Tooltip>
           )}
@@ -236,7 +236,7 @@ const ExtraDataList = ({ count = 0 }) => {
                 <DeleteIcon
                   onClick={() => handleRemove(elem)}
                   fontSize="small"
-                  style={{ verticalAlign: "middle", marginTop: 5 }}
+                  sx={{ verticalAlign: "middle", mt: 5 }}
                 />
               </Tooltip>
             )}
