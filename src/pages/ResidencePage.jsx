@@ -83,7 +83,7 @@ const HomeDocResidencePage = () => {
           <Paper
             sx={{
               bgcolor: (theme) => theme.palette.primary.main,
-              height: "90vh",
+              height: isMobile && residenceType === "ROOM" ? "auto" : "90vh",
               overflowY: "auto",
               mx: 1,
             }}

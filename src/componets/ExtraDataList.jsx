@@ -174,7 +174,7 @@ const ExtraDataList = ({ count = 0 }) => {
               <AddBoxRoundedIcon
                 onClick={handleAdd}
                 fontSize="small"
-                sx={{ verticalAlign: "middle", mt: 5 }}
+                sx={{ verticalAlign: "middle" }}
               />
             </Tooltip>
           )}
@@ -236,7 +236,7 @@ const ExtraDataList = ({ count = 0 }) => {
                 <DeleteIcon
                   onClick={() => handleRemove(elem)}
                   fontSize="small"
-                  sx={{ verticalAlign: "middle", mt: 5 }}
+                  sx={{ verticalAlign: "middle" }}
                 />
               </Tooltip>
             )}

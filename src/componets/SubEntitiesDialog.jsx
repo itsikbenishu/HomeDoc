@@ -60,7 +60,12 @@ const SubEntitiesDialog = ({
         TransitionComponent={Transition}
         sx={{ bgcolor: (theme) => theme.palette.primary.main }}
       >
-        <Box sx={{ backgroundColor: "#130b65", height: "100vh" }}>
+        <Box
+          sx={{
+            bgcolor: (theme) => theme.palette.primary.main,
+            height: "100vh",
+          }}
+        >
           <AppBar sx={{ position: "relative" }}>
             <Toolbar>
               <Typography sx={{ ml: 2, flex: 1 }} variant="h6">

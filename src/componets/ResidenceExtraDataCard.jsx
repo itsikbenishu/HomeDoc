@@ -73,7 +73,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
       }:`;
 
   return (
-    <Grid container spacing={1} direction="column" sx={{ mb: -10 }}>
+    <Grid container spacing={1} direction="column">
       <Grid item xs={12} sm={3} className={classes.gridItem}>
         <Box
           className={classes.box}

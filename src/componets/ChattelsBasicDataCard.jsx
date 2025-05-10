@@ -65,7 +65,7 @@ const ChattelsBasicDataCard = ({ entityTitle, entitySubTitle, entityType }) => {
             ml: 0.25,
           }}
         >
-          <Grid container direction="column" sx={{ mb: "-2rem" }}>
+          <Grid container direction="column" sx={{ marginBottom: "-2rem" }}>
             <Grid item xs={3}>
               <Typography variant="h5" className={classes.typographyText}>
                 {entityTitle}

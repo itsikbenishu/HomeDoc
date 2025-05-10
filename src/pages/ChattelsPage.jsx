@@ -69,7 +69,7 @@ const ChattelsPage = () => {
           <Card
             sx={{
               bgcolor: theme.palette.primary.main,
-              height: "90vh",
+              height: isMobile ? "auto" : "90vh",
               overflow: "auto",
               mx: 1,
             }}
@@ -86,7 +86,6 @@ const ChattelsPage = () => {
                   sx={{
                     bgcolor: theme.palette.secondary.main,
                     height: "calc(100% - 4px)",
-                    mb: -0.5,
                   }}
                 >
                   <ChattelsBasicDataCard

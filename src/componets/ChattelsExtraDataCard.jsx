@@ -83,7 +83,7 @@ const ChattelsExtraDataCard = () => {
   const { values, setFieldValue } = useFormikContext();
 
   return (
-    <Grid container spacing={1} direction="column" sx={{ mb: -10 }}>
+    <Grid container spacing={1} direction="column">
       <Grid item xs={12} sm={3} className={classes.gridItem}>
         <Box
           className={classes.box}
@@ -266,7 +266,7 @@ const ChattelsExtraDataCard = () => {
             }}
           >
             <ExtraDataList
-              count={3}
+              count={isMobile ? 1 : 3}
               addMessage="?האם אתה בטוח שהינך מעוניין להוסיף את התכונה הזו"
             />
           </Card>
