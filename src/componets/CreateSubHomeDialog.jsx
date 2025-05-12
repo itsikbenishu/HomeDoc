@@ -55,7 +55,7 @@ const CreateSubHomeDialog = ({
 }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const subEntities = useSelector(selectHomeDocsubEntities);
   const fatherInteriorEntityKey = useSelector(selectHomeDocInteriorEntityKey);
   const category = useSelector(selectHomeDocEntityCategory);
@@ -111,10 +111,9 @@ const CreateSubHomeDialog = ({
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={t("more")}
+                  primary={t("add")}
                   secondary={<span style={{ color: "white" }}></span>}
                   sx={{
-                    textAlign: "right",
                     color: (theme) => theme.palette.primary.contrastText,
                   }}
                 />
@@ -130,7 +129,11 @@ const CreateSubHomeDialog = ({
               />
             </Tooltip>
           )}
-      <Dialog open={openDialog} onClose={handleClose}>
+      <Dialog
+        open={openDialog}
+        onClose={handleClose}
+        dir={i18n.language === "he" ? "rtl" : "ltr"}
+      >
         <DialogTitle>{t("create_sub_home_dialog.title")}</DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ mb: 2 }}>
@@ -155,7 +158,7 @@ const CreateSubHomeDialog = ({
             </FormControl>
           </Stack>
         </DialogContent>
-        <DialogActions sx={{ gap: 1.1 }}>
+        <DialogActions sx={{ gap: 1.1, mx: 1 }}>
           <DialogButton onClick={handleClose}>
             {t("create_sub_home_dialog.cancel")}
           </DialogButton>

@@ -30,11 +30,13 @@ const SearchResults = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const resultsTitle = t("search_homedoc_page.sub_title");
   let paramsForQueryObj = location.search;
-  const paginationTheme = createTheme({ direction: "rtl" });
+  const paginationTheme = createTheme({
+    direction: i18n.language === "he" ? "rtl" : "ltr",
+  });
   const homeDocStatus = useSelector(selectHomeDocStatus);
 
   const isLoading =

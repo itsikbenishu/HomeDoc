@@ -124,7 +124,7 @@ const ResidenceSubEntitiesList = ({
                 subEntitesName={subEntityName}
                 subEntitiesList={subEntitiesList}
                 entityType={entityType}
-              ></SubEntitiesDialog>
+              />
             </Box>
           )}
         </Grid>

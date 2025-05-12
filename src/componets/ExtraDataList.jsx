@@ -41,7 +41,6 @@ const useStyles = makeStyles(() => ({
   moreIconContainer: {
     position: "absolute",
     top: 0,
-    left: 0,
     marginTop: 5,
     marginRight: 5,
   },
@@ -49,7 +48,7 @@ const useStyles = makeStyles(() => ({
 
 const ExtraDataList = ({ count = 0 }) => {
   const classes = useStyles();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { values, errors, setFieldValue, validateField } = useFormikContext();
   const isEditMode = useIsEditMode();
   const theme = useTheme();
@@ -113,7 +112,14 @@ const ExtraDataList = ({ count = 0 }) => {
       direction="column"
       className={classes.extraDataListContainer}
     >
-      <Grid item className={classes.moreIconContainer}>
+      <Grid
+        item
+        className={classes.moreIconContainer}
+        sx={{
+          left: i18n.language === "he" ? 0 : "auto",
+          right: i18n.language === "he" ? "auto" : 0,
+        }}
+      >
         {elementsByCount.length > 0 && (
           <ExtraDataListDialog
             extraDataList={elements}

@@ -1,4 +1,5 @@
 import { HashRouter, Routes, Route } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { ToastProvider } from "./utils/toast";
 
@@ -22,11 +23,13 @@ const portalTheme = createTheme({
 });
 
 const App = () => {
+  const { i18n } = useTranslation();
+
   return (
     <ThemeProvider theme={portalTheme}>
       <ToastProvider>
         <div
-          dir="rtl"
+          dir={i18n.language === "he" ? "rtl" : "ltr"}
           style={{
             backgroundColor: "#130b65",
             minHeight: "100vh",

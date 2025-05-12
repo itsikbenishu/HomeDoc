@@ -41,7 +41,7 @@ const Navbar = () => {
           </Button>
         </Box>
         <Box>
-          <ChangeLangButton handleClick={changeLanguage} />{" "}
+          <ChangeLangButton handleClick={changeLanguage} />
         </Box>
       </Toolbar>
     </AppBar>

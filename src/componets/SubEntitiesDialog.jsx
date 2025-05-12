@@ -31,7 +31,7 @@ const SubEntitiesDialog = ({
   entityType,
 }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -47,7 +47,7 @@ const SubEntitiesDialog = ({
   };
 
   return (
-    <>
+    <Box>
       <Tooltip title={`${t("more")} ${subEntitesName}`} placement="bottom">
         <MoreHorizRoundedIcon
           fontSize="small"
@@ -60,6 +60,7 @@ const SubEntitiesDialog = ({
         open={open}
         onClose={handleClose}
         TransitionComponent={Transition}
+        dir={i18n.language === "he" ? "rtl" : "ltr"}
         sx={{ bgcolor: (theme) => theme.palette.primary.main }}
       >
         <Box
@@ -111,7 +112,6 @@ const SubEntitiesDialog = ({
                       </span>
                     }
                     sx={{
-                      textAlign: "right",
                       color: (theme) => theme.palette.primary.contrastText,
                     }}
                   />
@@ -137,7 +137,7 @@ const SubEntitiesDialog = ({
           </List>
         </Box>
       </Dialog>
-    </>
+    </Box>
   );
 };
 

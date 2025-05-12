@@ -61,7 +61,7 @@ const useStyles = makeStyles(() => ({
 const CreateHomeDialog = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { HOME_DOC_CATEGORIES } = useTranslatedConstants();
   const [openDialog, setOpenDialog] = useState(false);
   const [category, setCategory] = useState("");
@@ -104,7 +104,6 @@ const CreateHomeDialog = () => {
       <FormControl
         sx={{
           mt: 3,
-          ml: 1,
           bgcolor: (theme) => theme.palette.primary.contrastText,
         }}
         variant="standard"
@@ -116,6 +115,7 @@ const CreateHomeDialog = () => {
       <Dialog
         open={openDialog}
         onClose={handleClose}
+        dir={i18n.language === "he" ? "rtl" : "ltr"}
         aria-labelledby="create-dialog-title"
         aria-describedby="create-dialog-description"
       >
@@ -161,7 +161,7 @@ const CreateHomeDialog = () => {
             </FormControl>
           </Stack>
         </DialogContent>
-        <DialogActions sx={{ gap: 1.1 }}>
+        <DialogActions sx={{ gap: 1.1, mx: 1 }}>
           <DialogButton onClick={handleClose}>
             {t("create_home_dialog.cancel")}
           </DialogButton>

@@ -46,6 +46,7 @@
 
   "more": "more",
   "loading": "Loading",
+  "add": "add",
   "in_development": "Coming soon",
   "page_card_lables": {
     "images": "Images",
@@ -54,7 +55,7 @@
 
   "confirm_dialog": { "no": "no", "yes": "yes" },
   "create_home_dialog": {
-    "title": "Create a property record",
+    "title": "Create a property documentation",
     "content": "To create a home documentation, please enter the address of the property and the type of property you are documentating.",
     "address_placeholder": "address",
     "type_option": "type",

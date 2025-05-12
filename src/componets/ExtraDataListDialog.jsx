@@ -27,7 +27,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
   const contrastTextColor = (theme) => theme.palette.primary.contrastText;
   const isEditMode = useIsEditMode();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -54,6 +54,7 @@ const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
         fullScreen
         open={open}
         onClose={handleClose}
+        dir={i18n.language === "he" ? "rtl" : "ltr"}
         TransitionComponent={Transition}
         sx={{
           zIndex: 10000,
@@ -88,7 +89,6 @@ const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
                     key={`listItemText-characteristic-${entity.id}`}
                     primary={`${entity.characteristic}:`}
                     sx={{
-                      textAlign: "right",
                       color: contrastTextColor,
                       width: "30%",
                     }}
@@ -97,7 +97,6 @@ const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
                     key={`listItemText-value-${entity.id}`}
                     primary={`${entity.value}`}
                     sx={{
-                      textAlign: "right",
                       color: contrastTextColor,
                       width: "65%",
                     }}

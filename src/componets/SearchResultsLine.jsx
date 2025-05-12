@@ -1,7 +1,9 @@
 import { Card, Stack, IconButton, Box } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles({
   card: {
@@ -31,6 +33,7 @@ const SearchResultsLine = ({
 }) => {
   const navigate = useNavigate();
   const classes = useStyles();
+  const { i18n } = useTranslation();
 
   return (
     <Card
@@ -57,7 +60,7 @@ const SearchResultsLine = ({
             onClick={() => navigate(`${linkPath}/${item[idName]}`)}
             sx={{ flexShrink: 0 }}
           >
-            <ArrowBackIcon />
+            {i18n.language === "he" ? <ArrowBackIcon /> : <ArrowForwardIcon />}
           </IconButton>
         )}
       </Stack>

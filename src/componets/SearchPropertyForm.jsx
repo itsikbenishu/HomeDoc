@@ -16,6 +16,7 @@ import CreateHomeDialog from "./CreateHomeDialog";
 import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 
 const useStyles = makeStyles(() => ({
+  container: { display: "flex", alignItems: "center" },
   iconButton: {
     height: "2.7rem",
     display: "flex",
@@ -132,17 +133,16 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
 
   return (
     <Box
+      className={classes.container}
       sx={{
         bgcolor: (theme) => theme.palette.secondary.main,
-        mx: { xs: 0.5, sm: 1 },
-        display: "flex",
-        alignItems: "center",
+        px: { xs: 0.5, sm: 1 },
         gap: 1,
       }}
     >
       <Box
         sx={{
-          pr: 0.5,
+          p: 0.5,
           flexShrink: 0,
         }}
       >
@@ -187,7 +187,9 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
 
       <Box sx={{ pt: 2 }}>
         <FormControl
-          sx={{ bgcolor: (theme) => theme.palette.primary.contrastText }}
+          sx={{
+            bgcolor: (theme) => theme.palette.primary.contrastText,
+          }}
           variant="standard"
         >
           <IconButton onClick={handleSearch} className={classes.iconButton}>

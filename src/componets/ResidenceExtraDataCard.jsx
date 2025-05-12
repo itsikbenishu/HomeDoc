@@ -79,7 +79,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
 
   const subEntitiesQuantityLabel = subEntityName
     ? t("residence_cards.label_sub_entities_quantity", {
-        entity: subEntityName,
+        entity: subEntityName.toLowerCase(),
       })
     : t("residence_cards.label_items_quantity");
 
@@ -94,7 +94,8 @@ const ResidenceExtraDataCard = ({ residence }) => {
             <Grid container spacing={0.25}>
               <Grid
                 item
-                xs={2}
+                xs="auto"
+                sm={2}
                 justifyContent="flex-start"
                 alignItems="center"
                 sx={{ pl: 0.5 }}
@@ -103,11 +104,7 @@ const ResidenceExtraDataCard = ({ residence }) => {
                   {t("residence_cards.label_description")}
                 </Typography>
               </Grid>
-              <Grid
-                item
-                xs={10}
-                className={classes.multilineTextFieldContainer}
-              >
+              <Grid item xs className={classes.multilineTextFieldContainer}>
                 <ExtraDataField
                   label="description"
                   className={classes.multilineTextField}

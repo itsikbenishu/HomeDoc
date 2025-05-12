@@ -120,12 +120,13 @@ const ResidenceBasicDataCard = ({
           })}
         >
           <Card className={classes.card} sx={{ bgcolor: "transparent" }}>
-            <Grid container spacing={0.5}>
-              <Grid item xs={0.5}>
+            <Grid container spacing={2}>
+              <Grid item xs="auto">
                 <Box sx={{ bgcolor: "transparent", ml: 0.25 }}>
                   <Typography
                     variant="subtitle1"
                     className={classes.typographyText}
+                    sx={{ whiteSpace: "nowrap" }}
                   >
                     {!entitySubTitle.type || entitySubTitle.type === "PROPERTY"
                       ? t("residence_cards.title_address")
@@ -133,7 +134,7 @@ const ResidenceBasicDataCard = ({
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item xs={11.5}>
+              <Grid item xs>
                 <Box sx={{ bgcolor: "transparent", mr: 5 }}>
                   {entitySubTitle.fatherId ? (
                     <Typography
