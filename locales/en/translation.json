@@ -121,8 +121,8 @@
     "more_than": "more than {{to}}"
   },
   "search_homedoc_page": {
-    "sub_title": "results",
-    "header": "property searching",
+    "sub_title": "Results",
+    "header": "Property Searching",
     "label_type": "type",
     "label_address": "address",
     "header_type": "property type",

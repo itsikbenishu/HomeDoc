@@ -49,7 +49,7 @@ const SearchResultsPage = () => {
   const homefields = isMobile
     ? ["interiorEntityKey"]
     : ["#", "category", "interiorEntityKey"];
-  const divfields = isMobile ? [10] : [1, 1, 8];
+  const divfields = isMobile ? [10] : [0.5, 2, 9.5];
 
   useEffect(() => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
