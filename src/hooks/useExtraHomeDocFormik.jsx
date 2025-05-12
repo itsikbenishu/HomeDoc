@@ -1,38 +1,49 @@
 import * as Yup from "yup";
 import { updateCurrentHomeDoc } from "../slices/HomeDocSlice";
+import { useTranslation } from "react-i18next";
 
 export const useExtraHomeDocFormik = (homeDoc, dispatch, pageType) => {
-  const etraDataItem = Yup.object({
+  const { t } = useTranslation();
+
+  const extraDataItem = Yup.object({
     value: Yup.string()
-      .max(35, "אורך השדה המירבי הוא 35 תווים")
-      .required("שדה חובה"),
+      .max(35, t("validation.max_35"))
+      .required(t("validation.required")),
     characteristic: Yup.string()
-      .max(100, "אורך השדה המירבי הוא 100 תווים")
-      .required("שדה חובה"),
+      .max(100, t("validation.max_100"))
+      .required(t("validation.required")),
   });
 
   const schema = Yup.object({
-    extraData: Yup.array().of(etraDataItem),
+    extraData: Yup.array().of(extraDataItem),
     subEntitiesQuantity: Yup.number()
-      .typeError("מספר בלבד")
-      .integer("מספר שלם בלבד")
-      .positive("מספר שלם חיובי בלבד"),
-    area: Yup.number().typeError("מספר בלבד").positive("מספר חיובי בלבד"),
+      .typeError(t("validation.number"))
+      .integer(t("validation.integer"))
+      .positive(t("validation.positive_integer")),
+    area: Yup.number()
+      .typeError(t("validation.number"))
+      .positive(t("validation.positive")),
 
-    width: Yup.number().typeError("מספר בלבד").positive("מספר חיובי בלבד"),
-    length: Yup.number().typeError("מספר בלבד").positive("מספר חיובי בלבד"),
+    width: Yup.number()
+      .typeError(t("validation.number"))
+      .positive(t("validation.positive")),
+    length: Yup.number()
+      .typeError(t("validation.number"))
+      .positive(t("validation.positive")),
 
     constructionYear: Yup.number()
-      .typeError("מספר בלבד")
-      .integer("מספר שלם בלבד")
-      .positive("מספר שלם חיובי בלבד")
-      .max(new Date().getFullYear(), "שנה לא תקינה"),
+      .typeError(t("validation.number"))
+      .integer(t("validation.integer"))
+      .positive(t("validation.positive_integer"))
+      .max(new Date().getFullYear(), t("validation.year_invalid")),
 
     quantity: Yup.number()
-      .typeError("מספר בלבד")
-      .integer("מספר שלם בלבד")
-      .positive("מספר שלם חיובי בלבד"),
-    weight: Yup.number().typeError("מספר בלבד").positive("מספר חיובי בלבד"),
+      .typeError(t("validation.number"))
+      .integer(t("validation.integer"))
+      .positive(t("validation.positive_integer")),
+    weight: Yup.number()
+      .typeError(t("validation.number"))
+      .positive(t("validation.positive")),
   });
 
   const formik = {

@@ -1,0 +1,130 @@
+{
+  "SYS_NAME": "HomeDoc",
+  "HOME_DOC_CATEGORIES.ONE_STORY_HOUSE": "One Story House",
+  "HOME_DOC_CATEGORIES.RESIDENTIAL_BUILDING": "Residential Building",
+  "HOME_DOC_CATEGORIES.MULTI_STORY_HOUSE": "Multi Story House",
+  "HOME_DOC_RESIDENCE_TYPE.PROPERTY": "House",
+  "HOME_DOC_RESIDENCE_TYPE.FLOOR": "Floor",
+  "HOME_DOC_RESIDENCE_TYPE.APARTMENT": "Apartment",
+  "HOME_DOC_RESIDENCE_TYPE.ROOM": "Room",
+  "HOME_DOC_CHATTELS_TYPE.FURNITURE": "Furniture",
+  "HOME_DOC_CHATTELS_TYPE.STUFF": "Item",
+  "HOME_DOC_CHATTELS_TYPE.INSTRUMENT": "Device",
+  "SUB_HOME_DOC_KEY.FLOOR": "floor number",
+  "SUB_HOME_DOC_KEY.APARTMENT": "apartment number",
+  "SUB_HOME_DOC_KEY.ROOM": "room name",
+  "SUB_HOME_DOC_KEY.FURNITURE": "furniture name",
+  "SUB_HOME_DOC_KEY.STUFF": "item name",
+  "SUB_HOME_DOC_KEY.INSTRUMENT": "device name",
+  "SUB_HOME_DOC_LIST.FLOOR": "Floors",
+  "SUB_HOME_DOC_LIST.APARTMENT": "Apartments",
+  "SUB_HOME_DOC_LIST.ROOM": "Rooms",
+  "SUB_HOME_DOC_LIST.FURNITURE": "Furniture",
+  "SUB_HOME_DOC_LIST.STUFF": "Staff",
+  "SUB_HOME_DOC_LIST.INSTRUMENT": "Devices",
+
+  "validation": {
+    "required": "Field is required",
+    "max_35": "Maximum length is 35 characters",
+    "max_100": "Maximum length is 100 characters",
+    "number": "Must be a number",
+    "integer": "Must be an integer",
+    "positive": "Must be a positive number",
+    "positive_integer": "Must be a positive integer",
+    "year_invalid": "Invalid year"
+  },
+
+  "home_page": { "title": "Choose property type" },
+  "homedoc_slice": {
+    "create_success": " Created successfully! ",
+    "create_error": " Creation failed! ",
+    "update_success": " Updated successfully! ",
+    "update_error": " Update failed! ",
+    "delete_success": " Deleted successfully! ",
+    "delete_error": " Deletion failed! "
+  },
+
+  "more": "more",
+  "loading": "Loading",
+  "in_development": "Coming soon",
+  "page_card_lables": {
+    "images": "Images",
+    "look_at": "Look At"
+  },
+
+  "confirm_dialog": { "no": "no", "yes": "yes" },
+  "create_home_dialog": {
+    "title": "Create a property record",
+    "content": "To create a home documentation, please enter the address of the property and the type of property you are documentating.",
+    "address_placeholder": "address",
+    "type_option": "type",
+    "cancel": "Cancel",
+    "comfirm": "Comfirm"
+  },
+  "create_sub_home_dialog": {
+    "title": "Create:",
+    "content_reason": "To expand the home documentation, please enter",
+    "content_which": "which has been decided to document.",
+    "cancel": "Cancel",
+    "comfirm": "Confirm"
+  },
+  "extra_data_list": {
+    "additional": "Additional information:",
+    "characteristic_name": "Characteristic Name",
+    "value": "Value",
+    "add": "Add",
+    "remove": "Remove"
+  },
+  "extra_data_list_dialog": {
+    "additional": "Additional information:",
+    "exit_aria_lable": "Exit",
+    "additional_characteristics": "Additional Characteristics"
+  },
+  "buttons_line_components": {
+    "label_delete": "Delete",
+    "question_and_disclaimer": "Are you sure you want to delete the record?\nSub entity records will also be deleted.",
+    "label_save": "Save",
+    "label_edit": "Edit",
+    "failed_edit": "Update failed due to invalid field",
+    "label_cancel": "Cancel"
+  },
+
+  "residence_cards": {
+    "title_address": "Address: ",
+    "label_description": "Description:",
+    "label_items_quantity": "Number of items:",
+    "label_sub_entities_quantity": "Number of {{entity}}:",
+    "label_construction_year": "Construction year:",
+    "label_area": "Area (sq km):",
+    "label_length": "Length (meters):",
+    "label_width": "Width (meters):",
+    "confirm_add_property": "Are you sure you want to add this attribute?"
+  },
+
+  "chattels_cards": {
+    "title_item": "Item:",
+    "label_room": "Room:",
+    "label_type": "Type:",
+    "label_description": "Description:",
+    "label_quantity": "Quantity of items:",
+    "label_weight": "Weight (kg):",
+    "label_length": "Length (meters):",
+    "label_width": "Width (meters):",
+    "label_colors": "Colors:",
+    "confirm_add_property": "Are you sure you want to add this property?"
+  },
+
+  "table_pagination": {
+    "label_rows_per_page": "Rows per page:",
+    "label_displayed_rows": "{{from}}–{{to}} of {{count}}",
+    "more_than": "more than {{to}}"
+  },
+  "search_homedoc_page": {
+    "sub_title": "results",
+    "header": "property searching",
+    "label_type": "type",
+    "label_address": "address",
+    "header_type": "property type",
+    "header_address": "address"
+  }
+}

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 import {
   Paper,
   Card,
@@ -28,8 +30,9 @@ const SearchResults = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
-  const resultsTitle = "תוצאות:";
+  const resultsTitle = t("search_homedoc_page.sub_title");
   let paramsForQueryObj = location.search;
   const paginationTheme = createTheme({ direction: "rtl" });
   const homeDocStatus = useSelector(selectHomeDocStatus);
@@ -152,7 +155,14 @@ const SearchResults = ({
             rowsPerPage={rowsPerPage}
             labelRowsPerPage=""
             labelDisplayedRows={({ from, to, count }) =>
-              `${from}-${to} מתוך ${count !== -1 ? count : `יותר מ-${to}`}`
+              t("table_pagination.label_displayed_rows", {
+                from,
+                to,
+                count:
+                  count !== -1
+                    ? count
+                    : t("table_pagination.more_than", { to }),
+              })
             }
             onRowsPerPageChange={handleChangeRowsPerPage}
           />

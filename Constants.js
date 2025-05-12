@@ -1,4 +1,4 @@
-export const SYS_NAME = "תיעוד ביתי";
+export const SYS_NAME = "HomeDoc";
 export const BASIC_PAGINATION = `page=1&limit=10`;
 
 export const NAVBAR_LINKS = [

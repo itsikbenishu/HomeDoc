@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { store } from "../Store";
 import "./index.css";
+import "../i18nConfig";
 import App from "./App";
 import { SYS_NAME } from "../Constants";
 

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom"; // הוספת useSearchParams
+import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -12,7 +13,7 @@ import {
   selectHomeDocStats,
   fetchHomeDocStats,
 } from "../slices/HomeDocSlice";
-import { HOME_DOC_CATEGORIES } from "../../Constants";
+import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 import HeaderPage from "../componets/HeaderPage";
 
 const useStyles = makeStyles(() => ({
@@ -27,6 +28,9 @@ const useStyles = makeStyles(() => ({
 const SearchResultsPage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const { HOME_DOC_CATEGORIES } = useTranslatedConstants();
+
   const [searchParams] = useSearchParams();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -35,7 +39,13 @@ const SearchResultsPage = () => {
     return { ...home, category: HOME_DOC_CATEGORIES[home.category] };
   });
   const homeDocsStats = useSelector(selectHomeDocStats);
-  const headers = isMobile ? [] : ["#", "סוג נכס", "כתובת"];
+  const headers = isMobile
+    ? []
+    : [
+        "#",
+        t("search_homedoc_page.header_type"),
+        t("search_homedoc_page.header_address"),
+      ];
   const homefields = isMobile
     ? ["interiorEntityKey"]
     : ["#", "category", "interiorEntityKey"];
@@ -95,7 +105,10 @@ const SearchResultsPage = () => {
           borderStyle: "none",
         }}
       >
-        <HeaderPage headerName="חיפוש נכס" cardClass={classes.header} />
+        <HeaderPage
+          headerName={t("search_homedoc_page.header")}
+          cardClass={classes.header}
+        />
         <Box>
           <SearchPropertyForm initialCategory={category}></SearchPropertyForm>
         </Box>

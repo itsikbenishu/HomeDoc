@@ -1,0 +1,130 @@
+{
+  "SYS_NAME": "תיעוד ביתי",
+  "HOME_DOC_CATEGORIES.ONE_STORY_HOUSE": "בית חד קומתי",
+  "HOME_DOC_CATEGORIES.RESIDENTIAL_BUILDING": "בניין מגורים",
+  "HOME_DOC_CATEGORIES.MULTI_STORY_HOUSE": "בית רב קומתי",
+  "HOME_DOC_RESIDENCE_TYPE.PROPERTY": "בית",
+  "HOME_DOC_RESIDENCE_TYPE.FLOOR": "קומה",
+  "HOME_DOC_RESIDENCE_TYPE.APARTMENT": "דירה",
+  "HOME_DOC_RESIDENCE_TYPE.ROOM": "חדר",
+  "HOME_DOC_CHATTELS_TYPE.FURNITURE": "רהיט",
+  "HOME_DOC_CHATTELS_TYPE.STUFF": "חפץ",
+  "HOME_DOC_CHATTELS_TYPE.INSTRUMENT": "מכשיר",
+  "SUB_HOME_DOC_KEY.FLOOR": "מספר הקומה",
+  "SUB_HOME_DOC_KEY.APARTMENT": "מספר הדירה",
+  "SUB_HOME_DOC_KEY.ROOM": "שם החדר",
+  "SUB_HOME_DOC_KEY.FURNITURE": "שם הרהיט",
+  "SUB_HOME_DOC_KEY.STUFF": "שם החפץ",
+  "SUB_HOME_DOC_KEY.INSTRUMENT": "שם המכשיר",
+  "SUB_HOME_DOC_LIST.FLOOR": "קומות",
+  "SUB_HOME_DOC_LIST.APARTMENT": "דירות",
+  "SUB_HOME_DOC_LIST.ROOM": "חדרים",
+  "SUB_HOME_DOC_LIST.FURNITURE": "רהיטים",
+  "SUB_HOME_DOC_LIST.STUFF": "חפצים",
+  "SUB_HOME_DOC_LIST.INSTRUMENT": "מכשירים",
+
+  "validation": {
+    "required": "שדה חובה",
+    "max_35": "אורך השדה המירבי הוא 35 תווים",
+    "max_100": "אורך השדה המירבי הוא 100 תווים",
+    "number": "מספר בלבד",
+    "integer": "מספר שלם בלבד",
+    "positive": "מספר חיובי בלבד",
+    "positive_integer": "מספר שלם חיובי בלבד",
+    "year_invalid": "שנה לא תקינה"
+  },
+
+  "home_page": { "title": "בחר סוג נכס" },
+
+  "homedoc_slice": {
+    "create_success": " נוצר בהצלחה! ",
+    "create_error": " יצירה נכשלה! ",
+    "update_success": " עודכן בהצלחה! ",
+    "update_error": " עדכון נכשל! ",
+    "delete_success": " מחיקה בהצלחה! ",
+    "delete_error": " מחיקה נכשלה! "
+  },
+
+  "more": "עוד",
+  "exit_aria_lable": "יציאה",
+  "loading": "טוען",
+  "in_development": "בפיתוח",
+  "page_card_lables": {
+    "images": "תמונות",
+    "look_at": "מבע על"
+  },
+
+  "confirm_dialog": { "no": "לא", "yes": "כן" },
+  "create_home_dialog": {
+    "title": "צור תיעוד נכס",
+    "content": "כדי לצור תיעוד ביתי, אנא הזן את הכתובת של הנכס ואת סוג הנכס אותו אתה מתעד.",
+    "address_placeholder": "כתובת",
+    "type_option": "סוג",
+    "cancel": "ביטול",
+    "comfirm": "אישור"
+  },
+  "create_sub_home_dialog": {
+    "title": "צור:",
+    "content_reason": "לצורך הרחבת התיעוד הביתי, אנא הזן את",
+    "content_which": "אשר הוחלט לתעד.",
+    "cancel": "ביטול",
+    "comfirm": "אישור"
+  },
+  "extra_data_list": {
+    "additional": "מידע נוסף:",
+    "characteristic_name": "שם מאפיין",
+    "value": "נתון",
+    "add": "הוסף",
+    "remove": "הסר"
+  },
+  "extra_data_list_dialog": {
+    "additional": "מידע נוסף:",
+    "additional_characteristics": "תכונות נוספות"
+  },
+  "buttons_line_components": {
+    "label_delete": "מחיקה",
+    "question_and_disclaimer": "האם אתה בטוח שהינך מעוניין למחוק את התיעוד?\nימחקו גם תיעודים של תתי ישויות.",
+    "label_save": "שמירה",
+    "label_edit": "עריכה",
+    "failed_edit": " העדכון נכשל בשל שדה שגוי ",
+    "label_cancel": "ביטול"
+  },
+
+  "residence_cards": {
+    "title_address": "כתובת:",
+    "label_description": "תיאור:",
+    "label_items_quantity": "כמות הפריטים:",
+    "label_sub_entities_quantity": "כמות ה{{entity}}:",
+    "label_construction_year": "שנת בנייה:",
+    "label_area": "שטח (קמ\"ר):",
+    "label_length": "אורך (מטרים):",
+    "label_width": "רוחב (מטרים):",
+    "confirm_add_property": "?האם אתה בטוח שהינך מעוניין להוסיף את התכונה הזו"
+  },
+  "chattels_cards": {
+    "title_item": "פריט:",
+    "label_room": "חדר:",
+    "label_type": "סוג:",
+    "label_description": "תיאור:",
+    "label_quantity": "כמות הפריטים:",
+    "label_weight": "משקל (ק\"ג):",
+    "label_length": "אורך (מטרים):",
+    "label_width": "רוחב (מטרים):",
+    "label_colors": "צבעים:",
+    "confirm_add_property": "?האם אתה בטוח שהינך מעוניין להוסיף את התכונה הזו"
+  },
+
+  "table_pagination": {
+    "label_rows_per_page": "שורות לעמוד:",
+    "label_displayed_rows": "{{from}}-{{to}} מתוך {{count}}",
+    "more_than": "יותר מ-{{to}}"
+  },
+  "search_homedoc_page": {
+    "sub_title": "תוצאות",
+    "header": "חיפוש נכס",
+    "label_type": "סוג",
+    "label_address": "כתובת",
+    "header_type": "סוג נכס",
+    "header_address": "כתובת"
+  }
+}

@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormikContext } from "formik";
@@ -11,7 +12,8 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { HOME_DOC_RESIDENCE_TYPE, SUB_HOME_DOC_TYPE } from "../../Constants";
+import { SUB_HOME_DOC_TYPE } from "../../Constants";
+import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 import {
   deleteHomeDoc,
   selectHomeDocEntityCategory,
@@ -48,6 +50,8 @@ const ResidenceBasicDataCard = ({
   const formik = useFormikContext();
   const dispatch = useDispatch();
   const theme = useTheme();
+  const { t } = useTranslation();
+  const { HOME_DOC_RESIDENCE_TYPE } = useTranslatedConstants();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const residenceId = useParams().id;
@@ -124,7 +128,7 @@ const ResidenceBasicDataCard = ({
                     className={classes.typographyText}
                   >
                     {!entitySubTitle.type || entitySubTitle.type === "PROPERTY"
-                      ? " כתובת:"
+                      ? t("residence_cards.title_address")
                       : HOME_DOC_RESIDENCE_TYPE[entitySubTitle.type]}
                   </Typography>
                 </Box>

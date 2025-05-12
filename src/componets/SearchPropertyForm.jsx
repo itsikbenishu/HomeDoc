@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
+import { useTranslation } from "react-i18next";
 import {
   IconButton,
   FormControl,
@@ -10,8 +11,9 @@ import {
   Box,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { BASIC_PAGINATION, HOME_DOC_CATEGORIES } from "../../Constants";
+import { BASIC_PAGINATION } from "../../Constants";
 import CreateHomeDialog from "./CreateHomeDialog";
+import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 
 const useStyles = makeStyles(() => ({
   iconButton: {
@@ -76,6 +78,8 @@ const useStyles = makeStyles(() => ({
 const SearchPropertyForm = ({ initialCategory = "" }) => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const { HOME_DOC_CATEGORIES } = useTranslatedConstants();
   const [category, setCategory] = useState(initialCategory || "");
   const [address, setAddress] = useState("");
   const [paramsForQueryObj, setParamsForQueryObj] = useState({});
@@ -143,14 +147,14 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
         }}
       >
         <FormControl variant="standard">
-          <InputLabel>סוג</InputLabel>
+          <InputLabel>{t("search_homedoc_page.label_type")}</InputLabel>
           <NativeSelect
             value={category}
             onChange={handleCategoryChange}
             className={classes.inputCategory}
           >
             <option aria-label="None" value="">
-              סוג
+              {t("search_homedoc_page.label_type")}
             </option>
             {Object.entries(HOME_DOC_CATEGORIES).map(
               ([category, categoryText]) => (
@@ -168,13 +172,15 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
         }}
       >
         <FormControl sx={{ width: "100%" }} variant="standard">
-          <InputLabel htmlFor="addressInput">כתובת</InputLabel>
+          <InputLabel htmlFor="addressInput">
+            {t("search_homedoc_page.label_address")}
+          </InputLabel>
           <Input
             id="addressInput"
             value={address}
             onChange={handleAddressChange}
             className={classes.inputAddress}
-            placeholder="כתובת"
+            placeholder={t("search_homedoc_page.label_address")}
           />
         </FormControl>
       </Box>

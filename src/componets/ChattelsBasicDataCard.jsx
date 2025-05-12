@@ -1,10 +1,12 @@
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormikContext } from "formik";
 import { Box, Grid, Typography, Card } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { HOME_DOC_CHATTELS_TYPE, SUB_HOME_DOC_TYPE } from "../../Constants";
+import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
+import { SUB_HOME_DOC_TYPE } from "../../Constants";
 import {
   deleteHomeDoc,
   selectHomeDocEntityCategory,
@@ -33,7 +35,10 @@ const ChattelsBasicDataCard = ({ entityTitle, entitySubTitle, entityType }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const formik = useFormikContext();
+
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const { HOME_DOC_CHATTELS_TYPE } = useTranslatedConstants();
   const residenceId = useParams().id;
   const category = useSelector(selectHomeDocEntityCategory);
 
@@ -111,7 +116,7 @@ const ChattelsBasicDataCard = ({ entityTitle, entitySubTitle, entityType }) => {
                     variant="subtitle1"
                     className={classes.typographyText}
                   >
-                    סוג:
+                    {t("chattels_cards.label_type")}
                   </Typography>
                 </Box>
               </Grid>
@@ -160,7 +165,7 @@ const ChattelsBasicDataCard = ({ entityTitle, entitySubTitle, entityType }) => {
                     variant="subtitle1"
                     className={classes.typographyText}
                   >
-                    חדר:
+                    {t("chattels_cards.label_room")}
                   </Typography>
                 </Box>
               </Grid>

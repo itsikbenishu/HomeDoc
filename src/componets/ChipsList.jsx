@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Autocomplete, TextField, Chip, Box, Popover } from "@mui/material";
 import { useIsEditMode } from "../hooks/useIsEditMode";
 
@@ -12,6 +13,7 @@ const ChipsList = ({
   handleDeleteChip = () => {},
   ...others
 }) => {
+  const { t } = useTranslation();
   const isEditMode = useIsEditMode();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -92,7 +94,7 @@ const ChipsList = ({
             renderedTags.push(
               <Chip
                 key="chip-more"
-                label=" עוד "
+                label={` ${t("more")} `}
                 {...restTagProps}
                 clickable
                 onClick={handleOpenPopover}

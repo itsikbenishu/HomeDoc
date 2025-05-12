@@ -1,5 +1,6 @@
 import React, { createContext, useState, useCallback, useEffect } from "react";
 import { Snackbar, Alert, Box } from "@mui/material";
+import i18next from "../../i18nConfig";
 
 const ToastContext = createContext();
 
@@ -47,6 +48,13 @@ export const ToastProvider = ({ children }) => {
   );
 };
 
-export const toast = (message, severity = "success", duration = 6000) => {
-  showToastGlobal(message, severity, duration);
+export const toast = (
+  message,
+  severity = "success",
+  duration = 6000,
+  isTranslatable = true
+) => {
+  const toastedMessage = isTranslatable ? i18next.t(message) : message;
+
+  showToastGlobal(toastedMessage, severity, duration);
 };

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Paper, useMediaQuery, useTheme } from "@mui/material";
@@ -10,12 +11,8 @@ import {
   selectHomeDocEntityType,
   selectHomeDocStatus,
 } from "../slices/HomeDocSlice";
-import {
-  HOME_DOC_CATEGORIES,
-  HOME_DOC_PAGES_TYPES,
-  HOME_DOC_RESIDENCE_TYPE,
-  STATUSES,
-} from "../../Constants";
+import { HOME_DOC_PAGES_TYPES, STATUSES } from "../../Constants";
+import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 import { useExtraHomeDocFormik } from "../hooks/useExtraHomeDocFormik";
 import ResidenceBasicDataCard from "../componets/ResidenceBasicDataCard";
 import ResidenceExtraDataCard from "../componets/ResidenceExtraDataCard";
@@ -39,6 +36,10 @@ const useStyles = makeStyles(() => ({
 const HomeDocResidencePage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const { HOME_DOC_CATEGORIES, HOME_DOC_RESIDENCE_TYPE } =
+    useTranslatedConstants();
+
   const params = useParams();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -138,8 +139,8 @@ const HomeDocResidencePage = () => {
               {!isMobile && (
                 <>
                   <Grid item xs={12} sm={6} sx={{ pt: 0.5 }}>
-                    <LabeledContainer lableName={"תמונות"}>
-                      <div>בפיתוח</div>
+                    <LabeledContainer lableName={t("page_card_lables.images")}>
+                      <div> {t("in_development")}</div>
                     </LabeledContainer>
                   </Grid>
                   <Grid item xs={12} sm={6} sx={{ pt: 0.5 }}>
@@ -156,8 +157,10 @@ const HomeDocResidencePage = () => {
                         }}
                       ></Paper>
                     ) : (
-                      <LabeledContainer lableName="מבט על">
-                        <div>בפיתוח</div>
+                      <LabeledContainer
+                        lableName={t("page_card_lables.look_at")}
+                      >
+                        <div> {t("in_development")}</div>
                       </LabeledContainer>
                     )}
                   </Grid>

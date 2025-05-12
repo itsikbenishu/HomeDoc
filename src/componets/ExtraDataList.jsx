@@ -15,6 +15,7 @@ import { toItemsWithIds, toItemWithId } from "../utils/appTools";
 import { useFormikContext } from "formik";
 import { useIsEditMode } from "../hooks/useIsEditMode";
 import ExtraDataListDialog from "./ExtraDataListDialog";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles(() => ({
   typographyText: {
@@ -48,22 +49,17 @@ const useStyles = makeStyles(() => ({
 
 const ExtraDataList = ({ count = 0 }) => {
   const classes = useStyles();
+  const { t } = useTranslation();
   const { values, errors, setFieldValue, validateField } = useFormikContext();
   const isEditMode = useIsEditMode();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const dataListWithIds = toItemsWithIds(values.extraData);
-  const [elements, setElements] = useState(dataListWithIds);
+  const init = () => toItemsWithIds(values.extraData);
+  const [elements, setElements] = useState(init);
   const [newCharacteristic, setNewCharacteristic] = useState("");
   const [newValue, setNewValaue] = useState("");
   const elementsByCount = elements.slice(0, count);
   const editOpacity = { opacity: isEditMode ? 1 : 0 };
-
-  useEffect(() => {
-    if (!isEditMode && !isEqual(elements, dataListWithIds)) {
-      setElements([...dataListWithIds]);
-    }
-  }, [isEditMode, dataListWithIds, elements]);
 
   const handleAdd = () => {
     if (newCharacteristic || newValue) {
@@ -129,7 +125,7 @@ const ExtraDataList = ({ count = 0 }) => {
       {isMobile && (
         <Grid item sx={{ mb: 0.2 }}>
           <Typography variant="subtitle1" className={classes.typographyText}>
-            מידע נוסף:
+            {t("extra_data_list.additional")}
           </Typography>
         </Grid>
       )}
@@ -138,7 +134,7 @@ const ExtraDataList = ({ count = 0 }) => {
         {!isMobile && (
           <Grid item xs={12} sm={2}>
             <Typography variant="subtitle1" className={classes.typographyText}>
-              מידע נוסף:
+              {t("extra_data_list.additional")}
             </Typography>
           </Grid>
         )}
@@ -148,7 +144,7 @@ const ExtraDataList = ({ count = 0 }) => {
             onChange={(e) => setNewCharacteristic(e.target.value)}
             value={newCharacteristic}
             variant="outlined"
-            placeholder="שם מאפיין"
+            placeholder={t("extra_data_list.characteristic_name")}
             className={classes.textField}
             disabled={!isEditMode}
             fullWidth
@@ -161,7 +157,7 @@ const ExtraDataList = ({ count = 0 }) => {
             onChange={(e) => setNewValaue(e.target.value)}
             value={newValue}
             variant="outlined"
-            placeholder="נתון"
+            placeholder={t("extra_data_list.value")}
             className={classes.textField}
             disabled={!isEditMode}
             fullWidth
@@ -170,7 +166,7 @@ const ExtraDataList = ({ count = 0 }) => {
         </Grid>
         <Grid item xs="auto" sx={{ display: "flex", alignItems: "center" }}>
           {isEditMode && (
-            <Tooltip title="הוסף" placement="bottom">
+            <Tooltip title={t("extra_data_list.add")} placement="bottom">
               <AddBoxRoundedIcon
                 onClick={handleAdd}
                 fontSize="small"
@@ -232,7 +228,7 @@ const ExtraDataList = ({ count = 0 }) => {
           </Grid>
           <Grid item xs="auto">
             {isEditMode && (
-              <Tooltip title="הסר" placement="bottom">
+              <Tooltip title={t("extra_data_list.remove")} placement="bottom">
                 <DeleteIcon
                   onClick={() => handleRemove(elem)}
                   fontSize="small"

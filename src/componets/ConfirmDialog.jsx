@@ -1,6 +1,6 @@
+import { useTranslation } from "react-i18next";
 import { Box, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import React from "react";
 import DialogButton from "./DialogButton";
 
 const useStyles = makeStyles(() => ({
@@ -27,6 +27,7 @@ const useStyles = makeStyles(() => ({
 
 const ConfirmDialog = ({ dialog, isOpen, onClose, onConfirm }) => {
   const classes = useStyles();
+  const { t } = useTranslation();
 
   if (!isOpen) return null;
 
@@ -42,8 +43,12 @@ const ConfirmDialog = ({ dialog, isOpen, onClose, onConfirm }) => {
           </Typography>
         </Box>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <DialogButton onClick={onConfirm}>כן</DialogButton>
-          <DialogButton onClick={onClose}>לא</DialogButton>
+          <DialogButton onClick={onConfirm}>
+            {t("confirm_dialog.yes")}
+          </DialogButton>
+          <DialogButton onClick={onClose}>
+            {t("confirm_dialog.no")}
+          </DialogButton>
         </Box>
       </Box>
     </Box>

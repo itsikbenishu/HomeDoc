@@ -1,14 +1,17 @@
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+import { useFormikContext } from "formik";
 import {
   Box,
   Grid,
   Typography,
   Card,
-  Stack,
   useTheme,
   useMediaQuery,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { SUB_HOME_DOC_LIST, SUB_HOME_DOC_TYPE } from "../../Constants";
+import { SUB_HOME_DOC_TYPE } from "../../Constants";
+import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 import ExtraDataList from "./ExtraDataList";
 import ExtraDataField from "./ExtraDataField";
 import LabeledExtraDataFields from "./LabeledExtraDataFields";
@@ -63,31 +66,30 @@ const ResidenceExtraDataCard = ({ residence }) => {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { validateForm } = useFormikContext();
+  const { t, i18n } = useTranslation();
+  const { SUB_HOME_DOC_LIST } = useTranslatedConstants();
 
-  const subEntitiesQuantityLable = !SUB_HOME_DOC_LIST[
-    SUB_HOME_DOC_TYPE[residence.category][residence.type]
-  ]
-    ? `כמות הפריטים:`
-    : `כמות ה${
-        SUB_HOME_DOC_LIST[SUB_HOME_DOC_TYPE[residence.category][residence.type]]
-      }:`;
+  useEffect(() => {
+    validateForm();
+  }, [i18n.language, validateForm]);
+
+  const docTypeKey = SUB_HOME_DOC_TYPE[residence.category]?.[residence.type];
+  const subEntityName = SUB_HOME_DOC_LIST[docTypeKey];
+
+  const subEntitiesQuantityLabel = subEntityName
+    ? t("residence_cards.label_sub_entities_quantity", {
+        entity: subEntityName,
+      })
+    : t("residence_cards.label_items_quantity");
 
   return (
     <Grid container spacing={1} direction="column">
       <Grid item xs={12} sm={3} className={classes.gridItem}>
-        <Box
-          className={classes.box}
-          sx={{
-            bgcolor: "transparent",
-          }}
-        >
+        <Box className={classes.box} sx={{ bgcolor: "transparent" }}>
           <Card
             className={classes.card}
-            sx={{
-              bgcolor: "transparent",
-              mt: 0.25,
-              mr: 0.25,
-            }}
+            sx={{ bgcolor: "transparent", mt: 0.25, mr: 0.25 }}
           >
             <Grid container spacing={0.25}>
               <Grid
@@ -97,7 +99,9 @@ const ResidenceExtraDataCard = ({ residence }) => {
                 alignItems="center"
                 sx={{ pl: 0.5 }}
               >
-                <Typography variant="subtitle1">תיאור:</Typography>
+                <Typography variant="subtitle1">
+                  {t("residence_cards.label_description")}
+                </Typography>
               </Grid>
               <Grid
                 item
@@ -128,24 +132,24 @@ const ResidenceExtraDataCard = ({ residence }) => {
       </Grid>
 
       <Grid item xs={12} sm={3} className={classes.gridItem}>
-        <Box
-          className={classes.box}
-          sx={{
-            bgcolor: "transparent",
-            mr: 0.25,
-          }}
-        >
+        <Box className={classes.box} sx={{ bgcolor: "transparent", mr: 0.25 }}>
           <Card className={classes.card} sx={{ bgcolor: "transparent" }}>
             <LabeledExtraDataFields
               className={classes.textField}
               columnsPerRow={3}
               labels={[
                 {
-                  text: subEntitiesQuantityLable,
+                  text: subEntitiesQuantityLabel,
                   formik: "subEntitiesQuantity",
                 },
-                { text: "שנת בנייה:", formik: "constructionYear" },
-                { text: 'שטח (קמ"ר):', formik: "area" },
+                {
+                  text: t("residence_cards.label_construction_year"),
+                  formik: "constructionYear",
+                },
+                {
+                  text: t("residence_cards.label_area"),
+                  formik: "area",
+                },
               ]}
             />
           </Card>
@@ -156,42 +160,37 @@ const ResidenceExtraDataCard = ({ residence }) => {
         <Grid item xs={12} sm={3} className={classes.gridItem}>
           <Box
             className={classes.box}
-            sx={{
-              bgcolor: "transparent",
-              mr: 0.25,
-            }}
+            sx={{ bgcolor: "transparent", mr: 0.25 }}
           >
             <Card className={classes.card} sx={{ bgcolor: "transparent" }}>
               <LabeledExtraDataFields
                 className={classes.textField}
                 columnsPerRow={3}
                 labels={[
-                  { text: "אורך (מטרים):", formik: "length" },
-                  { text: "רוחב (מטרים):", formik: "width" },
+                  {
+                    text: t("residence_cards.label_length"),
+                    formik: "length",
+                  },
+                  {
+                    text: t("residence_cards.label_width"),
+                    formik: "width",
+                  },
                 ]}
               />
             </Card>
           </Box>
         </Grid>
       )}
+
       <Grid item xs={12} sm={3} className={classes.gridItem}>
-        <Box
-          className={classes.box}
-          sx={{
-            mr: 0.25,
-            bgcolor: "transparent",
-          }}
-        >
+        <Box className={classes.box} sx={{ mr: 0.25, bgcolor: "transparent" }}>
           <Card
             className={classes.card}
-            sx={{
-              bgcolor: "transparent",
-              height: "100%",
-            }}
+            sx={{ bgcolor: "transparent", height: "100%" }}
           >
             <ExtraDataList
               count={isMobile ? 1 : residence.type !== "PROPERTY" ? 3 : 5}
-              addMessage="?האם אתה בטוח שהינך מעוניין להוסיף את התכונה הזו"
+              addMessage={t("residence_cards.confirm_add_property")}
             />
           </Card>
         </Box>

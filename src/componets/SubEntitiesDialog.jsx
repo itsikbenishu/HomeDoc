@@ -1,5 +1,6 @@
 import React, { forwardRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   Toolbar,
@@ -30,6 +31,7 @@ const SubEntitiesDialog = ({
   entityType,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -46,7 +48,7 @@ const SubEntitiesDialog = ({
 
   return (
     <>
-      <Tooltip title={`עוד ${subEntitesName}`} placement="bottom">
+      <Tooltip title={`${t("more")} ${subEntitesName}`} placement="bottom">
         <MoreHorizRoundedIcon
           fontSize="small"
           sx={{ verticalAlign: "middle" }}
@@ -75,7 +77,7 @@ const SubEntitiesDialog = ({
                 edge="end"
                 color="inherit"
                 onClick={handleClose}
-                aria-label="יציאה"
+                aria-label={t("exit_aria_lable")}
               >
                 <CloseIcon />
               </IconButton>

@@ -1,3 +1,5 @@
+import React from "react";
+import i18next from "../../i18nConfig";
 import SaveIcon from "@mui/icons-material/Save";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
@@ -6,20 +8,27 @@ import { toast } from "../utils/toast";
 
 const getButtonsLineComps = (navigate, location, formik, otherHandlers) => {
   const { resetForm, submitForm, isValid } = formik;
+  const transletor = (str) => i18next.t(str);
   const isEditMode = location.pathname.endsWith("/Edit");
   const pathname = location.pathname;
 
   const buttonsLineComponents = [
     {
       key: "delete",
-      label: "מחיקה",
+      label: transletor("buttons_line_components.label_delete"),
       onClick: () => {},
       iconComponent: <DeleteIcon />,
       dialog: {
         message: (
           <>
-            האם אתה בטוח שהינך מעוניין למחוק את התיעוד? <br /> ימחקו גם תיעודים
-            של תתי ישויות.
+            {transletor("buttons_line_components.question_and_disclaimer")
+              .split("\n")
+              .map((line, i) => (
+                <React.Fragment key={i}>
+                  {line}
+                  <br />
+                </React.Fragment>
+              ))}
           </>
         ),
         onConfirm: otherHandlers["delete"],
@@ -27,14 +36,20 @@ const getButtonsLineComps = (navigate, location, formik, otherHandlers) => {
     },
     {
       key: "editSave",
-      label: isEditMode ? "שמירה" : "עריכה",
+      label: isEditMode
+        ? transletor("buttons_line_components.label_save")
+        : transletor("buttons_line_components.label_edit"),
       onClick: () => {
         if (isEditMode) {
           submitForm();
           if (isValid) {
             navigate(pathname.substring(0, pathname.indexOf("/Edit")));
           } else {
-            toast(" העדכון נכשל בשל שדה שגוי ", "error", 10000);
+            toast(
+              transletor("buttons_line_components.failed_edit"),
+              "error",
+              10000
+            );
           }
         } else {
           navigate(`${pathname}/Edit`);
@@ -47,7 +62,7 @@ const getButtonsLineComps = (navigate, location, formik, otherHandlers) => {
   if (isEditMode) {
     buttonsLineComponents.push({
       key: "cancel",
-      label: "ביטול",
+      label: transletor("buttons_line_components.label_cancel"),
       onClick: () => {
         resetForm();
         navigate(pathname.substring(0, pathname.indexOf("/Edit")));

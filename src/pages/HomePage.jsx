@@ -8,7 +8,9 @@ import {
   CardContent,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { BASIC_PAGINATION, HOME_DOC_CATEGORIES } from "../../Constants";
+import { BASIC_PAGINATION } from "../../Constants";
+import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -39,6 +41,8 @@ const useStyles = makeStyles(() => ({
 const HomePage = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const { HOME_DOC_CATEGORIES } = useTranslatedConstants();
 
   return (
     <Stack
@@ -66,7 +70,7 @@ const HomePage = () => {
           }}
           className={classes.header}
         >
-          בחר סוג נכס
+          {t("home_page.title")}
         </Typography>
       </Paper>
 

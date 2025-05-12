@@ -2,13 +2,9 @@ import { Link } from "react-router-dom";
 import { Box, Card, Grid, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
+import { HOME_DOC_PAGE_TYPE, SUB_HOME_DOC_TYPE } from "../../Constants";
 import { selectHomeDocEntityCategory } from "../slices/HomeDocSlice";
-import {
-  HOME_DOC_RESIDENCE_TYPE,
-  HOME_DOC_PAGE_TYPE,
-  SUB_HOME_DOC_LIST,
-  SUB_HOME_DOC_TYPE,
-} from "../../Constants";
+import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 import CreateSubHomeDialog from "./CreateSubHomeDialog";
 import SubEntitiesDialog from "./SubEntitiesDialog";
 
@@ -39,6 +35,8 @@ const ResidenceSubEntitiesList = ({
 }) => {
   const classes = useStyles();
   const category = useSelector(selectHomeDocEntityCategory);
+  const { HOME_DOC_RESIDENCE_TYPE, SUB_HOME_DOC_LIST } =
+    useTranslatedConstants();
   const isExpand = subEntitiesList.length <= subEntitiesMax;
   const firstElemnts = subEntitiesList.slice(0, subEntitiesMax);
   const subEntityName = `${

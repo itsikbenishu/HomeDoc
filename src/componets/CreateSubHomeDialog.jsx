@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Stack,
@@ -19,7 +20,6 @@ import {
 import { makeStyles } from "@mui/styles";
 import AddIcon from "@mui/icons-material/Add";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
-import { SUB_HOME_DOC_KEY, SUB_HOME_DOC_TYPE } from "../../Constants";
 import {
   createSubHomeDoc,
   selectHomeDocEntityCategory,
@@ -27,6 +27,8 @@ import {
   selectHomeDocInteriorEntityKey,
 } from "../slices/HomeDocSlice";
 import { useIsEditMode } from "../hooks/useIsEditMode";
+import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
+import { SUB_HOME_DOC_TYPE } from "../../Constants";
 import DialogButton from "./DialogButton";
 
 const useStyles = makeStyles(() => ({
@@ -53,11 +55,13 @@ const CreateSubHomeDialog = ({
 }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const subEntities = useSelector(selectHomeDocsubEntities);
   const fatherInteriorEntityKey = useSelector(selectHomeDocInteriorEntityKey);
   const category = useSelector(selectHomeDocEntityCategory);
   const [openDialog, setOpenDialog] = useState(false);
   const [subHomeDocKey, setSubHomeDocKey] = useState("");
+  const { SUB_HOME_DOC_KEY } = useTranslatedConstants();
   const isEditMode = useIsEditMode();
 
   const handleClickOpen = () => {
@@ -107,7 +111,7 @@ const CreateSubHomeDialog = ({
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary="הוסף"
+                  primary={t("more")}
                   secondary={<span style={{ color: "white" }}></span>}
                   sx={{
                     textAlign: "right",
@@ -118,7 +122,7 @@ const CreateSubHomeDialog = ({
             </>
           )
         : !isEditMode && (
-            <Tooltip title="הוסף" placement="bottom">
+            <Tooltip title={t("more")} placement="bottom">
               <AddBoxRoundedIcon
                 onClick={handleClickOpen}
                 fontSize="small"
@@ -127,13 +131,13 @@ const CreateSubHomeDialog = ({
             </Tooltip>
           )}
       <Dialog open={openDialog} onClose={handleClose}>
-        <DialogTitle>צור</DialogTitle>
+        <DialogTitle>{t("create_sub_home_dialog.title")}</DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ mb: 2 }}>
             {dialogContentText === ""
-              ? `לצורך הרחבת התיעוד הביתי, אנא הזן את ${
+              ? `${t("create_sub_home_dialog.content_reason")} ${
                   SUB_HOME_DOC_KEY[SUB_HOME_DOC_TYPE[category][homeDocType]]
-                } אשר הוחלט לתעד.`
+                } ${t("create_sub_home_dialog.content_which")}`
               : dialogContentText}
           </DialogContentText>
           <Stack spacing={1}>
@@ -151,10 +155,12 @@ const CreateSubHomeDialog = ({
             </FormControl>
           </Stack>
         </DialogContent>
-        <DialogActions>
-          <DialogButton onClick={handleClose}>ביטול</DialogButton>
+        <DialogActions sx={{ gap: 1.1 }}>
+          <DialogButton onClick={handleClose}>
+            {t("create_sub_home_dialog.cancel")}
+          </DialogButton>
           <DialogButton disabled={!subHomeDocKey} onClick={handleCreate}>
-            אישור
+            {t("create_sub_home_dialog.comfirm")}
           </DialogButton>
         </DialogActions>
       </Dialog>

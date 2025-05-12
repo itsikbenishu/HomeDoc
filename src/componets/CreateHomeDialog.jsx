@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 import {
   Stack,
   IconButton,
@@ -12,11 +14,10 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { useDispatch } from "react-redux";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import { createHomeDoc } from "../slices/HomeDocSlice";
-import { HOME_DOC_CATEGORIES } from "../../Constants";
 import DialogButton from "./DialogButton";
+import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 
 const useStyles = makeStyles(() => ({
   iconButton: {
@@ -60,6 +61,8 @@ const useStyles = makeStyles(() => ({
 const CreateHomeDialog = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const { HOME_DOC_CATEGORIES } = useTranslatedConstants();
   const [openDialog, setOpenDialog] = useState(false);
   const [category, setCategory] = useState("");
   const [address, setAddress] = useState("");
@@ -116,7 +119,7 @@ const CreateHomeDialog = () => {
         aria-labelledby="create-dialog-title"
         aria-describedby="create-dialog-description"
       >
-        <DialogTitle>צור תיעוד נכס</DialogTitle>
+        <DialogTitle>{t("create_home_dialog.title")}</DialogTitle>
         <DialogContent>
           <DialogContentText
             sx={{
@@ -124,8 +127,7 @@ const CreateHomeDialog = () => {
               mt: -0.25,
             }}
           >
-            כדי לצור תיעוד ביתי, אנא הזן את הכתובת של הנכס ואת סוג הנכס אותו אתה
-            מתעד.
+            {t("create_home_dialog.content")}
           </DialogContentText>
           <Stack spacing={1}>
             <FormControl variant="standard">
@@ -133,7 +135,7 @@ const CreateHomeDialog = () => {
                 value={address}
                 onChange={handleAddressChange}
                 className={classes.input}
-                placeholder="כתובת"
+                placeholder={t("create_home_dialog.address_placeholder")}
                 inputProps={{ maxLength: 100 }}
                 fullWidth
               />
@@ -146,7 +148,7 @@ const CreateHomeDialog = () => {
                 fullWidth
               >
                 <option aria-label="None" value="">
-                  סוג
+                  {t("create_home_dialog.type_option")}
                 </option>
                 {Object.entries(HOME_DOC_CATEGORIES).map(
                   ([category, categoryText]) => (
@@ -159,13 +161,15 @@ const CreateHomeDialog = () => {
             </FormControl>
           </Stack>
         </DialogContent>
-        <DialogActions>
-          <DialogButton onClick={handleClose}>ביטול</DialogButton>
+        <DialogActions sx={{ gap: 1.1 }}>
+          <DialogButton onClick={handleClose}>
+            {t("create_home_dialog.cancel")}
+          </DialogButton>
           <DialogButton
             onClick={handleCreate}
             disabled={!(category && address)}
           >
-            אישור
+            {t("create_home_dialog.comfirm")}
           </DialogButton>
         </DialogActions>
       </Dialog>

@@ -276,13 +276,13 @@ const homeDocSlice = createSlice({
         state.stats = newStats;
         state.success = true;
         state.status = STATUSES.FULFILLED;
-        toast(" נוצר בהצלחה! ", "success");
+        toast("homedoc_slice.create_success", "success");
       })
       .addCase(createHomeDoc.rejected, (state, action) => {
         state.error = action.payload;
         state.success = false;
         state.status = STATUSES.PENDING;
-        toast(" יצירה נכשלה! ", "error");
+        toast("homedoc_slice.create_error", "error");
       })
       .addCase(updateCurrentHomeDoc.pending, (state) => {
         state.error = null;
@@ -297,13 +297,13 @@ const homeDocSlice = createSlice({
 
         state.success = true;
         state.status = STATUSES.FULFILLED;
-        toast(" עודכן בהצלחה! ", "success");
+        toast("homedoc_slice.update_success", "success");
       })
       .addCase(updateCurrentHomeDoc.rejected, (state, action) => {
         state.error = action.payload;
         state.success = false;
         state.status = STATUSES.REJECTED;
-        toast(" עדכון נכשל! ", "success");
+        toast("homedoc_slice.update_error", "success");
       })
       .addCase(createSubHomeDoc.pending, (state) => {
         state.error = null;
@@ -322,13 +322,13 @@ const homeDocSlice = createSlice({
 
         state.success = true;
         state.status = STATUSES.FULFILLED;
-        toast(" נוצר בהצלחה! ", "success");
+        toast("homedoc_slice.create_success", "success");
       })
       .addCase(createSubHomeDoc.rejected, (state, action) => {
         state.error = action.payload;
         state.success = false;
         state.status = STATUSES.REJECTED;
-        toast(" יצירה נכשלה! ", "error");
+        toast("homedoc_slice.create_error", "error");
       })
       .addCase(deleteHomeDoc.pending, (state) => {
         state.error = null;
@@ -339,13 +339,13 @@ const homeDocSlice = createSlice({
         state.entity = null;
         state.success = true;
         state.status = STATUSES.FULFILLED;
-        toast(" מחיקה בהצלחה! ", "success");
+        toast("homedoc_slice.delete_success", "success");
       })
       .addCase(deleteHomeDoc.rejected, (state, action) => {
         state.error = action.payload;
         state.success = false;
         state.status = STATUSES.PENDING;
-        toast(" מחיקה נכשלה! ", "error");
+        toast("homedoc_slice.delete_error", "error");
       });
   },
 });

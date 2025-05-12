@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, Grid, Paper, useMediaQuery, useTheme } from "@mui/material";
@@ -33,6 +34,7 @@ const ChattelsPage = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const theme = useTheme();
+  const { t } = useTranslation();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const chattels = useSelector(selectHomeDoc);
@@ -53,7 +55,9 @@ const ChattelsPage = () => {
   let isLoading =
     homeDocStatus === STATUSES.IDLE || homeDocStatus === STATUSES.PENDING;
 
-  const entityTitle = `פריט: ${chattels.interiorEntityKey}`;
+  const entityTitle = `${t("chattels_cards.title_item")} ${
+    chattels.interiorEntityKey
+  }`;
   const entitySubTitle = chattels.fatherInteriorEntityKey;
 
   return (
@@ -114,8 +118,8 @@ const ChattelsPage = () => {
               {!isMobile && (
                 <>
                   <Grid item xs={12} sm={12} sx={{ pt: 0.5 }}>
-                    <LabeledContainer lableName="תמונות">
-                      <div>בפיתוח</div>
+                    <LabeledContainer lableName={t("page_card_lables.images")}>
+                      <div> {t("in_development")}</div>
                     </LabeledContainer>
                   </Grid>
                 </>

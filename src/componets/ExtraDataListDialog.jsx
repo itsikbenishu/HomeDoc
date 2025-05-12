@@ -1,4 +1,5 @@
 import React, { forwardRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   Toolbar,
@@ -26,6 +27,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
   const contrastTextColor = (theme) => theme.palette.primary.contrastText;
   const isEditMode = useIsEditMode();
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -38,7 +40,10 @@ const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
 
   return (
     <>
-      <Tooltip title="תכונות נוספות" placement="bottom">
+      <Tooltip
+        title={t("extra_data_list_dialog.additional_characteristics")}
+        placement="bottom"
+      >
         <ReadMoreIcon
           fontSize="medium"
           sx={{ verticalAlign: "middle" }}
@@ -63,13 +68,13 @@ const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
           <AppBar sx={{ position: "relative" }}>
             <Toolbar>
               <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
-                מידע נוסף
+                {t("extra_data_list_dialog.additional")}
               </Typography>
               <IconButton
                 edge="end"
                 color="inherit"
                 onClick={handleClose}
-                aria-label="יציאה"
+                aria-label={t("exit_aria_lable")}
               >
                 <CloseIcon />
               </IconButton>

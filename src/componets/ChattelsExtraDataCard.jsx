@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { useFormikContext } from "formik";
 import {
   Box,
   Grid,
@@ -10,7 +13,6 @@ import { makeStyles } from "@mui/styles";
 import ExtraDataList from "./ExtraDataList";
 import ExtraDataField from "./ExtraDataField";
 import ChipsList from "./ChipsList";
-import { useFormikContext } from "formik";
 import LabeledExtraDataFields from "./LabeledExtraDataFields";
 
 const useStyles = makeStyles(() => ({
@@ -80,24 +82,20 @@ const ChattelsExtraDataCard = () => {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const { values, setFieldValue } = useFormikContext();
+  const { values, setFieldValue, validateForm } = useFormikContext();
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    validateForm();
+  }, [i18n.language, validateForm]);
 
   return (
     <Grid container spacing={1} direction="column">
       <Grid item xs={12} sm={3} className={classes.gridItem}>
-        <Box
-          className={classes.box}
-          sx={{
-            bgcolor: "transparent",
-          }}
-        >
+        <Box className={classes.box} sx={{ bgcolor: "transparent" }}>
           <Card
             className={classes.card}
-            sx={{
-              bgcolor: "transparent",
-              mt: "3px",
-              mr: 0.25,
-            }}
+            sx={{ bgcolor: "transparent", mt: "3px", mr: 0.25 }}
           >
             <Grid container spacing={0.25}>
               <Grid
@@ -111,7 +109,7 @@ const ChattelsExtraDataCard = () => {
                   variant="subtitle1"
                   className={classes.typographyText}
                 >
-                  תיאור:
+                  {t("chattels_cards.label_description")}
                 </Typography>
               </Grid>
               <Grid
@@ -143,23 +141,20 @@ const ChattelsExtraDataCard = () => {
       </Grid>
 
       <Grid item xs={12} sm={3} className={classes.gridItem}>
-        <Box
-          className={classes.box}
-          sx={{
-            bgcolor: "transparent",
-            mr: 0.25,
-          }}
-        >
+        <Box className={classes.box} sx={{ bgcolor: "transparent", mr: 0.25 }}>
           <Card className={classes.card} sx={{ bgcolor: "transparent" }}>
             <LabeledExtraDataFields
               className={classes.textField}
               columnsPerRow={3}
               labels={[
                 {
-                  text: "כמות הפריטים:",
+                  text: t("chattels_cards.label_quantity"),
                   formik: "quantity",
                 },
-                { text: 'משקל (ק"ג):', formik: "weight" },
+                {
+                  text: t("chattels_cards.label_weight"),
+                  formik: "weight",
+                },
               ]}
             />
           </Card>
@@ -169,10 +164,7 @@ const ChattelsExtraDataCard = () => {
       <Grid item xs={12} sm={3} className={classes.gridItem}>
         <Box
           className={classes.box}
-          sx={{
-            mr: 0.25,
-            backgroundColor: "transparent",
-          }}
+          sx={{ mr: 0.25, backgroundColor: "transparent" }}
         >
           <Card
             className={classes.card}
@@ -182,8 +174,14 @@ const ChattelsExtraDataCard = () => {
               className={classes.textField}
               columnsPerRow={3}
               labels={[
-                { text: "אורך (מטרים):", formik: "length" },
-                { text: "רוחב (מטרים):", formik: "width" },
+                {
+                  text: t("chattels_cards.label_length"),
+                  formik: "length",
+                },
+                {
+                  text: t("chattels_cards.label_width"),
+                  formik: "width",
+                },
               ]}
             />
           </Card>
@@ -191,19 +189,10 @@ const ChattelsExtraDataCard = () => {
       </Grid>
 
       <Grid item xs={12} sm={3} className={classes.gridItem}>
-        <Box
-          className={classes.box}
-          sx={{
-            backgroundColor: "transparent",
-          }}
-        >
+        <Box className={classes.box} sx={{ backgroundColor: "transparent" }}>
           <Card
             className={classes.card}
-            sx={{
-              backgroundColor: "transparent",
-              mt: "3px",
-              mr: 0.25,
-            }}
+            sx={{ backgroundColor: "transparent", mt: "3px", mr: 0.25 }}
           >
             <Grid container spacing={0.25}>
               <Grid
@@ -217,7 +206,7 @@ const ChattelsExtraDataCard = () => {
                   variant="subtitle1"
                   className={classes.typographyText}
                 >
-                  צבעים:
+                  {t("chattels_cards.label_colors")}
                 </Typography>
               </Grid>
               <Grid item xs={10} className={classes.textFieldContainer}>
@@ -254,20 +243,15 @@ const ChattelsExtraDataCard = () => {
       <Grid item xs={12} sm={3} className={classes.gridItem}>
         <Box
           className={classes.box}
-          sx={{
-            mr: 0.25,
-            backgroundColor: "transparent",
-          }}
+          sx={{ mr: 0.25, backgroundColor: "transparent" }}
         >
           <Card
             className={classes.card}
-            sx={{
-              backgroundColor: "transparent",
-            }}
+            sx={{ backgroundColor: "transparent" }}
           >
             <ExtraDataList
               count={isMobile ? 2 : 3}
-              addMessage="?האם אתה בטוח שהינך מעוניין להוסיף את התכונה הזו"
+              addMessage={t("chattels_cards.confirm_add_property")}
             />
           </Card>
         </Box>

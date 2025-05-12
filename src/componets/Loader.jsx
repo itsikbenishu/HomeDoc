@@ -1,4 +1,5 @@
 import ReactLoading from "react-loading";
+import i18next from "../../i18nConfig";
 
 const Loader = () => {
   return (
@@ -8,7 +9,7 @@ const Loader = () => {
         margin: "auto",
       }}
     >
-      <h1 style={{ color: "white" }}>טוען</h1>
+      <h1 style={{ color: "white" }}>{i18next.t("loading")}</h1>
       <div
         style={{
           width: "6.25rem",
