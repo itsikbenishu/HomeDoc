@@ -30,7 +30,6 @@ const SearchResultsPage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { HOME_DOC_CATEGORIES } = useTranslatedConstants();
-
   const [searchParams] = useSearchParams();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
