@@ -114,19 +114,14 @@ const HomeDocResidencePage = () => {
                     entitySubTitle={{
                       title: entitySubTitle,
                       fatherId: residence?.fatherId,
-                      type: residence?.fatherType,
+                      type: residence?.type,
                     }}
                     entityType={residence.type}
                     subEntities={residence.subEntities}
                   />
                 </Paper>
               </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={residenceType === "ROOM" ? 7.9 : 8.5}
-              >
+              <Grid item xs={12} sm={6} md={residenceType === "ROOM" ? 7.9 : 9}>
                 <Paper
                   elevation={1}
                   className={classes.paper}
