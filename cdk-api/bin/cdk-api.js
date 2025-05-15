@@ -13,12 +13,14 @@ new CdkApiStack(app, "CdkApiStack", {
   AWS_ACCOUNT: process.env.AWS_ACCOUNT,
   AWS_REGION: process.env.AWS_REGION,
   GIT_OAUTH_TOKEN: process.env.GIT_OAUTH_TOKEN,
-  POSTGRES_WRITE_HOST: process.env.POSTGRES_WRITE_HOST,
-  POSTGRES_READ_HOST: process.env.POSTGRES_READ_HOST,
+  POSTGRES_HOST: process.env.POSTGRES_HOST,
   POSTGRES_PORT: process.env.POSTGRES_PORT,
   POSTGRES_DB: process.env.POSTGRES_DB,
   POSTGRES_USER: process.env.POSTGRES_USER,
   POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
+  VPC_NAME: process.env.VPC_NAME,
+  POSTGRES_INSTANCE_IDENTIFIER: process.env.POSTGRES_RDS_INSTANCE_IDENTIFIER,
+  POSTGRES_ENDPOINT: process.env.POSTGRES_RDS_ENDPOINT,
   CORS_DOMAINS: [process.env.LOCAL_DOMAIN, process.env.PROD_DOMAIN],
 
   /* If you don't specify 'env', this stack will be environment-agnostic.

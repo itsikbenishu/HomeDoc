@@ -13,10 +13,10 @@ const path = require("path");
 
 // const sqs = require('aws-cdk-lib/aws-sqs');
 const { AmplifyStack } = require("./amplify-stack");
-const { AuroraServerless } = require("./aurora-db");
 const { ServicePrincipal } = require("aws-cdk-lib/aws-iam");
 const addResources = require("./add-resources");
 const resourceConfig = require("./resource-config");
+const { PostgresRDS } = require("./rds-db");
 
 class CdkApiStack extends Stack {
   /**
@@ -38,7 +38,7 @@ class CdkApiStack extends Stack {
     // The code that defines your stack goes here
 
     const vpc = Vpc.fromLookup(this, "ExistingVpc", {
-      vpcName: "portfoilo-vpc",
+      vpcName: props.VPC_NAME,
     });
 
     // example resource
@@ -52,15 +52,13 @@ class CdkApiStack extends Stack {
       props.GIT_OAUTH_TOKEN
     );
 
-    const auroraServerless = new AuroraServerless(
+    const rdsPostgres = new PostgresRDS(
       this,
-      "ExistingCluster",
+      "ExistingIntance",
       vpc,
-      "portfolio",
-      "portfolio-instance-1.chg6eo2ogcs7.eu-north-1.rds.amazonaws.com",
-      5432,
-      props.POSTGRES_DB,
-      props.POSTGRES_USER
+      props.POSTGRES_INSTANCE_IDENTIFIER,
+      props.POSTGRES_ENDPOINT,
+      props.POSTGRES_PORT
     );
 
     const corsOptions = {
@@ -76,8 +74,7 @@ class CdkApiStack extends Stack {
     });
 
     const postgresConfig = {
-      POSTGRES_WRITE_HOST: props.POSTGRES_WRITE_HOST,
-      POSTGRES_READ_HOST: props.POSTGRES_READ_HOST,
+      POSTGRES_HOST: props.POSTGRES_HOST,
       POSTGRES_PORT: props.POSTGRES_PORT,
       POSTGRES_DB: props.POSTGRES_DB,
       POSTGRES_USER: props.POSTGRES_USER,
@@ -128,15 +125,15 @@ class CdkApiStack extends Stack {
 
     const lambdaKeepWarmTarget = new LambdaFunction(lambdaKeepWarm);
 
-    // new Rule(this, "KeepWarmRule", {
-    //   ruleName: "KeepLambdaWarmSchedule",
-    //   schedule: Schedule.cron({
-    //     minute: "0/5",
-    //     hour: "6-17", // 9-20 Israel time (UTC+3)
-    //     weekDay: "MON-FRI",
-    //   }),
-    //   targets: [lambdaKeepWarmTarget],
-    // });
+    new Rule(this, "KeepWarmRule", {
+      ruleName: "KeepLambdaWarmSchedule",
+      schedule: Schedule.cron({
+        minute: "0/5",
+        hour: "6-17", // 9-20 Israel time (UTC+3)
+        weekDay: "MON-FRI",
+      }),
+      targets: [lambdaKeepWarmTarget],
+    });
   }
 }
 

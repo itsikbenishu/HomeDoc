@@ -11,12 +11,12 @@ exports.handler = async (event) => {
     }
 
     const APISQLFeatures = require("../utils/apiSqlFeatures.js");
-    const { getDrizzleReader, closePool } = require("../postgresDB");
-    const drizzleReader = getDrizzleReader();
+    const { getPostgresDB, closePool } = require("../postgresDB");
+    const postgresDB = getPostgresDB();
 
     const query = event.queryStringParameters || {};
 
-    const features = new APISQLFeatures(drizzleReader, "home_docs", query)
+    const features = new APISQLFeatures(postgresDB, "home_docs", query)
       .filter()
       .sort()
       .limitFields()
@@ -26,7 +26,7 @@ exports.handler = async (event) => {
     const entities = await features.execute();
 
     const homeDocs = entities.rows || [];
-    const pool = drizzleReader.client;
+    const pool = postgresDB.client;
     closePool(pool);
 
     return {

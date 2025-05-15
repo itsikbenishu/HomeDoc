@@ -2,8 +2,8 @@ const {
   ChattelsSpecsAttributes,
   ResidenceSpecsAttributes,
 } = require("../models/homeDocModel");
-const { getDrizzleReader, closePool } = require("../postgresDB");
-const drizzleReader = getDrizzleReader();
+const { getPostgresDB, closePool } = require("../postgresDB");
+const postgresDB = getPostgresDB();
 
 exports.handler = async (event) => {
   try {
@@ -47,7 +47,7 @@ exports.handler = async (event) => {
       .join(",");
     specColumns = specColumns ? specColumns + "," : "";
 
-    const entity = await drizzleReader.execute(
+    const entity = await postgresDB.execute(
       `SELECT 
            home_Docs.*, 
           ${specColumns}
@@ -69,7 +69,7 @@ exports.handler = async (event) => {
       };
     }
 
-    const subEntities = await drizzleReader.execute(
+    const subEntities = await postgresDB.execute(
       `SELECT HomeDocs.id, HomeDocs."interiorEntityKey",HomeDocs.type
           FROM home_docs as HomeDocs
           INNER JOIN home_docs_relations 
@@ -83,7 +83,7 @@ exports.handler = async (event) => {
       subEntities: subEntities.rowCount !== 0 ? subEntities.rows : [],
     };
 
-    const pool = drizzleReader.client;
+    const pool = postgresDB.client;
     closePool(pool);
 
     return {

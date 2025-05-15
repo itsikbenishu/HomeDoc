@@ -121,7 +121,12 @@ const HomeDocResidencePage = () => {
                   />
                 </Paper>
               </Grid>
-              <Grid item xs={12} sm={6} md={residenceType === "ROOM" ? 7.9 : 9}>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={residenceType === "ROOM" ? 7.9 : 8.5}
+              >
                 <Paper
                   elevation={1}
                   className={classes.paper}

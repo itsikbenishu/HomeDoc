@@ -1,5 +1,5 @@
-const { getDrizzleReader, closePool } = require("../postgresDB");
-const drizzleReader = getDrizzleReader();
+const { getPostgresDB, closePool } = require("../postgresDB");
+const postgresDB = getPostgresDB();
 
 exports.handler = async (event) => {
   try {
@@ -8,7 +8,7 @@ exports.handler = async (event) => {
       ? `AND "interiorEntityKey" ILIKE '%${event.queryStringParameters.interiorEntityKey}%'`
       : ``;
 
-    const categoryStats = await drizzleReader.execute(`
+    const categoryStats = await postgresDB.execute(`
         WITH category_stats AS (
           SELECT category, COUNT(*) AS countHomes
           FROM home_docs
@@ -28,7 +28,7 @@ exports.handler = async (event) => {
 
     const stats = categoryStats.rows[0];
 
-    const pool = drizzleReader.client;
+    const pool = postgresDB.client;
     closePool(pool);
 
     return {

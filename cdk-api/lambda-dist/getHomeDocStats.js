@@ -15567,55 +15567,51 @@ var require_postgresDB = __commonJS({
     var pg = require_lib2();
     var { drizzle } = require_node_postgres();
     var { Pool } = pg;
-    var drizzleWriter;
-    var drizzleReader2;
-    var getDrizzleWriter = () => {
-      if (!drizzleWriter) {
-        const writePool = new Pool({
-          host: process.env.POSTGRES_WRITE_HOST,
-          port: process.env.POSTGRES_PORT,
-          user: process.env.POSTGRES_USER,
-          password: process.env.POSTGRES_PASSWORD,
-          database: process.env.POSTGRES_DB,
-          max: 10,
-          idleTimeoutMillis: 3e4
-        });
-        drizzleWriter = drizzle({ client: writePool });
-      }
-      return drizzleWriter;
-    };
-    var getDrizzleReader2 = () => {
-      if (!drizzleReader2) {
+    var postgresDB2;
+    var getPostgresDB2 = () => {
+      console.log({
+        host: process.env.POSTGRES_HOST,
+        port: process.env.POSTGRES_PORT,
+        user: process.env.POSTGRES_USER,
+        password: process.env.POSTGRES_PASSWORD,
+        database: process.env.POSTGRES_DB,
+        max: 10,
+        idleTimeoutMillis: 3e4
+      });
+      if (!postgresDB2) {
         const readPool = new Pool({
-          host: process.env.POSTGRES_READ_HOST,
+          host: process.env.POSTGRES_HOST,
           port: process.env.POSTGRES_PORT,
           user: process.env.POSTGRES_USER,
           password: process.env.POSTGRES_PASSWORD,
           database: process.env.POSTGRES_DB,
           max: 10,
-          idleTimeoutMillis: 3e4
+          idleTimeoutMillis: 3e4,
+          ssl: {
+            rejectUnauthorized: false
+          }
         });
-        drizzleReader2 = drizzle({ client: readPool });
+        postgresDB2 = drizzle({ client: readPool });
       }
-      return drizzleReader2;
+      return postgresDB2;
     };
     var closePool2 = (pool) => {
       if (pool) {
         pool.end();
       }
     };
-    module2.exports = { getDrizzleWriter, getDrizzleReader: getDrizzleReader2, closePool: closePool2 };
+    module2.exports = { getPostgresDB: getPostgresDB2, closePool: closePool2 };
   }
 });
 
 // lambda/handlers/getHomeDocStats.js
 var withCors = require_withCors();
-var { getDrizzleReader, closePool } = require_postgresDB();
-var drizzleReader = getDrizzleReader();
+var { getPostgresDB, closePool } = require_postgresDB();
+var postgresDB = getPostgresDB();
 exports.handler = withCors(async (event) => {
   try {
     const interiorEntityKeyQeury = event.queryStringParameters?.interiorEntityKey ? `AND "interiorEntityKey" ILIKE '%${event.queryStringParameters.interiorEntityKey}%'` : ``;
-    const categoryStats = await drizzleReader.execute(`
+    const categoryStats = await postgresDB.execute(`
         WITH category_stats AS (
           SELECT category, COUNT(*) AS countHomes
           FROM home_docs
@@ -15633,7 +15629,7 @@ exports.handler = withCors(async (event) => {
         FROM category_stats
       `);
     const stats = categoryStats.rows[0];
-    const pool = drizzleReader.client;
+    const pool = postgresDB.client;
     closePool(pool);
     return {
       statusCode: 200,

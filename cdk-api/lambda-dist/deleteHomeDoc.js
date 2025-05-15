@@ -10484,7 +10484,7 @@ __export(Constants_exports, {
 var SYS_NAME, BASIC_PAGINATION, NAVBAR_LINKS, STATUSES, HOME_DOC_CATEGORIES, HOME_DOC_RESIDENCE_TYPE, HOME_DOC_CHATTELS_TYPE, SUB_HOME_DOC_KEY, SUB_HOME_DOC_LIST, HOME_DOC_PAGES_TYPES, HOME_DOC_PAGE_TYPE, SUB_HOME_DOC_TYPE;
 var init_Constants = __esm({
   "../Constants.js"() {
-    SYS_NAME = "\u05EA\u05D9\u05E2\u05D5\u05D3 \u05D1\u05D9\u05EA\u05D9";
+    SYS_NAME = "HomeDoc";
     BASIC_PAGINATION = `page=1&limit=10`;
     NAVBAR_LINKS = [
       // { name: "תיעוד ביתי", loc: "/HomeDoc", key: "2" },
@@ -15837,44 +15837,40 @@ var require_postgresDB = __commonJS({
     var pg = require_lib2();
     var { drizzle } = require_node_postgres();
     var { Pool } = pg;
-    var drizzleWriter2;
-    var drizzleReader;
-    var getDrizzleWriter2 = () => {
-      if (!drizzleWriter2) {
-        const writePool = new Pool({
-          host: process.env.POSTGRES_WRITE_HOST,
-          port: process.env.POSTGRES_PORT,
-          user: process.env.POSTGRES_USER,
-          password: process.env.POSTGRES_PASSWORD,
-          database: process.env.POSTGRES_DB,
-          max: 10,
-          idleTimeoutMillis: 3e4
-        });
-        drizzleWriter2 = drizzle({ client: writePool });
-      }
-      return drizzleWriter2;
-    };
-    var getDrizzleReader = () => {
-      if (!drizzleReader) {
+    var postgresDB2;
+    var getPostgresDB2 = () => {
+      console.log({
+        host: process.env.POSTGRES_HOST,
+        port: process.env.POSTGRES_PORT,
+        user: process.env.POSTGRES_USER,
+        password: process.env.POSTGRES_PASSWORD,
+        database: process.env.POSTGRES_DB,
+        max: 10,
+        idleTimeoutMillis: 3e4
+      });
+      if (!postgresDB2) {
         const readPool = new Pool({
-          host: process.env.POSTGRES_READ_HOST,
+          host: process.env.POSTGRES_HOST,
           port: process.env.POSTGRES_PORT,
           user: process.env.POSTGRES_USER,
           password: process.env.POSTGRES_PASSWORD,
           database: process.env.POSTGRES_DB,
           max: 10,
-          idleTimeoutMillis: 3e4
+          idleTimeoutMillis: 3e4,
+          ssl: {
+            rejectUnauthorized: false
+          }
         });
-        drizzleReader = drizzle({ client: readPool });
+        postgresDB2 = drizzle({ client: readPool });
       }
-      return drizzleReader;
+      return postgresDB2;
     };
     var closePool2 = (pool) => {
       if (pool) {
         pool.end();
       }
     };
-    module2.exports = { getDrizzleWriter: getDrizzleWriter2, getDrizzleReader, closePool: closePool2 };
+    module2.exports = { getPostgresDB: getPostgresDB2, closePool: closePool2 };
   }
 });
 
@@ -15882,12 +15878,12 @@ var require_postgresDB = __commonJS({
 var withCors = require_withCors();
 var { eq } = require_drizzle_orm();
 var { HomeDocs } = require_homeDocModel();
-var { getDrizzleWriter, closePool } = require_postgresDB();
-var drizzleWriter = getDrizzleWriter();
+var { getPostgresDB, closePool } = require_postgresDB();
+var postgresDB = getPostgresDB();
 exports.handler = withCors(async (event) => {
   try {
-    await drizzleWriter.delete(HomeDocs).where(eq(HomeDocs.id, event.pathParameters.id));
-    const pool = drizzleWriter.client;
+    await postgresDB.delete(HomeDocs).where(eq(HomeDocs.id, event.pathParameters.id));
+    const pool = postgresDB.client;
     closePool(pool);
     return {
       statusCode: 201,

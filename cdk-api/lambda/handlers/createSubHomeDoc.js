@@ -1,5 +1,5 @@
-const { getDrizzleWriter, closePool } = require("../postgresDB");
-const drizzleWriter = getDrizzleWriter();
+const { getPostgresDB, closePool } = require("../postgresDB");
+const postgresDB = getPostgresDB();
 const { HomeDocsRelations, HomeDocs } = require("../models/homeDocModel");
 
 exports.handler = async (event) => {
@@ -8,7 +8,7 @@ exports.handler = async (event) => {
     const fatherId = event.pathParameters.fatherId;
     let subHomedocsIds = body.subHomedocsIds || [];
 
-    const newHomeDoc = await drizzleWriter
+    const newHomeDoc = await postgresDB
       .insert(HomeDocs)
       .values({
         ...body.newHomeDoc,
@@ -22,14 +22,14 @@ exports.handler = async (event) => {
       subHomeDocId: newHomeDoc[0].id,
     };
 
-    const newHomeDocRelation = await drizzleWriter
+    const newHomeDocRelation = await postgresDB
       .insert(HomeDocsRelations)
       .values(newSubHomedocIds)
       .returning();
 
     subHomedocsIds.push(newSubHomedocIds);
 
-    const pool = drizzleWriter.client;
+    const pool = postgresDB.client;
     closePool(pool);
 
     return {

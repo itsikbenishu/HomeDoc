@@ -15703,44 +15703,40 @@ var require_postgresDB = __commonJS({
     var pg = require_lib2();
     var { drizzle } = require_node_postgres();
     var { Pool } = pg;
-    var drizzleWriter;
-    var drizzleReader;
-    var getDrizzleWriter = () => {
-      if (!drizzleWriter) {
-        const writePool = new Pool({
-          host: process.env.POSTGRES_WRITE_HOST,
-          port: process.env.POSTGRES_PORT,
-          user: process.env.POSTGRES_USER,
-          password: process.env.POSTGRES_PASSWORD,
-          database: process.env.POSTGRES_DB,
-          max: 10,
-          idleTimeoutMillis: 3e4
-        });
-        drizzleWriter = drizzle({ client: writePool });
-      }
-      return drizzleWriter;
-    };
-    var getDrizzleReader = () => {
-      if (!drizzleReader) {
+    var postgresDB;
+    var getPostgresDB = () => {
+      console.log({
+        host: process.env.POSTGRES_HOST,
+        port: process.env.POSTGRES_PORT,
+        user: process.env.POSTGRES_USER,
+        password: process.env.POSTGRES_PASSWORD,
+        database: process.env.POSTGRES_DB,
+        max: 10,
+        idleTimeoutMillis: 3e4
+      });
+      if (!postgresDB) {
         const readPool = new Pool({
-          host: process.env.POSTGRES_READ_HOST,
+          host: process.env.POSTGRES_HOST,
           port: process.env.POSTGRES_PORT,
           user: process.env.POSTGRES_USER,
           password: process.env.POSTGRES_PASSWORD,
           database: process.env.POSTGRES_DB,
           max: 10,
-          idleTimeoutMillis: 3e4
+          idleTimeoutMillis: 3e4,
+          ssl: {
+            rejectUnauthorized: false
+          }
         });
-        drizzleReader = drizzle({ client: readPool });
+        postgresDB = drizzle({ client: readPool });
       }
-      return drizzleReader;
+      return postgresDB;
     };
     var closePool = (pool) => {
       if (pool) {
         pool.end();
       }
     };
-    module2.exports = { getDrizzleWriter, getDrizzleReader, closePool };
+    module2.exports = { getPostgresDB, closePool };
   }
 });
 
@@ -15758,13 +15754,13 @@ exports.handler = withCors(async (event) => {
       };
     }
     const APISQLFeatures = require_apiSqlFeatures();
-    const { getDrizzleReader, closePool } = require_postgresDB();
-    const drizzleReader = getDrizzleReader();
+    const { getPostgresDB, closePool } = require_postgresDB();
+    const postgresDB = getPostgresDB();
     const query = event.queryStringParameters || {};
-    const features = new APISQLFeatures(drizzleReader, "home_docs", query).filter().sort().limitFields().paginate().makeQuery();
+    const features = new APISQLFeatures(postgresDB, "home_docs", query).filter().sort().limitFields().paginate().makeQuery();
     const entities = await features.execute();
     const homeDocs = entities.rows || [];
-    const pool = drizzleReader.client;
+    const pool = postgresDB.client;
     closePool(pool);
     return {
       statusCode: 200,

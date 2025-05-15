@@ -5,22 +5,22 @@ const {
   HomeDocsDimensions,
   ResidenceSpecsAttributes,
 } = require("../models/homeDocModel");
-const { getDrizzleWriter, closePool } = require("../postgresDB");
-const drizzleWriter = getDrizzleWriter();
+const { getPostgresDB, closePool } = require("../postgresDB");
+const postgresDB = getPostgresDB();
 
 exports.handler = async (event) => {
   const { id, pageType } = event.pathParameters || {};
   const body = JSON.parse(event.body || {});
 
   try {
-    const updatedHomeDoc = await drizzleWriter
+    const updatedHomeDoc = await postgresDB
       .update(HomeDocs)
       .set(body)
       .where(eq(HomeDocs.id, id))
       .returning()
       .then((rows) => rows[0]);
 
-    const updatedHomeDocsDimensions = await drizzleWriter
+    const updatedHomeDocsDimensions = await postgresDB
       .insert(HomeDocsDimensions)
       .values({ ...body, homeDocId: id })
       .onConflictDoUpdate({
@@ -42,7 +42,7 @@ exports.handler = async (event) => {
         specsAttributes = ResidenceSpecsAttributes;
         break;
       default:
-        const pool = drizzleWriter.client;
+        const pool = postgresDB.client;
         closePool(pool);
         return {
           statusCode: 400,
@@ -58,7 +58,7 @@ exports.handler = async (event) => {
       .filter((key) => specsAttributesKeys.includes(key))
       .reduce((obj, key) => ({ ...obj, [key]: body[key] }), {});
 
-    const updatedSpecAttributes = await drizzleWriter
+    const updatedSpecAttributes = await postgresDB
       .insert(specsAttributes)
       .values({ ...filteredBody, homeDocId: id })
       .onConflictDoUpdate({
@@ -74,7 +74,7 @@ exports.handler = async (event) => {
       ...specificAttributes
     } = updatedSpecAttributes;
 
-    const pool = drizzleWriter.client;
+    const pool = postgresDB.client;
     closePool(pool);
 
     return {

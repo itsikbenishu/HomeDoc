@@ -1,17 +1,17 @@
-const { getDrizzleWriter, closePool } = require("../postgresDB");
-const drizzleWriter = getDrizzleWriter();
+const { getPostgresDB, closePool } = require("../postgresDB");
+const postgresDB = getPostgresDB();
 const { HomeDocs } = require("../models/homeDocModel");
 
 exports.handler = async (event) => {
   try {
     const body = JSON.parse(event.body);
 
-    const newHomeDoc = await drizzleWriter
+    const newHomeDoc = await postgresDB
       .insert(HomeDocs)
       .values(body)
       .returning();
 
-    const pool = drizzleWriter.client;
+    const pool = postgresDB.client;
     closePool(pool);
 
     return {

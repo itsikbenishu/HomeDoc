@@ -1,15 +1,15 @@
 const { eq } = require("drizzle-orm");
 const { HomeDocs } = require("../models/homeDocModel");
-const { getDrizzleWriter, closePool } = require("../postgresDB");
-const drizzleWriter = getDrizzleWriter();
+const { getPostgresDB, closePool } = require("../postgresDB");
+const postgresDB = getPostgresDB();
 
 exports.handler = async (event) => {
   try {
-    await drizzleWriter
+    await postgresDB
       .delete(HomeDocs)
       .where(eq(HomeDocs.id, event.pathParameters.id));
 
-    const pool = drizzleWriter.client;
+    const pool = postgresDB.client;
     closePool(pool);
 
     return {
