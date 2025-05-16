@@ -95,6 +95,7 @@ const ChipsList = ({
             <TextField
               autoComplete="off"
               variant="outlined"
+              error={addAfterBlur && isEditMode && isInList}
               {...params}
               inputProps={{
                 ...params.inputProps,
