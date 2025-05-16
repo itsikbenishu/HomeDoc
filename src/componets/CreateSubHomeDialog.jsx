@@ -146,6 +146,7 @@ const CreateSubHomeDialog = ({
               <InputBase
                 value={subHomeDocKey}
                 onChange={handleSubHomeDocKeyChange}
+                aria-label={t("exit_aria_lable")}
                 className={classes.input}
                 placeholder={
                   SUB_HOME_DOC_KEY[SUB_HOME_DOC_TYPE[category][homeDocType]]

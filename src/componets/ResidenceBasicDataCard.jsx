@@ -22,6 +22,7 @@ import ResidenceSubEntitiesList from "./ResidenceSubEntitiesList";
 import ButtonsLine from "./ButtonsLine";
 import getButtonsLineComps from "./getButtonsLineComps";
 import { useInputDirection } from "../hooks/useInputDirection";
+import DirectionalTextSpan from "./DirectionalTextSpan";
 
 const useStyles = makeStyles(() => ({
   Box: {
@@ -148,12 +149,11 @@ const ResidenceBasicDataCard = ({
                     <Typography
                       variant="subtitle1"
                       className={classes.typographyText}
-                      dir={inputDirection(entitySubTitle.title)}
                     >
                       <Link
                         to={`/Results/Residence/${entitySubTitle.fatherId}`}
                       >
-                        {entitySubTitle.title}
+                        <DirectionalTextSpan value={entitySubTitle.title} />
                       </Link>
                     </Typography>
                   ) : (
