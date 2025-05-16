@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Autocomplete, TextField, Chip, Box, Popover } from "@mui/material";
+import {
+  Autocomplete,
+  TextField,
+  Chip,
+  Box,
+  Popover,
+  Tooltip,
+} from "@mui/material";
 import { useIsEditMode } from "../hooks/useIsEditMode";
 
 const ChipsList = ({
@@ -9,7 +16,8 @@ const ChipsList = ({
   firstChipsNumber = 4,
   maxChipLength = 12,
   options = [],
-
+  addAfterBlur = true,
+  errorMessage = "fgbgh",
   handleChangeChips = () => {},
   handleDeleteChip = () => {},
   ...others
@@ -29,15 +37,21 @@ const ChipsList = ({
 
   const handleChange = (e, newValues) => {
     const newValuePos = newValues.length - 1;
-    console.log(e.code);
+    console.log(e);
 
-    const isNewChip =
-      e.code === "Enter" &&
-      newValues.indexOf(newValues[newValuePos]) === newValuePos;
+    const isNewChip = newValues.indexOf(newValues[newValuePos]) === newValuePos;
+    const isEnter = e.code === "Enter";
     const isDeleteAll = e.type === "click";
+    const isBlur = e.type === "blur";
 
-    if (isNewChip || isDeleteAll) {
+    console.log(addAfterBlur, isBlur, isNewChip, e.type);
+
+    if (addAfterBlur && isBlur && isNewChip) {
       handleChangeChips(newValues);
+    } else {
+      if ((isNewChip && isEnter) || isDeleteAll) {
+        handleChangeChips(newValues);
+      }
     }
   };
 
@@ -50,25 +64,38 @@ const ChipsList = ({
   };
 
   return (
-    <Box sx={{ display: "flex", flexWrap: "wrap", alignItems: "center" }}>
+    <Box
+      sx={{ display: "flex", flexWrap: "wrap", alignItems: "center", my: 1 }}
+    >
       <Autocomplete
         multiple
         freeSolo
+        autoSelect
+        clearOnBlur
         fullWidth
         value={items}
         onChange={handleChange}
         className={className}
         options={options}
         renderInput={(params) => (
-          <TextField
-            autoComplete="off"
-            variant="outlined"
-            {...params}
-            inputProps={{
-              ...params.inputProps,
-              maxLength: maxChipLength,
+          <Tooltip
+            title={errorMessage}
+            open={addAfterBlur}
+            PopperProps={{
+              modifiers: [{ name: "offset", options: { offset: [0, 3] } }],
             }}
-          />
+            arrow
+          >
+            <TextField
+              autoComplete="off"
+              variant="outlined"
+              {...params}
+              inputProps={{
+                ...params.inputProps,
+                maxLength: maxChipLength,
+              }}
+            />
+          </Tooltip>
         )}
         renderTags={(values, getTagProps) => {
           const renderedTags = values
