@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +21,7 @@ import {
 import ResidenceSubEntitiesList from "./ResidenceSubEntitiesList";
 import ButtonsLine from "./ButtonsLine";
 import getButtonsLineComps from "./getButtonsLineComps";
+import { useInputDirection } from "../hooks/useInputDirection";
 
 const useStyles = makeStyles(() => ({
   Box: {
@@ -52,10 +53,15 @@ const ResidenceBasicDataCard = ({
   const theme = useTheme();
   const { t } = useTranslation();
   const { HOME_DOC_RESIDENCE_TYPE } = useTranslatedConstants();
+  const inputDirection = useInputDirection();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
   const residenceId = useParams().id;
   const category = useSelector(selectHomeDocEntityCategory);
+
+  const getFatherResidence = (category, subResidece) =>
+    Object.keys(SUB_HOME_DOC_TYPE[category]).find((key) => {
+      return SUB_HOME_DOC_TYPE[category][key] === subResidece;
+    });
 
   const otherHandlers = useMemo(() => {
     return {
@@ -128,9 +134,11 @@ const ResidenceBasicDataCard = ({
                     className={classes.typographyText}
                     sx={{ whiteSpace: "nowrap" }}
                   >
-                    {!entitySubTitle.type || entitySubTitle.type === "PROPERTY"
+                    {!entityType || entityType === "PROPERTY"
                       ? t("residence_cards.title_address")
-                      : HOME_DOC_RESIDENCE_TYPE[entitySubTitle.type]}
+                      : HOME_DOC_RESIDENCE_TYPE[
+                          getFatherResidence(category, entityType)
+                        ]}
                   </Typography>
                 </Box>
               </Grid>
@@ -140,6 +148,7 @@ const ResidenceBasicDataCard = ({
                     <Typography
                       variant="subtitle1"
                       className={classes.typographyText}
+                      dir={inputDirection(entitySubTitle.title)}
                     >
                       <Link
                         to={`/Results/Residence/${entitySubTitle.fatherId}`}

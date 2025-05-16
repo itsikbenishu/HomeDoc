@@ -19,6 +19,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { HOME_DOC_PAGE_TYPE } from "../../Constants";
 import CreateSubHomeDialog from "./CreateSubHomeDialog";
+import { useInputDirection } from "../hooks/useInputDirection";
+import DirectionalTextSpan from "./DirectionalTextSpan";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -31,8 +33,9 @@ const SubEntitiesDialog = ({
   entityType,
 }) => {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const inputDirection = useInputDirection();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -60,7 +63,6 @@ const SubEntitiesDialog = ({
         open={open}
         onClose={handleClose}
         TransitionComponent={Transition}
-        dir={i18n.language === "he" ? "rtl" : "ltr"}
         sx={{ bgcolor: (theme) => theme.palette.primary.main }}
       >
         <Box
@@ -105,7 +107,12 @@ const SubEntitiesDialog = ({
                 >
                   <ListItemText
                     key={`listItemText-${subEntity.id}`}
-                    primary={`${subEntityPreName}${subEntity.interiorEntityKey}`}
+                    primary={
+                      <DirectionalTextSpan
+                        value={subEntity.interiorEntityKey}
+                        prefix={subEntityPreName}
+                      />
+                    }
                     secondary={
                       <span style={{ color: "white" }}>
                         {subEntity?.description}
@@ -125,10 +132,7 @@ const SubEntitiesDialog = ({
               </React.Fragment>
             ))}
             <Box sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
-              <CreateSubHomeDialog
-                homeDocType={entityType}
-                isExpaned={true}
-              ></CreateSubHomeDialog>
+              <CreateSubHomeDialog homeDocType={entityType} isExpaned={true} />
               <Divider
                 key="addDivider"
                 sx={{ bgcolor: (theme) => theme.palette.primary.contrastText }}

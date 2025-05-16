@@ -28,6 +28,7 @@ import {
 } from "../slices/HomeDocSlice";
 import { useIsEditMode } from "../hooks/useIsEditMode";
 import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
+import { useInputDirection } from "../hooks/useInputDirection";
 import { SUB_HOME_DOC_TYPE } from "../../Constants";
 import DialogButton from "./DialogButton";
 
@@ -62,6 +63,7 @@ const CreateSubHomeDialog = ({
   const [openDialog, setOpenDialog] = useState(false);
   const [subHomeDocKey, setSubHomeDocKey] = useState("");
   const { SUB_HOME_DOC_KEY } = useTranslatedConstants();
+  const inputDirection = useInputDirection();
   const isEditMode = useIsEditMode();
 
   const handleClickOpen = () => {
@@ -129,11 +131,7 @@ const CreateSubHomeDialog = ({
               />
             </Tooltip>
           )}
-      <Dialog
-        open={openDialog}
-        onClose={handleClose}
-        dir={i18n.language === "he" ? "rtl" : "ltr"}
-      >
+      <Dialog open={openDialog} onClose={handleClose}>
         <DialogTitle>{t("create_sub_home_dialog.title")}</DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ mb: 2 }}>
@@ -152,7 +150,10 @@ const CreateSubHomeDialog = ({
                 placeholder={
                   SUB_HOME_DOC_KEY[SUB_HOME_DOC_TYPE[category][homeDocType]]
                 }
-                inputProps={{ maxLength: 50 }}
+                inputProps={{
+                  maxLength: 30,
+                  dir: inputDirection(subHomeDocKey),
+                }}
                 fullWidth
               />
             </FormControl>

@@ -9,17 +9,15 @@ import {
   useMediaQuery,
   Button,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { SYS_NAME } from "../../Constants";
 import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 import ChangeLangButton from "./ChangeLangButton";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"), { noSsr: true });
   const { i18n } = useTranslation();
   const { SYS_NAME } = useTranslatedConstants();
 

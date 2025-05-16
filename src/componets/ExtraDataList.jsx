@@ -16,6 +16,7 @@ import { useFormikContext } from "formik";
 import { useIsEditMode } from "../hooks/useIsEditMode";
 import ExtraDataListDialog from "./ExtraDataListDialog";
 import { useTranslation } from "react-i18next";
+import { useInputDirection } from "../hooks/useInputDirection";
 
 const useStyles = makeStyles(() => ({
   typographyText: {
@@ -51,6 +52,7 @@ const ExtraDataList = ({ count = 0 }) => {
   const { t, i18n } = useTranslation();
   const { values, errors, setFieldValue, validateField } = useFormikContext();
   const isEditMode = useIsEditMode();
+  const inputDirection = useInputDirection();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const init = () => toItemsWithIds(values.extraData);
@@ -154,6 +156,7 @@ const ExtraDataList = ({ count = 0 }) => {
             className={classes.textField}
             disabled={!isEditMode}
             fullWidth
+            dir={inputDirection(newCharacteristic)}
             sx={editOpacity}
           />
         </Grid>
@@ -167,6 +170,7 @@ const ExtraDataList = ({ count = 0 }) => {
             className={classes.textField}
             disabled={!isEditMode}
             fullWidth
+            dir={inputDirection(newValue)}
             sx={editOpacity}
           />
         </Grid>
@@ -208,6 +212,7 @@ const ExtraDataList = ({ count = 0 }) => {
                 disabled={!isEditMode}
                 className={classes.textField}
                 error={!!errors?.extraData?.[index]?.characteristic}
+                dir={inputDirection(elem.characteristic)}
                 fullWidth
               />
             </Tooltip>
@@ -228,6 +233,7 @@ const ExtraDataList = ({ count = 0 }) => {
                 disabled={!isEditMode}
                 className={classes.textField}
                 error={!!errors?.extraData?.[index]?.value}
+                dir={inputDirection(elem.value)}
                 fullWidth
               />
             </Tooltip>

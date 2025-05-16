@@ -7,6 +7,7 @@ import { selectHomeDocEntityCategory } from "../slices/HomeDocSlice";
 import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 import CreateSubHomeDialog from "./CreateSubHomeDialog";
 import SubEntitiesDialog from "./SubEntitiesDialog";
+import { useInputDirection } from "../hooks/useInputDirection";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -37,6 +38,7 @@ const ResidenceSubEntitiesList = ({
   const category = useSelector(selectHomeDocEntityCategory);
   const { HOME_DOC_RESIDENCE_TYPE, SUB_HOME_DOC_LIST } =
     useTranslatedConstants();
+  const inputDirection = useInputDirection();
   const isExpand = subEntitiesList.length <= subEntitiesMax;
   const firstElemnts = subEntitiesList.slice(0, subEntitiesMax);
   const subEntityName = `${
@@ -59,11 +61,11 @@ const ResidenceSubEntitiesList = ({
       <Grid
         container
         spacing={{
-          xs: 6,
+          xs: 2,
           sm: 0.5,
         }}
       >
-        <Grid item xs={2}>
+        <Grid item xs="auto">
           <Box
             sx={{
               p: 0,
@@ -78,15 +80,20 @@ const ResidenceSubEntitiesList = ({
         </Grid>
 
         {firstElemnts.map((subEntity) => (
-          <Grid item xs={1} key={subEntity.id}>
+          <Grid item xs={3} sm="auto" key={subEntity.id}>
             <Box
               className={classes.subEntity}
               sx={{
                 bgcolor: "transparent",
+                mx: { xs: 0.5, sm: 2 },
               }}
               key={subEntity.id}
             >
-              <Typography variant="body1" className={classes.typographyText}>
+              <Typography
+                variant="body1"
+                className={classes.typographyText}
+                dir={inputDirection(subEntity.interiorEntityKey)}
+              >
                 <Link
                   to={`/Results/${HOME_DOC_PAGE_TYPE[subEntity.type]}/${
                     subEntity.id
@@ -111,7 +118,7 @@ const ResidenceSubEntitiesList = ({
             ></CreateSubHomeDialog>
           </Box>
         </Grid>
-        <Grid item xs={1}>
+        <Grid item sm={1}>
           {!isExpand && (
             <Box
               className={classes.subEntity}

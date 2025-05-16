@@ -19,6 +19,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useIsEditMode } from "../hooks/useIsEditMode";
+import { useInputDirection } from "../hooks/useInputDirection";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -28,6 +29,7 @@ const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
   const contrastTextColor = (theme) => theme.palette.primary.contrastText;
   const isEditMode = useIsEditMode();
   const { t, i18n } = useTranslation();
+  const inputDirection = useInputDirection();
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -87,6 +89,7 @@ const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
                 <ListItem key={`ListItem-${entity.id}`}>
                   <ListItemText
                     key={`listItemText-characteristic-${entity.id}`}
+                    dir={inputDirection(entity.value)}
                     primary={`${entity.characteristic}:`}
                     sx={{
                       color: contrastTextColor,
@@ -95,6 +98,7 @@ const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
                   />
                   <ListItemText
                     key={`listItemText-value-${entity.id}`}
+                    dir={inputDirection(entity.value)}
                     primary={`${entity.value}`}
                     sx={{
                       color: contrastTextColor,

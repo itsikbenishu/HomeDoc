@@ -1,14 +1,13 @@
-import React, { useState } from "react";
-import TranslateIcon from "@mui/icons-material/Translate";
+import { useTranslation } from "react-i18next";
 import { Typography, Button } from "@mui/material";
+import TranslateIcon from "@mui/icons-material/Translate";
 
 function ChangeLangButton({ handleClick }) {
-  const [language, setLanguage] = useState("EN");
+  const { i18n } = useTranslation();
 
   const handleToggleLanguage = () => {
-    const newLang = language === "EN" ? "HE" : "EN";
+    const newLang = i18n.language === "en" ? "he" : "en";
     handleClick(newLang.toLowerCase());
-    setLanguage(newLang);
   };
 
   return (
@@ -20,7 +19,7 @@ function ChangeLangButton({ handleClick }) {
       sx={{ "& .MuiButton-startIcon": { m: 0.5 } }}
     >
       <Typography variant="button">
-        {language === "EN" ? "EN" : "HE"}
+        {i18n.language === "en" ? "EN" : "HE"}
       </Typography>
     </Button>
   );

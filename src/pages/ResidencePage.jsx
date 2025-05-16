@@ -19,6 +19,7 @@ import ResidenceExtraDataCard from "../componets/ResidenceExtraDataCard";
 import LabeledContainer from "../componets/LabeledContainer";
 import Loader from "../componets/Loader";
 import { EditModeContext } from "../hooks/useIsEditMode";
+import DirectionalTextSpan from "../componets/DirectionalTextSpan";
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -63,9 +64,17 @@ const HomeDocResidencePage = () => {
     homeDocStatus === STATUSES.IDLE || homeDocStatus === STATUSES.PENDING;
 
   const entityTitle =
-    residenceType === "PROPERTY"
-      ? HOME_DOC_CATEGORIES[residence.category]
-      : `${HOME_DOC_RESIDENCE_TYPE[residenceType]}: ${residence.interiorEntityKey}`;
+    residenceType === "PROPERTY" ? (
+      HOME_DOC_CATEGORIES[residence.category]
+    ) : (
+      <>
+        <DirectionalTextSpan
+          prefix={`${HOME_DOC_RESIDENCE_TYPE[residenceType]}: `}
+          value={residence?.interiorEntityKey}
+        />
+      </>
+    );
+
   const entitySubTitle =
     residenceType === "PROPERTY"
       ? residence.interiorEntityKey
@@ -114,14 +123,13 @@ const HomeDocResidencePage = () => {
                     entitySubTitle={{
                       title: entitySubTitle,
                       fatherId: residence?.fatherId,
-                      type: residence?.type,
                     }}
                     entityType={residence.type}
                     subEntities={residence.subEntities}
                   />
                 </Paper>
               </Grid>
-              <Grid item xs={12} sm={6} md={residenceType === "ROOM" ? 7.9 : 9}>
+              <Grid item xs={12} sm={6} md={residenceType === "ROOM" ? 7.8 : 9}>
                 <Paper
                   elevation={1}
                   className={classes.paper}

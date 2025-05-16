@@ -1,12 +1,7 @@
 export const SYS_NAME = "HomeDoc";
 export const BASIC_PAGINATION = `page=1&limit=10`;
 
-export const NAVBAR_LINKS = [
-  // { name: "תיעוד ביתי", loc: "/HomeDoc", key: "2" },
-  // { name: "סנייק", loc: "/Snake", key: "3" },
-  // { name: "צוללות", loc: "/Submarine", key: "4" },
-  // { name: "מסך הבית", loc: "/", key: "1" },
-];
+export const NAVBAR_LINKS = [];
 
 export const STATUSES = {
   IDLE: "idle",
@@ -22,7 +17,7 @@ export const HOME_DOC_CATEGORIES = {
 };
 
 export const HOME_DOC_RESIDENCE_TYPE = {
-  PROPERTY: "בית",
+  PROPERTY: "נכס",
   FLOOR: "קומה",
   APARTMENT: "דירה",
   ROOM: "חדר",
