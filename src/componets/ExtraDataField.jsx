@@ -1,7 +1,6 @@
 import { TextField, Tooltip } from "@mui/material";
 import { useIsEditMode } from "../hooks/useIsEditMode";
 import { useFormikContext } from "formik";
-import React from "react";
 
 const ExtraDataField = ({ className, label, ...others }) => {
   const isEditMode = useIsEditMode();

@@ -9,6 +9,7 @@ const ChipsList = ({
   firstChipsNumber = 4,
   maxChipLength = 12,
   options = [],
+
   handleChangeChips = () => {},
   handleDeleteChip = () => {},
   ...others
@@ -28,6 +29,8 @@ const ChipsList = ({
 
   const handleChange = (e, newValues) => {
     const newValuePos = newValues.length - 1;
+    console.log(e.code);
+
     const isNewChip =
       e.code === "Enter" &&
       newValues.indexOf(newValues[newValuePos]) === newValuePos;
