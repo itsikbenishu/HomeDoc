@@ -44,7 +44,8 @@ const ChipsList = ({
 
   const handleChange = (e, newValues) => {
     const newValuePos = newValues.length - 1;
-    const isNewChip = newValues.indexOf(newValues[newValuePos]) === newValuePos;
+    const trimmedNewValue = newValues[newValuePos].trim();
+    const isNewChip = newValues.indexOf(trimmedNewValue) === newValuePos;
     const isEnter = e.code === "Enter";
     const isDeleteAll = e.type === "click";
     const isBlur = e.type === "blur";
@@ -53,11 +54,13 @@ const ChipsList = ({
       handleChangeChips(newValues);
     }
 
+    const changedValues = [...newValues.slice(0, -1), trimmedNewValue];
+
     if (addAfterBlur && isBlur && isNewChip) {
-      handleChangeChips(newValues);
+      handleChangeChips(changedValues);
     } else {
       if (isNewChip && isEnter) {
-        handleChangeChips(newValues);
+        handleChangeChips(changedValues);
       }
     }
   };
@@ -75,8 +78,7 @@ const ChipsList = ({
       <Autocomplete
         multiple
         freeSolo
-        autoSelect
-        clearOnBlur
+        clearOnBlur={addAfterBlur}
         fullWidth
         value={currentChips}
         onChange={handleChange}

@@ -30,7 +30,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const LabeledContainer = ({ lableName, children }) => {
+const LabeledContainer = ({ labelName, children }) => {
   const classes = useStyles();
 
   return (
@@ -40,7 +40,7 @@ const LabeledContainer = ({ lableName, children }) => {
       sx={{ bgcolor: (theme) => theme.palette.primary.main }}
     >
       <div className={classes.label}>
-        <Typography variant="body2">{lableName}</Typography>
+        <Typography variant="body2">{labelName}</Typography>
       </div>
       <Card
         className={classes.card}

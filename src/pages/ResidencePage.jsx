@@ -147,7 +147,7 @@ const HomeDocResidencePage = () => {
               {!isMobile && (
                 <>
                   <Grid item xs={12} sm={6} sx={{ pt: 0.5 }}>
-                    <LabeledContainer lableName={t("page_card_lables.images")}>
+                    <LabeledContainer labelName={t("page_card_lables.images")}>
                       <div> {t("in_development")}</div>
                     </LabeledContainer>
                   </Grid>
@@ -166,7 +166,7 @@ const HomeDocResidencePage = () => {
                       ></Paper>
                     ) : (
                       <LabeledContainer
-                        lableName={t("page_card_lables.look_at")}
+                        labelName={t("page_card_lables.look_at")}
                       >
                         <div> {t("in_development")}</div>
                       </LabeledContainer>
