@@ -7,17 +7,18 @@ import {
   Box,
   Popover,
   Tooltip,
+  debounce,
 } from "@mui/material";
 import { useIsEditMode } from "../hooks/useIsEditMode";
 
 const ChipsList = ({
   className,
-  items,
+  currentChips,
   firstChipsNumber = 4,
   maxChipLength = 12,
   options = [],
-  addAfterBlur = true,
-  errorMessage = "fgbgh",
+  addAfterBlur = false,
+  errorMessage = "",
   handleChangeChips = () => {},
   handleDeleteChip = () => {},
   ...others
@@ -25,6 +26,7 @@ const ChipsList = ({
   const { t } = useTranslation();
   const isEditMode = useIsEditMode();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isInList, setIsInList] = useState(false);
   const open = Boolean(anchorEl);
 
   const handleOpenPopover = (event) => {
@@ -35,21 +37,26 @@ const ChipsList = ({
     setAnchorEl(null);
   };
 
+  const handleInputChange = debounce((e, newInputValue, reason) => {
+    const isNewChip = !currentChips.includes(newInputValue);
+    setIsInList(addAfterBlur && !isNewChip);
+  }, 300);
+
   const handleChange = (e, newValues) => {
     const newValuePos = newValues.length - 1;
-    console.log(e);
-
     const isNewChip = newValues.indexOf(newValues[newValuePos]) === newValuePos;
     const isEnter = e.code === "Enter";
     const isDeleteAll = e.type === "click";
     const isBlur = e.type === "blur";
 
-    console.log(addAfterBlur, isBlur, isNewChip, e.type);
+    if (isDeleteAll) {
+      handleChangeChips(newValues);
+    }
 
     if (addAfterBlur && isBlur && isNewChip) {
       handleChangeChips(newValues);
     } else {
-      if ((isNewChip && isEnter) || isDeleteAll) {
+      if (isNewChip && isEnter) {
         handleChangeChips(newValues);
       }
     }
@@ -64,23 +71,22 @@ const ChipsList = ({
   };
 
   return (
-    <Box
-      sx={{ display: "flex", flexWrap: "wrap", alignItems: "center", my: 1 }}
-    >
+    <Box sx={{ display: "flex", flexWrap: "wrap", alignItems: "center" }}>
       <Autocomplete
         multiple
         freeSolo
         autoSelect
         clearOnBlur
         fullWidth
-        value={items}
+        value={currentChips}
         onChange={handleChange}
+        onInputChange={handleInputChange}
         className={className}
         options={options}
         renderInput={(params) => (
           <Tooltip
             title={errorMessage}
-            open={addAfterBlur}
+            open={addAfterBlur && isEditMode && isInList}
             PopperProps={{
               modifiers: [{ name: "offset", options: { offset: [0, 3] } }],
             }}
@@ -117,7 +123,7 @@ const ChipsList = ({
               );
             });
 
-          if (items.length > firstChipsNumber) {
+          if (currentChips.length > firstChipsNumber) {
             const { key, onDelete, ...restTagProps } = getTagProps(
               firstChipsNumber - 1
             );
@@ -159,7 +165,7 @@ const ChipsList = ({
         }}
       >
         <Box sx={{ padding: 2 }}>
-          {items.slice(firstChipsNumber).map((value, index) => (
+          {currentChips.slice(firstChipsNumber).map((value, index) => (
             <Chip
               key={`chip-more-${index}`}
               label={value}

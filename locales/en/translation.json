@@ -112,7 +112,9 @@
     "label_length": "Length (meters):",
     "label_width": "Width (meters):",
     "label_colors": "Colors:",
-    "confirm_add_property": "Are you sure you want to add this property?"
+    "confirm_add_property": "Are you sure you want to add this property?",
+    "chip_color": "color",
+    "chip_list_error_message": "The {chip} is already on the list"
   },
 
   "table_pagination": {

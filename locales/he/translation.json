@@ -112,7 +112,9 @@
     "label_length": "אורך (מטרים):",
     "label_width": "רוחב (מטרים):",
     "label_colors": "צבעים:",
-    "confirm_add_property": "?האם אתה בטוח שהינך מעוניין להוסיף את התכונה הזו"
+    "confirm_add_property": "?האם אתה בטוח שהינך מעוניין להוסיף את התכונה הזו",
+    "chip_color": "צבע",
+    "chip_list_error_message": "הצבע הוא כבר חלק מהרשימה"
   },
 
   "table_pagination": {
