@@ -109,9 +109,7 @@ const ChattelsExtraDataCard = () => {
                   variant="subtitle1"
                   className={classes.typographyText}
                 >
-                  {t("chattels_cards.chip_list_error_message", {
-                    chip: t("chattels_cards.chip_color"),
-                  })}
+                  {t("chattels_cards.label_description")}
                 </Typography>
               </Grid>
               <Grid
@@ -217,7 +215,9 @@ const ChattelsExtraDataCard = () => {
                   currentChips={values["colors"]}
                   firstChipsNumber={isMobile ? 1 : 4}
                   addAfterBlur={isMobile}
-                  errorMessage={t("chattels_cards.confirm_add_property")}
+                  errorMessage={t("chattels_cards.chip_list_error_message", {
+                    chip: t("chattels_cards.chip_color"),
+                  })}
                   handleChangeChips={(newValue) => {
                     setFieldValue("colors", newValue);
                   }}
