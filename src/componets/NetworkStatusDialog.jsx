@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Box, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import DialogButton from "./DialogButton";
-import useNetworkStatus from "../hooks/useNetworkStatus,jsx";
 import Loader from "./Loader";
+import useNetworkStatus from "../hooks/useNetworkStatus";
 
 const useStyles = makeStyles(() => ({
   dialogOverlay: {
