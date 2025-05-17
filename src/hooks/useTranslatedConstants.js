@@ -7,11 +7,6 @@ export const useTranslatedConstants = () => {
   const translatedConstants = {
     SYS_NAME: t("SYS_NAME", { defaultValue: constants.SYS_NAME }),
 
-    NAVBAR_LINKS: constants.NAVBAR_LINKS.map((link) => ({
-      ...link,
-      name: t(link.name, { defaultValue: link.name }),
-    })),
-
     HOME_DOC_CATEGORIES: Object.keys(constants.HOME_DOC_CATEGORIES).reduce(
       (acc, key) => {
         acc[key] = t(`HOME_DOC_CATEGORIES.${key}`, {

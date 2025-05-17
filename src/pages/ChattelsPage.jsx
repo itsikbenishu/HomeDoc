@@ -118,7 +118,7 @@ const ChattelsPage = () => {
               {!isMobile && (
                 <>
                   <Grid item xs={12} sm={12} sx={{ pt: 0.5 }}>
-                    <LabeledContainer lableName={t("page_card_lables.images")}>
+                    <LabeledContainer labelName={t("page_card_lables.images")}>
                       <div> {t("in_development")}</div>
                     </LabeledContainer>
                   </Grid>

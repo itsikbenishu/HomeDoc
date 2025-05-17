@@ -28,7 +28,7 @@ const Navbar = () => {
   return (
     <AppBar position="static">
       <CssBaseline />
-      <Toolbar>
+      <Toolbar sx={{ justifyContent: "space-between" }}>
         <Box onClick={() => navigate("/")}>
           <Button
             variant="text"

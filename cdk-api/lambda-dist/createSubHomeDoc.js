@@ -15613,24 +15613,17 @@ __export(Constants_exports, {
   HOME_DOC_PAGES_TYPES: () => HOME_DOC_PAGES_TYPES,
   HOME_DOC_PAGE_TYPE: () => HOME_DOC_PAGE_TYPE,
   HOME_DOC_RESIDENCE_TYPE: () => HOME_DOC_RESIDENCE_TYPE,
-  NAVBAR_LINKS: () => NAVBAR_LINKS,
   STATUSES: () => STATUSES,
   SUB_HOME_DOC_KEY: () => SUB_HOME_DOC_KEY,
   SUB_HOME_DOC_LIST: () => SUB_HOME_DOC_LIST,
   SUB_HOME_DOC_TYPE: () => SUB_HOME_DOC_TYPE,
   SYS_NAME: () => SYS_NAME
 });
-var SYS_NAME, BASIC_PAGINATION, NAVBAR_LINKS, STATUSES, HOME_DOC_CATEGORIES, HOME_DOC_RESIDENCE_TYPE, HOME_DOC_CHATTELS_TYPE, SUB_HOME_DOC_KEY, SUB_HOME_DOC_LIST, HOME_DOC_PAGES_TYPES, HOME_DOC_PAGE_TYPE, SUB_HOME_DOC_TYPE;
+var SYS_NAME, BASIC_PAGINATION, STATUSES, HOME_DOC_CATEGORIES, HOME_DOC_RESIDENCE_TYPE, HOME_DOC_CHATTELS_TYPE, SUB_HOME_DOC_KEY, SUB_HOME_DOC_LIST, HOME_DOC_PAGES_TYPES, HOME_DOC_PAGE_TYPE, SUB_HOME_DOC_TYPE;
 var init_Constants = __esm({
   "../Constants.js"() {
     SYS_NAME = "HomeDoc";
     BASIC_PAGINATION = `page=1&limit=10`;
-    NAVBAR_LINKS = [
-      // { name: "תיעוד ביתי", loc: "/HomeDoc", key: "2" },
-      // { name: "סנייק", loc: "/Snake", key: "3" },
-      // { name: "צוללות", loc: "/Submarine", key: "4" },
-      // { name: "מסך הבית", loc: "/", key: "1" },
-    ];
     STATUSES = {
       IDLE: "idle",
       PENDING: "pending",
@@ -15643,7 +15636,7 @@ var init_Constants = __esm({
       MULTI_STORY_HOUSE: "\u05D1\u05D9\u05EA \u05E8\u05D1 \u05E7\u05D5\u05DE\u05EA\u05D9"
     };
     HOME_DOC_RESIDENCE_TYPE = {
-      PROPERTY: "\u05D1\u05D9\u05EA",
+      PROPERTY: "\u05E0\u05DB\u05E1",
       FLOOR: "\u05E7\u05D5\u05DE\u05D4",
       APARTMENT: "\u05D3\u05D9\u05E8\u05D4",
       ROOM: "\u05D7\u05D3\u05E8"
