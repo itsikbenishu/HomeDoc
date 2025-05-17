@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
+import Link from "../componets/Link";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useFormikContext } from "formik";
 import { Box, Grid, Typography, Card } from "@mui/material";

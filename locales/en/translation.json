@@ -35,6 +35,14 @@
   },
 
   "home_page": { "title": "Choose property type" },
+
+  "error_page": {
+    "title": "Something went wrong",
+    "sub_title": "We can't find that page",
+    "note": "You can search homeDoc at ",
+    "search_page": "search page"
+  },
+
   "homedoc_slice": {
     "create_success": " Created successfully! ",
     "create_error": " Creation failed! ",
@@ -53,6 +61,11 @@
     "look_at": "Look At"
   },
 
+  "network_status_dialog": {
+    "title": "No Internet connection",
+    "content": "Please check your Internet connection.",
+    "try_again_button": "Try again"
+  },
   "confirm_dialog": { "no": "no", "yes": "yes" },
   "create_home_dialog": {
     "title": "Create a property documentation",

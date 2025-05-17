@@ -234,7 +234,7 @@ const homeDocSlice = createSlice({
       })
       .addCase(fetchHomeDoc.rejected, (state, action) => {
         state.error = action.payload;
-        state.status = STATUSES.PENDING;
+        state.status = STATUSES.REJECTED;
       })
       .addCase(fetchHomeDocStats.pending, (state) => {
         state.error = null;
@@ -281,7 +281,7 @@ const homeDocSlice = createSlice({
       .addCase(createHomeDoc.rejected, (state, action) => {
         state.error = action.payload;
         state.success = false;
-        state.status = STATUSES.PENDING;
+        state.status = STATUSES.REJECTED;
         toast("homedoc_slice.create_error", "error");
       })
       .addCase(updateCurrentHomeDoc.pending, (state) => {

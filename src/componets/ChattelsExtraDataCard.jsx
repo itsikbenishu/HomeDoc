@@ -100,10 +100,11 @@ const ChattelsExtraDataCard = () => {
             <Grid container spacing={0.25}>
               <Grid
                 item
-                xs={2}
+                xs="auto"
+                sm={2}
                 justifyContent="flex-start"
                 alignItems="center"
-                sx={{ pl: 2 }}
+                sx={{ pl: 0.5 }}
               >
                 <Typography
                   variant="subtitle1"
@@ -112,11 +113,7 @@ const ChattelsExtraDataCard = () => {
                   {t("chattels_cards.label_description")}
                 </Typography>
               </Grid>
-              <Grid
-                item
-                xs={10}
-                className={classes.multilineTextFieldContainer}
-              >
+              <Grid item xs className={classes.multilineTextFieldContainer}>
                 <ExtraDataField
                   label="description"
                   className={classes.multilineTextField}

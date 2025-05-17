@@ -12,6 +12,7 @@ import SearchResultsPage from "./pages/SearchResultsPage";
 import ResidencePage from "./pages/ResidencePage";
 import ChattelsPage from "./pages/ChattelsPage";
 import Navbar from "./componets/NavBar";
+import NetworkStatusDialog from "./componets/NetworkStatusDialog";
 
 const createEmotionCache = (isRTL) =>
   createCache({
@@ -59,6 +60,7 @@ const App = () => {
           >
             <HashRouter>
               <Navbar />
+              <NetworkStatusDialog />
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/Results" element={<SearchResultsPage />} />

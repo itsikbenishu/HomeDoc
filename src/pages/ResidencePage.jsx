@@ -19,6 +19,7 @@ import ResidenceExtraDataCard from "../componets/ResidenceExtraDataCard";
 import LabeledContainer from "../componets/LabeledContainer";
 import Loader from "../componets/Loader";
 import { EditModeContext } from "../hooks/useIsEditMode";
+import ErrorPage from "./ErrorPage";
 import DirectionalTextSpan from "../componets/DirectionalTextSpan";
 
 const useStyles = makeStyles(() => ({
@@ -62,6 +63,9 @@ const HomeDocResidencePage = () => {
 
   const isLoading =
     homeDocStatus === STATUSES.IDLE || homeDocStatus === STATUSES.PENDING;
+  const isRejected = homeDocStatus === STATUSES.REJECTED;
+
+  if (isRejected) return <ErrorPage />;
 
   const entityTitle =
     residenceType === "PROPERTY" ? (
@@ -70,7 +74,7 @@ const HomeDocResidencePage = () => {
       <>
         <DirectionalTextSpan
           prefix={`${HOME_DOC_RESIDENCE_TYPE[residenceType]}: `}
-          value={residence?.interiorEntityKey}
+          value={residence.interiorEntityKey}
         />
       </>
     );

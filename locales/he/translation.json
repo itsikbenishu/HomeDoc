@@ -36,6 +36,13 @@
 
   "home_page": { "title": "בחר סוג נכס" },
 
+  "error_page": {
+    "title": "משהו השתבש",
+    "sub_title": "לא מצאנו את הדף הזה",
+    "note": "ניתן לחפש תיעוד ביתי ב",
+    "search_page": "מנוע החיפוש"
+  },
+
   "homedoc_slice": {
     "create_success": " נוצר בהצלחה! ",
     "create_error": " יצירה נכשלה! ",
@@ -53,6 +60,12 @@
   "page_card_lables": {
     "images": "תמונות",
     "look_at": "מבט על"
+  },
+
+  "network_status_dialog": {
+    "title": "אין חיבור לאינטרנט",
+    "content": "אנא בדוק את החיבור שלך לאינטרנט.",
+    "try_again_button": "נסה שוב"
   },
 
   "confirm_dialog": { "no": "לא", "yes": "כן" },

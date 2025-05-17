@@ -1,13 +1,13 @@
-import { Link } from "react-router-dom";
 import { Box, Card, Grid, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
 import { HOME_DOC_PAGE_TYPE, SUB_HOME_DOC_TYPE } from "../../Constants";
 import { selectHomeDocEntityCategory } from "../slices/HomeDocSlice";
 import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
+import { useInputDirection } from "../hooks/useInputDirection";
+import Link from "../componets/Link";
 import CreateSubHomeDialog from "./CreateSubHomeDialog";
 import SubEntitiesDialog from "./SubEntitiesDialog";
-import { useInputDirection } from "../hooks/useInputDirection";
 
 const useStyles = makeStyles(() => ({
   card: {

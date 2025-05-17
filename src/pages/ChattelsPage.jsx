@@ -12,6 +12,7 @@ import {
 } from "../slices/HomeDocSlice";
 import { HOME_DOC_PAGES_TYPES, STATUSES } from "../../Constants";
 import { useExtraHomeDocFormik } from "../hooks/useExtraHomeDocFormik";
+import ErrorPage from "./ErrorPage";
 import ChattelsBasicDataCard from "../componets/ChattelsBasicDataCard";
 import ChattelsExtraDataCard from "../componets/ChattelsExtraDataCard";
 import LabeledContainer from "../componets/LabeledContainer";
@@ -54,6 +55,9 @@ const ChattelsPage = () => {
 
   let isLoading =
     homeDocStatus === STATUSES.IDLE || homeDocStatus === STATUSES.PENDING;
+  const isRejected = homeDocStatus === STATUSES.REJECTED;
+
+  if (isRejected) return <ErrorPage />;
 
   const entityTitle = `${t("chattels_cards.title_item")} ${
     chattels.interiorEntityKey
