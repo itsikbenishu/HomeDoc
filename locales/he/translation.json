@@ -1,8 +1,8 @@
 {
   "SYS_NAME": "תיעוד ביתי",
-  "HOME_DOC_CATEGORIES.ONE_STORY_HOUSE": "בית חד קומתי",
+  "HOME_DOC_CATEGORIES.ONE_STORY_HOUSE": "בית קרקע חד קומתי",
   "HOME_DOC_CATEGORIES.RESIDENTIAL_BUILDING": "בניין מגורים",
-  "HOME_DOC_CATEGORIES.MULTI_STORY_HOUSE": "בית רב קומתי",
+  "HOME_DOC_CATEGORIES.MULTI_STORY_HOUSE": "בית קרקע רב קומתי",
   "HOME_DOC_RESIDENCE_TYPE.PROPERTY": "נכס",
   "HOME_DOC_RESIDENCE_TYPE.FLOOR": "קומה",
   "HOME_DOC_RESIDENCE_TYPE.APARTMENT": "דירה",
@@ -110,7 +110,7 @@
     "label_items_quantity": "כמות הפריטים:",
     "label_sub_entities_quantity": "כמות ה{{entity}}:",
     "label_construction_year": "שנת בנייה:",
-    "label_area": "שטח (קמ\"ר):",
+    "label_area": "שטח (מ\"ר):",
     "label_length": "אורך (מטרים):",
     "label_width": "רוחב (מטרים):",
     "confirm_add_property": "?האם אתה בטוח שהינך מעוניין להוסיף את התכונה הזו"

@@ -30,7 +30,7 @@ const useStyles = makeStyles(() => ({
     border: "none",
   },
   categoryCardContent: {
-    fontSize: "2.25rem",
+    fontSize: "2rem",
     "&:hover": {
       color: "burlywood",
       borderBottom: "1px solid white",

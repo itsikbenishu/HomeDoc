@@ -1,8 +1,8 @@
 {
   "SYS_NAME": "HomeDoc",
-  "HOME_DOC_CATEGORIES.ONE_STORY_HOUSE": "One Story House",
+  "HOME_DOC_CATEGORIES.ONE_STORY_HOUSE": "One-Story Ground House",
   "HOME_DOC_CATEGORIES.RESIDENTIAL_BUILDING": "Residential Building",
-  "HOME_DOC_CATEGORIES.MULTI_STORY_HOUSE": "Multi Story House",
+  "HOME_DOC_CATEGORIES.MULTI_STORY_HOUSE": "Multi-Story Ground House",
   "HOME_DOC_RESIDENCE_TYPE.PROPERTY": "Property",
   "HOME_DOC_RESIDENCE_TYPE.FLOOR": "Floor",
   "HOME_DOC_RESIDENCE_TYPE.APARTMENT": "Apartment",
@@ -109,7 +109,7 @@
     "label_items_quantity": "Number of items:",
     "label_sub_entities_quantity": "Number of {{entity}}:",
     "label_construction_year": "Construction year:",
-    "label_area": "Area (sq km):",
+    "label_area": "Area (sq m):",
     "label_length": "Length (meters):",
     "label_width": "Width (meters):",
     "confirm_add_property": "Are you sure you want to add this attribute?"
