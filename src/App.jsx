@@ -23,6 +23,7 @@ const createEmotionCache = (isRTL) =>
 const App = () => {
   const { i18n } = useTranslation();
   const isRTL = i18n.language === "he";
+  console.log(isRTL, i18n.language);
 
   const emotionCache = useMemo(() => createEmotionCache(isRTL), [isRTL]);
 

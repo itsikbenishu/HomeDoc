@@ -13,7 +13,8 @@ i18next
       he: { translation: translationHE },
       en: { translation: translationEN },
     },
-    fallbackLng: "en",
+    lng: "en",
+    fallbackLng: "he",
     interpolation: {
       escapeValue: false,
     },
