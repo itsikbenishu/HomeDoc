@@ -81,8 +81,6 @@ const ResidenceBasicDataCard = ({
     [navigate, location, formik, otherHandlers]
   );
 
-  console.log(entityTitle);
-
   return (
     <Grid container spacing={0.75} direction="column">
       <Grid item xs={12} sm={3}>

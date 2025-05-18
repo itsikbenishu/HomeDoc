@@ -57,10 +57,6 @@ const ResidenceSubEntitiesList = ({
       ? `${HOME_DOC_RESIDENCE_TYPE[SUB_HOME_DOC_TYPE[category][entityType]]}: `
       : "";
 
-  console.log(100 / (subEntitiesMax + (isExpand ? 0.5 : 1)));
-  console.log(subEntitiesMax, isExpand);
-  console.log(subEntitiesMax + (isExpand ? 0.5 : 1));
-
   return (
     <Card className={classes.card} sx={{ bgcolor: "transparent" }}>
       <Stack direction="row" spacing={1} alignItems="center">
