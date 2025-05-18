@@ -19,7 +19,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { HOME_DOC_PAGE_TYPE } from "../../Constants";
 import CreateSubHomeDialog from "./CreateSubHomeDialog";
-import { useInputDirection } from "../hooks/useInputDirection";
 import DirectionalTextSpan from "./DirectionalTextSpan";
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -35,7 +34,6 @@ const SubEntitiesDialog = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const inputDirection = useInputDirection();
 
   const handleClickOpen = () => {
     setOpen(true);

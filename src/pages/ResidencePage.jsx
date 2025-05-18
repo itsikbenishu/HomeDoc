@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Paper, useMediaQuery, useTheme } from "@mui/material";
+import { Paper, useMediaQuery, useTheme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Formik } from "formik";
 import {
@@ -14,6 +14,7 @@ import {
 import { HOME_DOC_PAGES_TYPES, STATUSES } from "../../Constants";
 import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 import { useExtraHomeDocFormik } from "../hooks/useExtraHomeDocFormik";
+import { ParentGrid, PageDivision } from "../componets/HomeDocPageGrid";
 import ResidenceBasicDataCard from "../componets/ResidenceBasicDataCard";
 import ResidenceExtraDataCard from "../componets/ResidenceExtraDataCard";
 import LabeledContainer from "../componets/LabeledContainer";
@@ -35,7 +36,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const HomeDocResidencePage = () => {
+const ResidencePage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -74,15 +75,15 @@ const HomeDocResidencePage = () => {
       <>
         <DirectionalTextSpan
           prefix={`${HOME_DOC_RESIDENCE_TYPE[residenceType]}: `}
-          value={residence.interiorEntityKey}
+          value={residence?.interiorEntityKey}
         />
       </>
     );
 
   const entitySubTitle =
     residenceType === "PROPERTY"
-      ? residence.interiorEntityKey
-      : residence.fatherInteriorEntityKey;
+      ? residence?.interiorEntityKey
+      : residence?.fatherInteriorEntityKey;
 
   return (
     <EditModeContext.Provider value={isEditMode}>
@@ -97,29 +98,19 @@ const HomeDocResidencePage = () => {
           <Paper
             sx={{
               bgcolor: (theme) => theme.palette.primary.main,
-              height: isMobile && residenceType === "ROOM" ? "auto" : "90vh",
-              overflowY: "auto",
+              height: "90vh",
               mx: 1,
             }}
           >
-            <Grid
-              container
-              sx={{ height: "100%" }}
-              direction={isMobile ? "row" : "column"}
-            >
-              <Grid item xs={12} sm={6} md={3}>
+            <ParentGrid id="ParentGrid">
+              <PageDivision.basicDataCard sx={{ mb: 1 }}>
                 <Paper
                   elevation={1}
                   className={classes.paper}
                   sx={(theme) => ({
                     bgcolor: theme.palette.secondary.main,
-                    height: "calc(100% - 4px)",
-                    mb:
-                      residenceType === "PROPERTY"
-                        ? -0.5
-                        : residenceType === "ROOM"
-                        ? 4
-                        : 1,
+                    height: "100%",
+                    mb: residenceType === "PROPERTY" ? -0.5 : 1,
                   })}
                 >
                   <ResidenceBasicDataCard
@@ -132,53 +123,48 @@ const HomeDocResidencePage = () => {
                     subEntities={residence.subEntities}
                   />
                 </Paper>
-              </Grid>
-              <Grid item xs={12} sm={6} md={residenceType === "ROOM" ? 7.8 : 9}>
+              </PageDivision.basicDataCard>
+
+              <PageDivision.extraDataCard>
                 <Paper
                   elevation={1}
                   className={classes.paper}
                   sx={(theme) => ({
                     bgcolor: theme.palette.secondary.main,
-                    height:
-                      residenceType === "PROPERTY"
-                        ? "calc(100% - 5px)"
-                        : "100%",
+                    height: "100%",
                   })}
                 >
                   <ResidenceExtraDataCard residence={residence} />
                 </Paper>
-              </Grid>
+              </PageDivision.extraDataCard>
+
               {!isMobile && (
-                <>
-                  <Grid item xs={12} sm={6} sx={{ pt: 0.5 }}>
-                    <LabeledContainer labelName={t("page_card_lables.images")}>
-                      <div> {t("in_development")}</div>
-                    </LabeledContainer>
-                  </Grid>
-                  <Grid item xs={12} sm={6} sx={{ pt: 0.5 }}>
-                    {residenceType === "PROPERTY" ? (
-                      <Paper
-                        elevation={2}
-                        className={classes.paper}
-                        sx={{
-                          bgcolor: (theme) => theme.palette.primary.main,
-                          height:
-                            residenceType === "PROPERTY"
-                              ? "100%"
-                              : "calc(100% - 4px)",
-                        }}
-                      ></Paper>
-                    ) : (
-                      <LabeledContainer
-                        labelName={t("page_card_lables.look_at")}
-                      >
-                        <div> {t("in_development")}</div>
-                      </LabeledContainer>
-                    )}
-                  </Grid>
-                </>
+                <PageDivision.images>
+                  <LabeledContainer labelName={t("page_card_lables.images")}>
+                    <div>{t("in_development")}</div>
+                  </LabeledContainer>
+                </PageDivision.images>
               )}
-            </Grid>
+
+              {residenceType !== "PROPERTY" && !isMobile && (
+                <PageDivision.look_at>
+                  {residenceType === "PROPERTY" ? (
+                    <Paper
+                      elevation={2}
+                      className={classes.paper}
+                      sx={{
+                        bgcolor: (theme) => theme.palette.primary.main,
+                        height: "100%",
+                      }}
+                    ></Paper>
+                  ) : (
+                    <LabeledContainer labelName={t("page_card_lables.look_at")}>
+                      <div>{t("in_development")}</div>
+                    </LabeledContainer>
+                  )}
+                </PageDivision.look_at>
+              )}
+            </ParentGrid>
           </Paper>
         </Formik>
       )}
@@ -186,4 +172,4 @@ const HomeDocResidencePage = () => {
   );
 };
 
-export default HomeDocResidencePage;
+export default ResidencePage;

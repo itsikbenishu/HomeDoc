@@ -149,10 +149,10 @@ const CreateSubHomeDialog = ({
                 aria-label={t("exit_aria_lable")}
                 className={classes.input}
                 placeholder={
-                  SUB_HOME_DOC_KEY[SUB_HOME_DOC_TYPE[category][homeDocType]]
+                  SUB_HOME_DOC_KEY[SdesUB_HOME_DOC_TYPE[category][homeDocType]]
                 }
                 inputProps={{
-                  maxLength: 30,
+                  maxLength: 20,
                   dir: inputDirection(subHomeDocKey),
                 }}
                 fullWidth

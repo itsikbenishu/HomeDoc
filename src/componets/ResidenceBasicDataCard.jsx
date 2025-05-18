@@ -21,7 +21,6 @@ import {
 import ResidenceSubEntitiesList from "./ResidenceSubEntitiesList";
 import ButtonsLine from "./ButtonsLine";
 import getButtonsLineComps from "./getButtonsLineComps";
-import { useInputDirection } from "../hooks/useInputDirection";
 import DirectionalTextSpan from "./DirectionalTextSpan";
 import Link from "../componets/Link";
 
@@ -55,7 +54,6 @@ const ResidenceBasicDataCard = ({
   const theme = useTheme();
   const { t } = useTranslation();
   const { HOME_DOC_RESIDENCE_TYPE } = useTranslatedConstants();
-  const inputDirection = useInputDirection();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const residenceId = useParams().id;
   const category = useSelector(selectHomeDocEntityCategory);
@@ -82,6 +80,8 @@ const ResidenceBasicDataCard = ({
     () => getButtonsLineComps(navigate, location, formik, otherHandlers),
     [navigate, location, formik, otherHandlers]
   );
+
+  console.log(entityTitle);
 
   return (
     <Grid container spacing={0.75} direction="column">
@@ -192,6 +192,7 @@ const ResidenceBasicDataCard = ({
                       SUB_HOME_DOC_TYPE[category][filterdSubType]
                 )}
                 subEntitiesMax={isMobile ? 2 : 5}
+                subEntityMaxLen={13}
                 entityType={entityType}
               />
             </Box>

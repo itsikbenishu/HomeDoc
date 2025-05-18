@@ -13,6 +13,7 @@ import {
 import { HOME_DOC_PAGES_TYPES, STATUSES } from "../../Constants";
 import { useExtraHomeDocFormik } from "../hooks/useExtraHomeDocFormik";
 import ErrorPage from "./ErrorPage";
+import { ParentGrid, PageDivision } from "../componets/HomeDocPageGrid";
 import ChattelsBasicDataCard from "../componets/ChattelsBasicDataCard";
 import ChattelsExtraDataCard from "../componets/ChattelsExtraDataCard";
 import LabeledContainer from "../componets/LabeledContainer";
@@ -60,9 +61,9 @@ const ChattelsPage = () => {
   if (isRejected) return <ErrorPage />;
 
   const entityTitle = `${t("chattels_cards.title_item")} ${
-    chattels.interiorEntityKey
+    chattels?.interiorEntityKey
   }`;
-  const entitySubTitle = chattels.fatherInteriorEntityKey;
+  const entitySubTitle = chattels?.fatherInteriorEntityKey;
 
   return (
     <EditModeContext.Provider value={isEditMode}>
@@ -77,17 +78,16 @@ const ChattelsPage = () => {
           <Card
             sx={{
               bgcolor: theme.palette.primary.main,
-              height: isMobile ? "auto" : "90vh",
-              overflow: "auto",
+              height: "90vh",
               mx: 1,
             }}
           >
-            <Grid
+            <ParentGrid
               container
               sx={{ height: "100%" }}
               direction={isMobile ? "row" : "column"}
             >
-              <Grid item xs={12} sm={6} md={3}>
+              <PageDivision.basicDataCard>
                 <Paper
                   elevation={1}
                   className={classes.paper}
@@ -106,8 +106,8 @@ const ChattelsPage = () => {
                     entityType={chattels.type}
                   />
                 </Paper>
-              </Grid>
-              <Grid item xs={12} sm={6} md={9}>
+              </PageDivision.basicDataCard>
+              <PageDivision.extraDataCard>
                 <Paper
                   elevation={1}
                   className={classes.paper}
@@ -118,17 +118,15 @@ const ChattelsPage = () => {
                 >
                   <ChattelsExtraDataCard />
                 </Paper>
-              </Grid>
+              </PageDivision.extraDataCard>
               {!isMobile && (
-                <>
-                  <Grid item xs={12} sm={12} sx={{ pt: 0.5 }}>
-                    <LabeledContainer labelName={t("page_card_lables.images")}>
-                      <div> {t("in_development")}</div>
-                    </LabeledContainer>
-                  </Grid>
-                </>
+                <PageDivision.images>
+                  <LabeledContainer labelName={t("page_card_lables.images")}>
+                    <div> {t("in_development")}</div>
+                  </LabeledContainer>
+                </PageDivision.images>
               )}
-            </Grid>
+            </ParentGrid>
           </Card>
         </Formik>
       )}

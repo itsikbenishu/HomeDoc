@@ -18,6 +18,7 @@ const StyledButton = styled("div")(({ theme, disabled }) => ({
   fontSize: "0.875rem",
   lineHeight: "1.75",
   transition: "all 0.3s ease",
+  textTransform: "lowercase",
   "&:hover": !disabled && {
     backgroundColor: "rgb(205 213 225)",
     boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",

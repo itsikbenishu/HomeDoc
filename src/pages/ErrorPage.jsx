@@ -1,9 +1,11 @@
 import { useTranslation } from "react-i18next";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Link from "../componets/Link";
 
 const ErrorPage = () => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Box
@@ -17,9 +19,10 @@ const ErrorPage = () => {
     >
       <Stack spacing={2} alignItems="center">
         <Typography
-          variant="h2"
+          variant={isMobile ? "h3" : "h2"}
           sx={{
-            color: (theme) => theme.palette.primary.contrastText,
+            textAlign: "center",
+            color: theme.palette.primary.contrastText,
           }}
         >
           {t("error_page.title")}
@@ -27,20 +30,20 @@ const ErrorPage = () => {
         <Typography
           variant="h5"
           sx={{
-            color: (theme) => theme.palette.primary.contrastText,
+            color: theme.palette.primary.contrastText,
           }}
         >
           {t("error_page.sub_title")}
         </Typography>
         <Typography
           variant="h6"
-          sx={{ color: (theme) => theme.palette.primary.contrastText }}
+          sx={{ color: theme.palette.primary.contrastText }}
         >
           {t("error_page.note")}
           <Link
             to="/Results?"
             sx={{
-              color: (theme) => theme.palette.primary.contrastText,
+              color: theme.palette.primary.contrastText,
               textDecoration: "underline",
             }}
           >

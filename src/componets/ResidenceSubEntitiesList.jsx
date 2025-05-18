@@ -1,4 +1,4 @@
-import { Box, Card, Grid, Typography } from "@mui/material";
+import { Box, Card, Stack, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
 import { HOME_DOC_PAGE_TYPE, SUB_HOME_DOC_TYPE } from "../../Constants";
@@ -32,6 +32,7 @@ const ResidenceSubEntitiesList = ({
   subEntityType,
   subEntitiesList,
   subEntitiesMax = 5,
+  subEntityMaxLen = 20,
   entityType,
 }) => {
   const classes = useStyles();
@@ -40,6 +41,11 @@ const ResidenceSubEntitiesList = ({
     useTranslatedConstants();
   const inputDirection = useInputDirection();
   const isExpand = subEntitiesList.length <= subEntitiesMax;
+  const truncateText = (text) => {
+    return text.length > subEntityMaxLen
+      ? text.slice(0, subEntityMaxLen) + "..."
+      : text;
+  };
   const firstElemnts = subEntitiesList.slice(0, subEntitiesMax);
   const subEntityName = `${
     SUB_HOME_DOC_LIST[SUB_HOME_DOC_TYPE[category][subEntityType]]
@@ -51,81 +57,59 @@ const ResidenceSubEntitiesList = ({
       ? `${HOME_DOC_RESIDENCE_TYPE[SUB_HOME_DOC_TYPE[category][entityType]]}: `
       : "";
 
-  return (
-    <Card
-      className={classes.card}
-      sx={{
-        bgcolor: "transparent",
-      }}
-    >
-      <Grid
-        container
-        spacing={{
-          xs: 2,
-          sm: 0.5,
-        }}
-      >
-        <Grid item xs="auto">
-          <Box
-            sx={{
-              p: 0,
-              bgcolor: "transparent",
-            }}
-          >
-            <Typography
-              variant="body1"
-              className={classes.typographyText}
-            >{`${subEntityName}:`}</Typography>
-          </Box>
-        </Grid>
+  console.log(100 / (subEntitiesMax + (isExpand ? 0.5 : 1)));
+  console.log(subEntitiesMax, isExpand);
+  console.log(subEntitiesMax + (isExpand ? 0.5 : 1));
 
-        {firstElemnts.map((subEntity) => (
-          <Grid item xs={3} sm="auto" key={subEntity.id}>
+  return (
+    <Card className={classes.card} sx={{ bgcolor: "transparent" }}>
+      <Stack direction="row" spacing={1} alignItems="center">
+        <Box sx={{ width: 65, p: 0 }}>
+          <Typography variant="body1" className={classes.typographyText}>
+            {`${subEntityName}:`}
+          </Typography>
+        </Box>
+
+        <Stack
+          direction="row"
+          spacing={1}
+          flexWrap="wrap"
+          useFlexGap
+          flexGrow={1}
+        >
+          {firstElemnts.map((subEntity) => (
             <Box
+              key={subEntity.id}
               className={classes.subEntity}
               sx={{
-                bgcolor: "transparent",
-                mx: { xs: 0.5, sm: 2 },
+                width: `${100 / (subEntitiesMax + (isExpand ? 0.5 : 1))}%`,
+                maxWidth: `${100 / (subEntitiesMax + (isExpand ? 0.5 : 1))}%`,
+                flexShrink: 0,
               }}
-              key={subEntity.id}
             >
               <Typography
-                variant="body1"
+                variant="subtitle1"
                 className={classes.typographyText}
+                noWrap
                 dir={inputDirection(subEntity.interiorEntityKey)}
               >
                 <Link
                   to={`/Results/${HOME_DOC_PAGE_TYPE[subEntity.type]}/${
                     subEntity.id
                   }`}
-                  key={subEntity.id}
                 >
-                  {subEntity.interiorEntityKey}
+                  {truncateText(subEntity.interiorEntityKey)}
                 </Link>
               </Typography>
             </Box>
-          </Grid>
-        ))}
-        <Grid item xs={1}>
-          <Box
-            className={classes.subEntity}
-            sx={{
-              bgcolor: "transparent",
-            }}
-          >
-            <CreateSubHomeDialog
-              homeDocType={subEntityType}
-            ></CreateSubHomeDialog>
+          ))}
+
+          <Box className={classes.subEntity} sx={{ flexShrink: 0 }}>
+            <CreateSubHomeDialog homeDocType={subEntityType} />
           </Box>
-        </Grid>
-        <Grid item sm={1}>
+
           {!isExpand && (
-            <Box
-              className={classes.subEntity}
-              style={{
-                backgroundColor: "transparent",
-              }}
-            >
+            <Box className={classes.subEntity} sx={{ flexShrink: 0 }}>
               <SubEntitiesDialog
                 subEntityPreName={subEntityPreName}
                 subEntitesName={subEntityName}
@@ -134,8 +118,8 @@ const ResidenceSubEntitiesList = ({
               />
             </Box>
           )}
-        </Grid>
-      </Grid>
+        </Stack>
+      </Stack>
     </Card>
   );
 };
