@@ -163,6 +163,7 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
             onChange={handleCategoryChange}
             className={classes.inputCategory}
             disableUnderline
+            dir={i18n.dir()}
           >
             <option aria-label="None" value="" dir={i18n.dir()}>
               {t("search_homedoc_page.label_type")}
