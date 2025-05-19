@@ -163,18 +163,13 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
             onChange={handleCategoryChange}
             className={classes.inputCategory}
             disableUnderline
-            dir="rtl"
           >
-            <option aria-label="None" value="">
+            <option aria-label="None" value="" dir="ltr">
               {t("search_homedoc_page.label_type")}
             </option>
             {Object.entries(HOME_DOC_CATEGORIES).map(
               ([category, categoryText]) => (
-                <option
-                  key={category}
-                  value={category}
-                  style={{ textAlign: "left" }}
-                >
+                <option key={category} value={category} dir="ltr">
                   {categoryText}
                 </option>
               )
