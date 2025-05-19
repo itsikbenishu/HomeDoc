@@ -156,7 +156,7 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
           },
         }}
       >
-        <FormControl variant="standard">
+        <FormControl variant="standard" dir={i18n.dir()}>
           <InputLabel>{t("search_homedoc_page.label_type")}</InputLabel>
           <NativeSelect
             value={category}
@@ -164,7 +164,7 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
             className={classes.inputCategory}
             disableUnderline
           >
-            <option aria-label="None" value="">
+            <option aria-label="None" value="" dir={i18n.dir()}>
               {t("search_homedoc_page.label_type")}
             </option>
             {Object.entries(HOME_DOC_CATEGORIES).map(
