@@ -1,8 +1,8 @@
 {
   "SYS_NAME": "HomeDoc",
-  "HOME_DOC_CATEGORIES.ONE_STORY_HOUSE": "One-Story Ground House",
+  "HOME_DOC_CATEGORIES.ONE_STORY_HOUSE": "One-Story House",
   "HOME_DOC_CATEGORIES.RESIDENTIAL_BUILDING": "Residential Building",
-  "HOME_DOC_CATEGORIES.MULTI_STORY_HOUSE": "Multi-Story Ground House",
+  "HOME_DOC_CATEGORIES.MULTI_STORY_HOUSE": "Multi-Story House",
   "HOME_DOC_RESIDENCE_TYPE.PROPERTY": "Property",
   "HOME_DOC_RESIDENCE_TYPE.FLOOR": "Floor",
   "HOME_DOC_RESIDENCE_TYPE.APARTMENT": "Apartment",
@@ -68,8 +68,8 @@
   },
   "confirm_dialog": { "no": "no", "yes": "yes" },
   "create_home_dialog": {
-    "title": "Create a property documentation",
-    "content": "To create a home documentation, please enter the address of the property and the type of property you are documentating.",
+    "title": "Create a documentation",
+    "content": "Enter the property address and type to create documentation.",
     "address_placeholder": "address",
     "type_option": "type",
     "cancel": "Cancel",
@@ -77,8 +77,8 @@
   },
   "create_sub_home_dialog": {
     "title": "Create:",
-    "content_reason": "To expand the home documentation, please enter",
-    "content_which": "which has been decided to document.",
+    "content_reason": "To expand documentation, please enter the",
+    "content_which": "selected for documentation.",
     "cancel": "Cancel",
     "comfirm": "Confirm"
   },

@@ -22,17 +22,17 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     backgroundColor: "white",
     marginTop: 2,
-    borderRadius: 4,
+    borderRadius: 8,
     ".MuiTouchRipple-ripple .MuiTouchRipple-child": {
-      borderRadius: 4,
+      borderRadius: 8,
     },
     "&:hover": {
-      borderRadius: 4,
+      borderRadius: 8,
       backgroundColor: "white",
       border: "1px solid #ced4da",
       fontSize: 16,
       "&:active": {
-        borderRadius: 4,
+        borderRadius: 8,
         border: "1px solid #80bdff",
         boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
       },
@@ -40,15 +40,17 @@ const useStyles = makeStyles(() => ({
   },
   inputAddress: {
     height: "2.7rem",
+    borderRadius: 8,
+    ".mui-hbm4je-MuiInputBase-root-MuiInput-root": { borderRadius: 8 },
     "& .MuiInputBase-input": {
-      borderRadius: 4,
+      borderRadius: 8,
       position: "relative",
       backgroundColor: "white",
       border: "1px solid #ced4da",
       fontSize: 16,
       padding: "10px 26px 10px 12px",
       "&:focus": {
-        borderRadius: 4,
+        borderRadius: 8,
         borderColor: "#80bdff",
         boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
       },
@@ -57,18 +59,21 @@ const useStyles = makeStyles(() => ({
   inputCategory: {
     height: "2.7rem",
     display: "flex",
+    borderRadius: 8,
     "label + &": {
       marginTop: 3,
     },
     "& .MuiInputBase-input": {
-      borderRadius: 4,
+      borderRadius: 8,
       position: "relative",
       backgroundColor: "white",
+
       border: "1px solid #ced4da",
       fontSize: 16,
       padding: "10px 26px 10px 12px",
       "&:focus": {
-        borderRadius: 4,
+        backgroundColor: "white",
+        borderRadius: 8,
         borderColor: "#80bdff",
         boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
       },
@@ -135,15 +140,19 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
     <Box
       className={classes.container}
       sx={{
-        bgcolor: (theme) => theme.palette.secondary.main,
         px: { xs: 0.5, sm: 1 },
-        gap: 1,
+        mt: { xs: -1, sm: -2 },
+        gap: { xs: 0.4, sm: 0.8 },
       }}
     >
       <Box
         sx={{
           p: 0.5,
           flexShrink: 0,
+          width: {
+            xs: "35%",
+            sm: "auto",
+          },
         }}
       >
         <FormControl variant="standard">
@@ -152,6 +161,7 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
             value={category}
             onChange={handleCategoryChange}
             className={classes.inputCategory}
+            disableUnderline
           >
             <option aria-label="None" value="">
               {t("search_homedoc_page.label_type")}
@@ -176,11 +186,11 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
             {t("search_homedoc_page.label_address")}
           </InputLabel>
           <Input
-            id="addressInput"
             value={address}
             onChange={handleAddressChange}
             className={classes.inputAddress}
             placeholder={t("search_homedoc_page.label_address")}
+            disableUnderline
           />
         </FormControl>
       </Box>
@@ -189,6 +199,7 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
         <FormControl
           sx={{
             bgcolor: (theme) => theme.palette.primary.contrastText,
+            borderRadius: 2,
           }}
           variant="standard"
         >

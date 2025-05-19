@@ -1,8 +1,8 @@
-import { Card, Typography, Paper } from "@mui/material";
+import { Card, Typography, Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(() => ({
-  paper: {
+  Box: {
     height: "calc(100% - 0.5rem)",
     padding: "0.2rem",
     marginTop: "0.5rem",
@@ -34,13 +34,14 @@ const LabeledContainer = ({ labelName, children }) => {
   const classes = useStyles();
 
   return (
-    <Paper
-      elevation={1}
-      className={classes.paper}
-      sx={{ bgcolor: (theme) => theme.palette.primary.main }}
-    >
+    <Box elevation={1} className={classes.Box} sx={{ bgcolor: "transparent" }}>
       <div className={classes.label}>
-        <Typography variant="body2">{labelName}</Typography>
+        <Typography
+          variant="body2"
+          sx={{ color: (theme) => theme.palette.primary.contrastText }}
+        >
+          {labelName}
+        </Typography>
       </div>
       <Card
         className={classes.card}
@@ -50,7 +51,7 @@ const LabeledContainer = ({ labelName, children }) => {
       >
         {children}
       </Card>
-    </Paper>
+    </Box>
   );
 };
 

@@ -25,17 +25,17 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     backgroundColor: "white",
     marginTop: 2,
-    borderRadius: 4,
+    borderRadius: 8,
     ".MuiTouchRipple-ripple .MuiTouchRipple-child": {
-      borderRadius: 4,
+      borderRadius: 8,
     },
     "&:hover": {
-      borderRadius: 4,
+      borderRadius: 8,
       backgroundColor: "white",
       border: "1px solid #ced4da",
       fontSize: 16,
       "&:active": {
-        borderRadius: 4,
+        borderRadius: 8,
         border: "1px solid #80bdff",
         boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
       },
@@ -45,7 +45,7 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     marginTop: 2,
     "& .MuiInputBase-input": {
-      borderRadius: 4,
+      borderRadius: 8,
       backgroundColor: "white",
       border: "1px solid #ced4da",
       fontSize: 16,
@@ -105,6 +105,7 @@ const CreateHomeDialog = () => {
         sx={{
           mt: 3,
           bgcolor: (theme) => theme.palette.primary.contrastText,
+          borderRadius: 2,
         }}
         variant="standard"
       >
@@ -116,11 +117,18 @@ const CreateHomeDialog = () => {
         open={openDialog}
         onClose={handleClose}
         dir={i18n.language === "he" ? "rtl" : "ltr"}
-        aria-labelledby="create-dialog-title"
-        aria-describedby="create-dialog-description"
       >
         <DialogTitle>{t("create_home_dialog.title")}</DialogTitle>
-        <DialogContent>
+        <DialogContent
+          sx={{
+            fontSize: {
+              xs: "0.9rem",
+              sm: "1rem",
+            },
+            color: "text.primary",
+            mb: 2,
+          }}
+        >
           <DialogContentText
             sx={{
               mb: 0.5,

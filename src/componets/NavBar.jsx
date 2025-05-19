@@ -26,7 +26,7 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" elevation={0}>
       <CssBaseline />
       <Toolbar sx={{ justifyContent: "space-between" }}>
         <Box onClick={() => navigate("/")}>

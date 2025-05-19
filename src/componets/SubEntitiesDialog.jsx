@@ -61,11 +61,11 @@ const SubEntitiesDialog = ({
         open={open}
         onClose={handleClose}
         TransitionComponent={Transition}
-        sx={{ bgcolor: (theme) => theme.palette.primary.main }}
+        sx={{ bgcolor: (theme) => theme.palette.secondary.main }}
       >
         <Box
           sx={{
-            bgcolor: (theme) => theme.palette.primary.main,
+            bgcolor: (theme) => theme.palette.secondary.main,
             height: "100vh",
           }}
         >
@@ -90,10 +90,7 @@ const SubEntitiesDialog = ({
                 <ListItemButton
                   key={`listItemButton-${subEntity.id}`}
                   sx={{
-                    bgcolor: (theme) => theme.palette.primary.main,
-                    "&:hover": {
-                      bgcolor: "#133365",
-                    },
+                    bgcolor: (theme) => theme.palette.secondary.main,
                   }}
                   onClick={() =>
                     handleItemClick(
@@ -117,23 +114,25 @@ const SubEntitiesDialog = ({
                       </span>
                     }
                     sx={{
-                      color: (theme) => theme.palette.primary.contrastText,
+                      color: (theme) => theme.palette.secondary.contrastText,
                     }}
                   />
                 </ListItemButton>
                 <Divider
                   key={`divider-${subEntity.id}`}
                   sx={{
-                    bgcolor: (theme) => theme.palette.primary.contrastText,
+                    bgcolor: (theme) => theme.palette.secondary.contrastText,
                   }}
                 />
               </React.Fragment>
             ))}
-            <Box sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
+            <Box sx={{ bgcolor: (theme) => theme.palette.secondary.main }}>
               <CreateSubHomeDialog homeDocType={entityType} isExpaned={true} />
               <Divider
                 key="addDivider"
-                sx={{ bgcolor: (theme) => theme.palette.primary.contrastText }}
+                sx={{
+                  bgcolor: (theme) => theme.palette.secondary.contrastText,
+                }}
               />
             </Box>
           </List>

@@ -60,7 +60,7 @@ const ResidenceSubEntitiesList = ({
   return (
     <Card className={classes.card} sx={{ bgcolor: "transparent" }}>
       <Stack direction="row" spacing={1} alignItems="center">
-        <Box sx={{ width: 65, p: 0 }}>
+        <Box sx={{ width: 90, p: 0 }}>
           <Typography variant="body1" className={classes.typographyText}>
             {`${subEntityName}:`}
           </Typography>

@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     marginTop: 2,
     "& .MuiInputBase-input": {
-      borderRadius: 4,
+      borderRadius: 8,
       backgroundColor: "white",
       border: "1px solid #ced4da",
       fontSize: 16,
@@ -56,7 +56,7 @@ const CreateSubHomeDialog = ({
 }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const subEntities = useSelector(selectHomeDocsubEntities);
   const fatherInteriorEntityKey = useSelector(selectHomeDocInteriorEntityKey);
   const category = useSelector(selectHomeDocEntityCategory);
@@ -65,6 +65,10 @@ const CreateSubHomeDialog = ({
   const { SUB_HOME_DOC_KEY } = useTranslatedConstants();
   const inputDirection = useInputDirection();
   const isEditMode = useIsEditMode();
+
+  const subHomeDocKeyType = homeDocType.includes("ROOM_")
+    ? "ROOM"
+    : SUB_HOME_DOC_TYPE[category][homeDocType];
 
   const handleClickOpen = () => {
     setOpenDialog(true);
@@ -108,7 +112,9 @@ const CreateSubHomeDialog = ({
             <>
               <ListItemButton autoFocus onClick={handleClickOpen}>
                 <ListItemAvatar>
-                  <Avatar>
+                  <Avatar
+                    sx={{ bgcolor: (theme) => theme.palette.primary.main }}
+                  >
                     <AddIcon fontSize="small" />
                   </Avatar>
                 </ListItemAvatar>
@@ -116,7 +122,7 @@ const CreateSubHomeDialog = ({
                   primary={t("add")}
                   secondary={<span style={{ color: "white" }}></span>}
                   sx={{
-                    color: (theme) => theme.palette.primary.contrastText,
+                    color: (theme) => theme.palette.primary.main,
                   }}
                 />
               </ListItemButton>
@@ -134,10 +140,19 @@ const CreateSubHomeDialog = ({
       <Dialog open={openDialog} onClose={handleClose}>
         <DialogTitle>{t("create_sub_home_dialog.title")}</DialogTitle>
         <DialogContent>
-          <DialogContentText sx={{ mb: 2 }}>
+          <DialogContentText
+            sx={{
+              fontSize: {
+                xs: "0.9rem",
+                sm: "1rem",
+              },
+              color: "text.primary",
+              mb: 2,
+            }}
+          >
             {dialogContentText === ""
               ? `${t("create_sub_home_dialog.content_reason")} ${
-                  SUB_HOME_DOC_KEY[SUB_HOME_DOC_TYPE[category][homeDocType]]
+                  SUB_HOME_DOC_KEY[subHomeDocKeyType]
                 } ${t("create_sub_home_dialog.content_which")}`
               : dialogContentText}
           </DialogContentText>
@@ -148,9 +163,7 @@ const CreateSubHomeDialog = ({
                 onChange={handleSubHomeDocKeyChange}
                 aria-label={t("exit_aria_lable")}
                 className={classes.input}
-                placeholder={
-                  SUB_HOME_DOC_KEY[SUB_HOME_DOC_TYPE[category][homeDocType]]
-                }
+                placeholder={SUB_HOME_DOC_KEY[subHomeDocKeyType]}
                 inputProps={{
                   maxLength: 20,
                   dir: inputDirection(subHomeDocKey),

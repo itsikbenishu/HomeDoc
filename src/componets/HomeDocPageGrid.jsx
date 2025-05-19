@@ -38,6 +38,7 @@ const areaStyles = {
 
 const createResponsiveDiv = (area) =>
   styled("div")(({ theme }) => ({
+    borderRadius: theme.borderRadius,
     gridArea: area.desktop,
 
     [theme.breakpoints.down("sm")]: {

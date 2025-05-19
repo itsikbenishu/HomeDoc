@@ -1,17 +1,16 @@
-import { Card, Typography } from "@mui/material";
-import styled from "@emotion/styled";
+import { Box, Typography } from "@mui/material";
 
-const StyledCard = styled(Card)(({ theme }) => ({
-  color: theme.palette.primary.contrastText,
-  backgroundColor: theme.palette.primary.main,
-  textAlign: "center",
-}));
-
-const HeaderPage = ({ headerName, cardClass }) => {
+const HeaderPage = ({ headerName, cardClass, others }) => {
   return (
-    <StyledCard className={cardClass}>
-      <Typography variant="h4">{headerName}</Typography>
-    </StyledCard>
+    <Box sx={{ textAlign: "center" }} className={cardClass}>
+      <Typography
+        variant="h4"
+        {...others}
+        sx={{ color: (theme) => theme.palette.primary.contrastText }}
+      >
+        {headerName}
+      </Typography>
+    </Box>
   );
 };
 

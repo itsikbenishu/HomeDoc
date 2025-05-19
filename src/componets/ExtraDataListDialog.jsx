@@ -26,7 +26,9 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
-  const contrastTextColor = (theme) => theme.palette.primary.contrastText;
+  const contrastTextColor = (theme) => theme.palette.secondary.contrastText;
+  const mainTextColor = (theme) => theme.palette.secondary.main;
+
   const isEditMode = useIsEditMode();
   const { t, i18n } = useTranslation();
   const inputDirection = useInputDirection();
@@ -64,7 +66,7 @@ const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
       >
         <Box
           sx={{
-            bgcolor: (theme) => theme.palette.primary.main,
+            bgcolor: mainTextColor,
             height: "100%",
           }}
         >
@@ -83,10 +85,13 @@ const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
               </IconButton>
             </Toolbar>
           </AppBar>
-          <List>
+          <List sx={{ bgcolor: mainTextColor }}>
             {extraDataList.map((entity) => (
               <React.Fragment key={`ListItem-${entity.id}`}>
-                <ListItem key={`ListItem-${entity.id}`}>
+                <ListItem
+                  key={`ListItem-${entity.id}`}
+                  sx={{ bgcolor: mainTextColor }}
+                >
                   <ListItemText
                     key={`listItemText-characteristic-${entity.id}`}
                     dir={inputDirection(entity.value)}
@@ -106,7 +111,15 @@ const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
                     }}
                   />
                   {isEditMode && (
-                    <ListItemButton edge="end" aria-label="delete">
+                    <ListItemButton
+                      sx={{
+                        "&:hover": {
+                          backgroundColor: "transparent",
+                        },
+                      }}
+                      edge="end"
+                      aria-label="delete"
+                    >
                       <DeleteIcon
                         onClick={() => handleRemove(entity)}
                         fontSize="medium"

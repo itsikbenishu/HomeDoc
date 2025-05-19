@@ -23,10 +23,8 @@ const createEmotionCache = (isRTL) =>
 const App = () => {
   const { i18n } = useTranslation();
   const isRTL = i18n.language === "he";
-  console.log(isRTL, i18n.language);
 
   const emotionCache = useMemo(() => createEmotionCache(isRTL), [isRTL]);
-
   const portalTheme = useMemo(
     () =>
       createTheme({
@@ -37,8 +35,31 @@ const App = () => {
             contrastText: "white",
           },
           secondary: {
-            main: "rgb(205 213 225)",
+            main: "rgba(242, 210, 161, 0.92)",
             contrastText: "#130b65",
+          },
+          background: {
+            default: "#e3e8e8",
+          },
+          text: {
+            primary: "#130b65",
+          },
+        },
+
+        components: {
+          MuiBox: {
+            styleOverrides: {
+              root: {
+                borderRadius: 8,
+              },
+            },
+          },
+          MuiCard: {
+            styleOverrides: {
+              root: {
+                borderRadius: 8,
+              },
+            },
           },
         },
       }),
@@ -55,7 +76,7 @@ const App = () => {
         <ToastProvider>
           <div
             style={{
-              backgroundColor: "#130b65",
+              backgroundColor: "#e3e8e8",
               minHeight: "100vh",
             }}
           >

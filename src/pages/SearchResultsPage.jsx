@@ -16,6 +16,8 @@ import {
 import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 import HeaderPage from "../componets/HeaderPage";
 
+import BackgroundImage from "./Background_Gemini_Generated_Image.png";
+
 const useStyles = makeStyles(() => ({
   header: {
     margin: 4,
@@ -101,7 +103,11 @@ const SearchResultsPage = () => {
       <Stack
         spacing={1}
         sx={{
-          borderStyle: "none",
+          backgroundImage: `url(${BackgroundImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          height: "100vh",
         }}
       >
         <HeaderPage
@@ -109,7 +115,7 @@ const SearchResultsPage = () => {
           cardClass={classes.header}
         />
         <Box>
-          <SearchPropertyForm initialCategory={category}></SearchPropertyForm>
+          <SearchPropertyForm initialCategory={category} />
         </Box>
         <Box>
           <SearchResults

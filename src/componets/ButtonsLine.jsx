@@ -12,7 +12,8 @@ const StyledFab = styled(Fab)(({ theme }) => ({
   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.3)",
   "&:hover": {
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.4)",
-    color: theme.palette.secondary.contrastText,
+    backgroundColor: theme.palette.primary.contrastText,
+    color: theme.palette.primary.main,
   },
 }));
 const ButtonsLine = ({ buttons, lineStyle }) => {

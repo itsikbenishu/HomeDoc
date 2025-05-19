@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Grid, Paper, useMediaQuery, useTheme } from "@mui/material";
+import { Card, Paper, useMediaQuery, useTheme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Formik } from "formik";
 import {
@@ -20,6 +20,8 @@ import LabeledContainer from "../componets/LabeledContainer";
 import Loader from "../componets/Loader";
 import { EditModeContext } from "../hooks/useIsEditMode";
 
+import BackgroundImage from "./Background_Gemini_Generated_Image.png";
+
 const useStyles = makeStyles(() => ({
   header: {
     margin: "0 0rem 2rem 0rem",
@@ -27,6 +29,7 @@ const useStyles = makeStyles(() => ({
   paper: {
     height: "100%",
     padding: "0.2rem",
+    borderRadius: 8,
     position: "relative",
   },
 }));
@@ -77,14 +80,16 @@ const ChattelsPage = () => {
         >
           <Card
             sx={{
-              bgcolor: theme.palette.primary.main,
+              backgroundImage: `url(${BackgroundImage})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
               height: "90vh",
-              mx: 1,
             }}
           >
             <ParentGrid
               container
-              sx={{ height: "100%" }}
+              sx={{ height: "100%", mt: 0.3, mx: 1 }}
               direction={isMobile ? "row" : "column"}
             >
               <PageDivision.basicDataCard>

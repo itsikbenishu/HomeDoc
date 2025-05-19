@@ -23,11 +23,14 @@ import { EditModeContext } from "../hooks/useIsEditMode";
 import ErrorPage from "./ErrorPage";
 import DirectionalTextSpan from "../componets/DirectionalTextSpan";
 
+import BackgroundImage from "./Background_Gemini_Generated_Image.png";
+
 const useStyles = makeStyles(() => ({
   header: {
     margin: "0 0rem 2rem 0rem",
   },
   paper: {
+    borderRadius: 8,
     padding: "0.2rem",
     display: "flex",
     alignItems: "flex-start",
@@ -97,19 +100,22 @@ const ResidencePage = () => {
         >
           <Paper
             sx={{
-              bgcolor: (theme) => theme.palette.primary.main,
+              backgroundImage: `url(${BackgroundImage})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
               height: "90vh",
-              mx: 1,
             }}
           >
-            <ParentGrid id="ParentGrid">
-              <PageDivision.basicDataCard sx={{ mb: 1 }}>
+            <ParentGrid sx={{ mx: 1.5 }}>
+              <PageDivision.basicDataCard>
                 <Paper
                   elevation={1}
                   className={classes.paper}
                   sx={(theme) => ({
                     bgcolor: theme.palette.secondary.main,
-                    height: "100%",
+                    height: "calc(100% - 8px)",
+                    mt: 0.5,
                     mb: residenceType === "PROPERTY" ? -0.5 : 1,
                   })}
                 >
