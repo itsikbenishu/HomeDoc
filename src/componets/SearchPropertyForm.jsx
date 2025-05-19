@@ -164,12 +164,12 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
             className={classes.inputCategory}
             disableUnderline
           >
-            <option aria-label="None" value="" dir={i18n.dir()}>
+            <option aria-label="None" value="">
               {t("search_homedoc_page.label_type")}
             </option>
             {Object.entries(HOME_DOC_CATEGORIES).map(
               ([category, categoryText]) => (
-                <option key={category} value={category}>
+                <option key={category} value={category} dir={i18n.dir()}>
                   {categoryText}
                 </option>
               )
