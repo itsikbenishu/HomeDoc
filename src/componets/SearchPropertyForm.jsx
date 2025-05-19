@@ -84,7 +84,8 @@ const useStyles = makeStyles(() => ({
 const SearchPropertyForm = ({ initialCategory = "" }) => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
   const { HOME_DOC_CATEGORIES } = useTranslatedConstants();
   const [category, setCategory] = useState(initialCategory || "");
   const [address, setAddress] = useState("");
@@ -163,7 +164,7 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
             className={classes.inputCategory}
             disableUnderline
           >
-            <option aria-label="None" value="">
+            <option aria-label="None" value="" dir={i18n.dir()}>
               {t("search_homedoc_page.label_type")}
             </option>
             {Object.entries(HOME_DOC_CATEGORIES).map(

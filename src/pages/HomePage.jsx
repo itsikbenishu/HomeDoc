@@ -71,7 +71,7 @@ const HomePage = () => {
             component="h1"
             className={classes.header}
             sx={{
-              color: "white",
+              color: (theme) => theme.palette.primary.contrastText,
               textShadow: "1px 1px 4px rgba(0,0,0,0.6)",
             }}
           >

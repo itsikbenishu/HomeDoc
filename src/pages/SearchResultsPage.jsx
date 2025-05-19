@@ -21,6 +21,7 @@ import BackgroundImage from "./Background_Gemini_Generated_Image.png";
 const useStyles = makeStyles(() => ({
   header: {
     margin: 4,
+    textShadow: "1px 1px 4px rgba(0,0,0,0.6)",
   },
   resultsCard: {
     margin: 4,
