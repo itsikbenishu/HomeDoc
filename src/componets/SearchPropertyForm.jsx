@@ -159,6 +159,7 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
         <FormControl variant="standard">
           <InputLabel>{t("search_homedoc_page.label_type")}</InputLabel>
           <NativeSelect
+            dir="ltr"
             value={category}
             onChange={handleCategoryChange}
             className={classes.inputCategory}
