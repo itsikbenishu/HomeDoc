@@ -103,7 +103,7 @@ const ResidencePage = () => {
               backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
-              height: "vh",
+              height: "91vh",
             }}
           >
             <ParentGrid sx={{ mx: 1.5 }}>
