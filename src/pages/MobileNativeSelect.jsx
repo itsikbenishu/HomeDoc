@@ -6,7 +6,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 const MobileNativeSelect = ({
   value = "",
   onChange = () => {},
-  options,
+  options = [],
   ...others
 }) => {
   const [clicked, setClicked] = useState(false);
