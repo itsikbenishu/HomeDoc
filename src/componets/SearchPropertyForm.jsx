@@ -15,7 +15,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import { BASIC_PAGINATION } from "../../Constants";
 import CreateHomeDialog from "./CreateHomeDialog";
-import MobileNativeSelect from "../pages/MobileNativeSelect";
+import MobileNativeSelect from "./MobileNativeSelect";
 import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 
 const useStyles = makeStyles(() => ({

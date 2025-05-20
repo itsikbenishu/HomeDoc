@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Link from "../componets/Link";
 
-import BackgroundImage from "./Background_Gemini_Generated_Image.png";
+import BackgroundImage from "../images/Background_Gemini_Generated_Image.png";
 
 const ErrorPage = () => {
   const { t } = useTranslation();

@@ -16,8 +16,7 @@ import {
 import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 import HeaderPage from "../componets/HeaderPage";
 
-import BackgroundImage from "./Background_Gemini_Generated_Image.png";
-
+import BackgroundImage from "../images/Background_Gemini_Generated_Image.png";
 const useStyles = makeStyles(() => ({
   header: {
     margin: 4,

@@ -12,8 +12,7 @@ import { BASIC_PAGINATION } from "../../Constants";
 import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 import { useTranslation } from "react-i18next";
 
-import BackgroundImage from "./Background_Gemini_Generated_Image.png";
-
+import BackgroundImage from "../images/Background_Gemini_Generated_Image.png";
 const useStyles = makeStyles(() => ({
   stack: {
     height: "100%",

@@ -20,8 +20,7 @@ import LabeledContainer from "../componets/LabeledContainer";
 import Loader from "../componets/Loader";
 import { EditModeContext } from "../hooks/useIsEditMode";
 
-import BackgroundImage from "./Background_Gemini_Generated_Image.png";
-
+import BackgroundImage from "../images/Background_Gemini_Generated_Image.png";
 const useStyles = makeStyles(() => ({
   header: {
     margin: "0 0rem 2rem 0rem",

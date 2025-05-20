@@ -1,7 +1,7 @@
 import ReactLoading from "react-loading";
 import i18next from "../../i18nConfig";
 
-import BackgroundImage from "../pages/Background_Gemini_Generated_Image.png";
+import BackgroundImage from "../images/Background_Gemini_Generated_Image.png";
 import { Typography } from "@mui/material";
 
 const Loader = () => {
