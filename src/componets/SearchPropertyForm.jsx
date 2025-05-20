@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import { useTranslation } from "react-i18next";
@@ -9,10 +9,13 @@ import {
   NativeSelect,
   Input,
   Box,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { BASIC_PAGINATION } from "../../Constants";
 import CreateHomeDialog from "./CreateHomeDialog";
+import MobileNativeSelect from "../pages/MobileNativeSelect";
 import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 
 const useStyles = makeStyles(() => ({
@@ -84,29 +87,27 @@ const useStyles = makeStyles(() => ({
 const SearchPropertyForm = ({ initialCategory = "" }) => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { HOME_DOC_CATEGORIES } = useTranslatedConstants();
   const [category, setCategory] = useState(initialCategory || "");
   const [address, setAddress] = useState("");
   const [paramsForQueryObj, setParamsForQueryObj] = useState({});
 
-  const handleCategoryChange = (event) => {
-    setCategory(event.target.value);
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
     setParamsForQueryObj({
       ...paramsForQueryObj,
-      category: event.target.value
-        ? `${event.target.value}`
-        : event.target.value,
+      category: e.target.value ? `${e.target.value}` : e.target.value,
     });
   };
-  const handleAddressChange = (event) => {
-    setAddress(event.target.value);
+  const handleAddressChange = (e) => {
+    setAddress(e.target.value);
     setParamsForQueryObj({
       ...paramsForQueryObj,
-      interiorEntityKey: event.target.value
-        ? `${event.target.value}`
-        : event.target.value,
+      interiorEntityKey: e.target.value ? `${e.target.value}` : e.target.value,
     });
   };
   const handleSearch = () => {
@@ -158,34 +159,44 @@ const SearchPropertyForm = ({ initialCategory = "" }) => {
       >
         <FormControl variant="standard">
           <InputLabel>{t("search_homedoc_page.label_type")}</InputLabel>
-          <NativeSelect
-            dir="ltr"
-            value={category}
-            onChange={handleCategoryChange}
-            className={classes.inputCategory}
-            disableUnderline
-          >
-            <option
-              aria-label="None"
-              value=""
-              dir="ltr"
-              style={{ textAlign: "left" }}
+          {isMobile ? (
+            <MobileNativeSelect
+              options={[
+                {
+                  value: "",
+                  label: t("search_homedoc_page.label_type"),
+                },
+                ...Object.entries(HOME_DOC_CATEGORIES).map(
+                  ([category, categoryText]) => ({
+                    value: category,
+                    label: categoryText,
+                  })
+                ),
+              ]}
+              value={category}
+              onChange={handleCategoryChange}
+              className={classes.inputCategory}
+              disableUnderline
+            />
+          ) : (
+            <NativeSelect
+              value={category}
+              onChange={handleCategoryChange}
+              className={classes.inputCategory}
+              disableUnderline
             >
-              {t("search_homedoc_page.label_type")}
-            </option>
-            {Object.entries(HOME_DOC_CATEGORIES).map(
-              ([category, categoryText]) => (
-                <option
-                  key={category}
-                  value={category}
-                  dir="ltr"
-                  style={{ textAlign: "left" }}
-                >
-                  {categoryText}
-                </option>
-              )
-            )}
-          </NativeSelect>
+              <option aria-label="None" value="">
+                {t("search_homedoc_page.label_type")}
+              </option>
+              {Object.entries(HOME_DOC_CATEGORIES).map(
+                ([category, categoryText]) => (
+                  <option key={category} value={category}>
+                    {categoryText}
+                  </option>
+                )
+              )}
+            </NativeSelect>
+          )}
         </FormControl>
       </Box>
       <Box
