@@ -42,7 +42,7 @@ const HomePage = () => {
   return (
     <Box
       sx={{
-        height: { xs: "100vh", sm: "90vh" },
+        height: { xs: "100%", sm: "90vh" },
         backgroundImage: `url(${BackgroundImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",

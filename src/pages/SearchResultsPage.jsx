@@ -107,7 +107,7 @@ const SearchResultsPage = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          height: "100vh",
+          height: { xs: "100%", sm: "100vh" },
         }}
       >
         <HeaderPage

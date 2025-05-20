@@ -83,7 +83,7 @@ const ChattelsPage = () => {
               backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
-              height: "90vh",
+              height: "91vh",
             }}
           >
             <ParentGrid
