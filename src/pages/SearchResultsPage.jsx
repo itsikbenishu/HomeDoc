@@ -99,17 +99,17 @@ const SearchResultsPage = () => {
         homeDocsStats.totalCount;
 
   return (
-    <>
-      <Stack
-        spacing={1}
-        sx={{
-          backgroundImage: `url(${BackgroundImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          height: "100vh",
-        }}
-      >
+    <Box
+      sx={{
+        backgroundImage: `url(${BackgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "fixed",
+        minHeight: "100vh",
+      }}
+    >
+      <Stack spacing={1}>
         <HeaderPage
           headerName={t("search_homedoc_page.header")}
           cardClass={classes.header}
@@ -129,7 +129,7 @@ const SearchResultsPage = () => {
           />
         </Box>
       </Stack>
-    </>
+    </Box>
   );
 };
 
