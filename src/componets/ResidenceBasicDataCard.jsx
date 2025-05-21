@@ -188,7 +188,7 @@ const ResidenceBasicDataCard = ({
                     : subEntity.type ===
                       SUB_HOME_DOC_TYPE[category][filterdSubType]
                 )}
-                subEntitiesMax={isMobile ? 2 : 5}
+                subEntitiesMax={isMobile ? 2 : 4}
                 subEntityMaxLen={13}
                 entityType={entityType}
               />

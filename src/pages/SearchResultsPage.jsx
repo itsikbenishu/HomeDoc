@@ -50,7 +50,7 @@ const SearchResultsPage = () => {
   const homefields = isMobile
     ? ["interiorEntityKey"]
     : ["#", "category", "interiorEntityKey"];
-  const divfields = isMobile ? [10] : [0.5, 2, 9.5];
+  const columnRatios = isMobile ? [10] : [0.5, 2, 9.5];
 
   useEffect(() => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
@@ -122,7 +122,7 @@ const SearchResultsPage = () => {
             headers={headers}
             results={homeDocs}
             fields={homefields}
-            columnRatios={divfields}
+            columnRatios={columnRatios}
             paginationCount={paginationCount}
             isLinkable={true}
             linkPath={"Residence"}
