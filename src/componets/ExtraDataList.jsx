@@ -118,8 +118,7 @@ const ExtraDataList = ({ count = 0 }) => {
         item
         className={classes.moreIconContainer}
         sx={{
-          left: i18n.language === "he" ? 0 : "auto",
-          right: i18n.language === "he" ? "auto" : 0,
+          right: 0,
         }}
       >
         {elementsByCount.length > 0 && (
