@@ -114,7 +114,7 @@ const ExtraDataListDialog = ({ extraDataList, handleRemove }) => {
                     <ListItemButton
                       sx={{
                         "&:hover": {
-                          backgroundColor: "transparent",
+                          bgcolor: "transparent",
                         },
                       }}
                       edge="end"

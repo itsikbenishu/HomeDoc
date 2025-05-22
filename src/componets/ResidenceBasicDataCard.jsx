@@ -175,7 +175,7 @@ const ResidenceBasicDataCard = ({
             <Box
               className={classes.Box}
               sx={{
-                backgroundColor: (theme) => theme.palette.secondary.main,
+                bgcolor: (theme) => theme.palette.secondary.main,
                 ml: 0.25,
               }}
             >

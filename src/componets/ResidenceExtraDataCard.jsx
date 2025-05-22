@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
   textField: {
     padding: 0.5,
     marginBottom: 3,
-    width: "8rem",
+    maxWidth: "8rem",
     height: "1.5rem",
     "& .MuiInputBase-root": {
       padding: 0,

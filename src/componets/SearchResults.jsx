@@ -69,7 +69,7 @@ const SearchResults = ({
     <Paper
       elevation={12}
       sx={(theme) => ({
-        backgroundColor: theme.palette.secondary.main,
+        bgcolor: theme.palette.secondary.main,
         mx: 3,
         px: 2,
       })}
@@ -89,7 +89,7 @@ const SearchResults = ({
             elevation={24}
             square
             sx={{
-              backgroundColor: "burlywood",
+              bgcolor: "burlywood",
               width: "100%",
               minHeight: "2.5rem",
               overflowX: "auto",

@@ -53,14 +53,14 @@ const HomePage = () => {
         spacing={5}
         className={classes.stack}
         sx={{
-          backgroundColor: "rgba(0, 0, 0, 0.3)",
+          bgcolor: "rgba(0, 0, 0, 0.3)",
           p: { xs: 2, sm: 4 },
         }}
       >
         <Paper
           elevation={0}
           sx={{
-            backgroundColor: "transparent",
+            bgcolor: "transparent",
             alignItems: "center",
             mb: 4,
           }}
@@ -81,7 +81,7 @@ const HomePage = () => {
         <Paper
           elevation={0}
           sx={{
-            backgroundColor: "transparent",
+            bgcolor: "transparent",
             width: "100%",
           }}
         >

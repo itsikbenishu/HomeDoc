@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
   textField: {
     padding: 0.5,
     marginBottom: 2,
-    width: "8rem",
+    maxWidth: "8rem",
     height: "1.5rem",
     "& .MuiInputBase-root": {
       padding: 0,
@@ -90,7 +90,7 @@ const ChattelsExtraDataCard = () => {
   }, [i18n.language, validateForm]);
 
   return (
-    <Grid container spacing={1} direction="column">
+    <Grid container columnSpacing={1} direction="column">
       <Grid item xs={12} sm={3} className={classes.gridItem}>
         <Box className={classes.box} sx={{ bgcolor: "transparent" }}>
           <Card
@@ -186,10 +186,10 @@ const ChattelsExtraDataCard = () => {
       </Grid>
 
       <Grid item xs={12} sm={3} className={classes.gridItem}>
-        <Box className={classes.box} sx={{ backgroundColor: "transparent" }}>
+        <Box className={classes.box} sx={{ bgcolor: "transparent" }}>
           <Card
             className={classes.card}
-            sx={{ backgroundColor: "transparent", mt: "3px", mr: 0.25 }}
+            sx={{ bgcolor: "transparent", mt: "3px", mr: 0.25 }}
           >
             <Grid container spacing={0.25}>
               <Grid
