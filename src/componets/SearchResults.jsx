@@ -75,16 +75,14 @@ const SearchResults = ({
       })}
     >
       <Stack spacing={2} alignItems="center">
-        <Card
-          elevation={0}
+        <Box
           sx={{
-            bgcolor: "transparent",
             width: "100%",
             maxWidth: "85rem",
           }}
         >
           <Typography variant="h4">{resultsTitle}</Typography>
-        </Card>
+        </Box>
 
         {headers.length > 0 && (
           <Card
