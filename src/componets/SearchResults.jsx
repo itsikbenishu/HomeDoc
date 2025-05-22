@@ -78,19 +78,12 @@ const SearchResults = ({
         <Card
           elevation={0}
           sx={{
-            backgroundColor: (theme) => theme.palette.secondary.main,
+            bgcolor: "transparent",
             width: "100%",
             maxWidth: "85rem",
           }}
         >
-          <Typography
-            variant="h4"
-            sx={{
-              color: (theme) => theme.palette.primary.main,
-            }}
-          >
-            {resultsTitle}
-          </Typography>
+          <Typography variant="h4">{resultsTitle}</Typography>
         </Card>
 
         {headers.length > 0 && (

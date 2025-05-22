@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
     textShadow: "1px 1px 4px rgba(0,0,0,0.6)",
   },
   resultsCard: {
-    margin: 4,
+    paddingBottom: 3,
   },
 }));
 
@@ -117,7 +117,7 @@ const SearchResultsPage = () => {
         <Box>
           <SearchPropertyForm initialCategory={category} />
         </Box>
-        <Box>
+        <Box className={classes.resultsCard}>
           <SearchResults
             headers={headers}
             results={homeDocs}
