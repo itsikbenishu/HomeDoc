@@ -15705,17 +15705,8 @@ var require_postgresDB = __commonJS({
     var { Pool } = pg;
     var postgresDB;
     var getPostgresDB = () => {
-      console.log({
-        host: process.env.POSTGRES_HOST,
-        port: process.env.POSTGRES_PORT,
-        user: process.env.POSTGRES_USER,
-        password: process.env.POSTGRES_PASSWORD,
-        database: process.env.POSTGRES_DB,
-        max: 10,
-        idleTimeoutMillis: 3e4
-      });
       if (!postgresDB) {
-        const readPool = new Pool({
+        const pool = new Pool({
           host: process.env.POSTGRES_HOST,
           port: process.env.POSTGRES_PORT,
           user: process.env.POSTGRES_USER,
@@ -15727,7 +15718,7 @@ var require_postgresDB = __commonJS({
             rejectUnauthorized: false
           }
         });
-        postgresDB = drizzle({ client: readPool });
+        postgresDB = drizzle({ client: pool });
       }
       return postgresDB;
     };
