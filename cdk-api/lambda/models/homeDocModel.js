@@ -3,6 +3,7 @@ const {
   pgEnum,
   serial,
   integer,
+  numeric,
   text,
   timestamp,
   json,
@@ -26,6 +27,7 @@ const HomeDocs = pgTable("home_docs", {
     onDelete: "cascade",
   }),
   interiorEntityKey: text(),
+  externalId: text(),
   fatherInteriorEntityKey: text(),
   createdAt: timestamp().defaultNow(),
   updatedAt: timestamp().defaultNow(),
@@ -52,8 +54,8 @@ const HomeDocsDimensions = pgTable("home_docs_dimensions", {
       onDelete: "cascade",
     })
     .unique(),
-  length: text(),
-  width: text(),
+  length: numeric(),
+  width: numeric(),
 });
 
 const ResidenceSpecsAttributes = pgTable("residence_specs_attributes", {
@@ -63,9 +65,9 @@ const ResidenceSpecsAttributes = pgTable("residence_specs_attributes", {
       onDelete: "cascade",
     })
     .unique(),
-  area: text(),
-  subEntitiesQuantity: text(),
-  constructionYear: text(),
+  area: numeric(),
+  subEntitiesQuantity: integer(),
+  constructionYear: integer(),
 });
 
 const ChattelsSpecsAttributes = pgTable("chattels_specs_attributes", {
@@ -76,8 +78,8 @@ const ChattelsSpecsAttributes = pgTable("chattels_specs_attributes", {
     })
     .unique(),
   colors: text(),
-  quantity: text(),
-  weight: text(),
+  quantity: integer(),
+  weight: numeric(),
 });
 
 module.exports = {

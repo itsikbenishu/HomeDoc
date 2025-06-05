@@ -70,13 +70,19 @@ export const useExtraHomeDocFormik = (homeDoc, dispatch, pageType) => {
           pageType: pageType,
           HomeDocData: {
             ...values,
+            area: values.area ? parseFloat(values.area) : null,
+            length: values.length ? parseFloat(values.length) : null,
+            width: values.width ? parseFloat(values.width) : null,
+            constructionYear: values.constructionYear
+              ? parseInt(values.constructionYear)
+              : null,
+            quantity: values.quantity ? parseInt(values.quantity) : null,
+            weight: values.weight ? parseFloat(values.weight) : null,
             colors: values.colors.join("|"),
-            extraData: values.extraData.map((elem) => {
-              return {
-                value: elem.value,
-                characteristic: elem.characteristic,
-              };
-            }),
+            extraData: values.extraData.map((elem) => ({
+              value: elem.value,
+              characteristic: elem.characteristic,
+            })),
           },
         })
       );

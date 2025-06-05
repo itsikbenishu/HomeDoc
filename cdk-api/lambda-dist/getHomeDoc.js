@@ -10425,6 +10425,7 @@ var require_homeDocModel = __commonJS({
       pgEnum,
       serial,
       integer,
+      numeric,
       text,
       timestamp,
       json
@@ -10444,6 +10445,7 @@ var require_homeDocModel = __commonJS({
         onDelete: "cascade"
       }),
       interiorEntityKey: text(),
+      externalId: text(),
       fatherInteriorEntityKey: text(),
       createdAt: timestamp().defaultNow(),
       updatedAt: timestamp().defaultNow(),
@@ -10466,17 +10468,17 @@ var require_homeDocModel = __commonJS({
       homeDocId: integer().references(() => HomeDocs.id, {
         onDelete: "cascade"
       }).unique(),
-      length: text(),
-      width: text()
+      length: numeric(),
+      width: numeric()
     });
     var ResidenceSpecsAttributes2 = pgTable("residence_specs_attributes", {
       id: serial().primaryKey(),
       homeDocId: integer().references(() => HomeDocs.id, {
         onDelete: "cascade"
       }).unique(),
-      area: text(),
-      subEntitiesQuantity: text(),
-      constructionYear: text()
+      area: numeric(),
+      subEntitiesQuantity: integer(),
+      constructionYear: integer()
     });
     var ChattelsSpecsAttributes2 = pgTable("chattels_specs_attributes", {
       id: serial().primaryKey(),
@@ -10484,8 +10486,8 @@ var require_homeDocModel = __commonJS({
         onDelete: "cascade"
       }).unique(),
       colors: text(),
-      quantity: text(),
-      weight: text()
+      quantity: integer(),
+      weight: numeric()
     });
     module2.exports = {
       HomeDocs,
