@@ -64,20 +64,26 @@ export const useExtraHomeDocFormik = (homeDoc, dispatch, pageType) => {
     },
     validationSchema: schema,
     onSubmit: (values) => {
+      const parseOrNull = (val, parser) => {
+        return val === "" || val === undefined ? null : parser(val);
+      };
+
       dispatch(
         updateCurrentHomeDoc({
           id: homeDoc.id,
           pageType: pageType,
           HomeDocData: {
             ...values,
-            area: values.area ? parseFloat(values.area) : null,
-            length: values.length ? parseFloat(values.length) : null,
-            width: values.width ? parseFloat(values.width) : null,
-            constructionYear: values.constructionYear
-              ? parseInt(values.constructionYear)
-              : null,
-            quantity: values.quantity ? parseInt(values.quantity) : null,
-            weight: values.weight ? parseFloat(values.weight) : null,
+            area: parseOrNull(values.area, parseFloat),
+            length: parseOrNull(values.length, parseFloat),
+            width: parseOrNull(values.width, parseFloat),
+            constructionYear: parseOrNull(values.constructionYear, parseInt),
+            quantity: parseOrNull(values.quantity, parseInt),
+            weight: parseOrNull(values.weight, parseFloat),
+            subEntitiesQuantity: parseOrNull(
+              values.subEntitiesQuantity,
+              parseInt
+            ),
             colors: values.colors.join("|"),
             extraData: values.extraData.map((elem) => ({
               value: elem.value,
