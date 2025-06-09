@@ -65,7 +65,7 @@ export const useExtraHomeDocFormik = (homeDoc, dispatch, pageType) => {
     validationSchema: schema,
     onSubmit: (values) => {
       const parseOrNull = (val, parser) => {
-        return val === "" || val === undefined ? null : parser(val);
+        return val == null || val === "" ? null : parser(val);
       };
 
       dispatch(
