@@ -10,11 +10,11 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { SUB_HOME_DOC_TYPE } from "../../Constants";
-import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
-import ExtraDataList from "./ExtraDataList";
-import ExtraDataField from "./ExtraDataField";
-import LabeledExtraDataFields from "./LabeledExtraDataFields";
+import { SUB_HOME_DOC_TYPE } from "../../../../Constants";
+import { useTranslatedConstants } from "../../../hooks/useTranslatedConstants";
+import ExtraDataList from "../forms/ExtraDataList";
+import ExtraDataField from "../forms/ExtraDataField";
+import LabeledExtraDataFields from "../forms/LabeledExtraDataFields";
 
 const useStyles = makeStyles(() => ({
   gridItem: {

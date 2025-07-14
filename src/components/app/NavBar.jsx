@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
+import { useTranslatedConstants } from "../../hooks/useTranslatedConstants";
 import ChangeLangButton from "./ChangeLangButton";
 
 const Navbar = () => {

@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Stack } from "@mui/material";
-import SearchResults from "../componets/SearchResults";
-import SearchPropertyForm from "../componets/SearchPropertyForm";
+import SearchResults from "../components/searchPage/resultsCards/SearchResults";
+import SearchPropertyForm from "../components/searchPage/form/SearchPropertyForm";
 import {
   selectHomeDocResults,
   searchHomeDocs,
@@ -14,7 +14,7 @@ import {
   fetchHomeDocStats,
 } from "../slices/HomeDocSlice";
 import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
-import HeaderPage from "../componets/HeaderPage";
+import HeaderPage from "../components/common/HeaderPage";
 
 import BackgroundImage from "../images/Background_Gemini_Generated_Image.png";
 const useStyles = makeStyles(() => ({

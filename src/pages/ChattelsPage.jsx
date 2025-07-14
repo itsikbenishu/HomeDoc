@@ -13,11 +13,14 @@ import {
 import { HOME_DOC_PAGES_TYPES, STATUSES } from "../../Constants";
 import { useExtraHomeDocFormik } from "../hooks/useExtraHomeDocFormik";
 import ErrorPage from "./ErrorPage";
-import { ParentGrid, PageDivision } from "../componets/HomeDocPageGrid";
-import ChattelsBasicDataCard from "../componets/ChattelsBasicDataCard";
-import ChattelsExtraDataCard from "../componets/ChattelsExtraDataCard";
-import LabeledContainer from "../componets/LabeledContainer";
-import Loader from "../componets/Loader";
+import {
+  ParentGrid,
+  PageDivision,
+} from "../components/entityPage/layout/HomeDocPageGrid";
+import ChattelsBasicDataCard from "../components/entityPage/cards/ChattelsBasicDataCard";
+import ChattelsExtraDataCard from "../components/entityPage/cards/ChattelsExtraDataCard";
+import LabeledContainer from "../components/entityPage/layout/LabeledContainer";
+import Loader from "../components/common/Loader";
 import { EditModeContext } from "../hooks/useIsEditMode";
 
 import BackgroundImage from "../images/Background_Gemini_Generated_Image.png";

@@ -1,11 +1,11 @@
 import { Box, Card, Stack, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
-import { HOME_DOC_PAGE_TYPE, SUB_HOME_DOC_TYPE } from "../../Constants";
-import { selectHomeDocEntityCategory } from "../slices/HomeDocSlice";
-import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
-import { useInputDirection } from "../hooks/useInputDirection";
-import Link from "../componets/Link";
+import { HOME_DOC_PAGE_TYPE, SUB_HOME_DOC_TYPE } from "../../../../Constants";
+import { selectHomeDocEntityCategory } from "../../../slices/HomeDocSlice";
+import { useTranslatedConstants } from "../../../hooks/useTranslatedConstants";
+import { useInputDirection } from "../../../hooks/useInputDirection";
+import Link from "../../common/Link";
 import CreateSubHomeDialog from "./CreateSubHomeDialog";
 import SubEntitiesDialog from "./SubEntitiesDialog";
 

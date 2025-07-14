@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Fab, Tooltip } from "@mui/material";
 import styled from "@emotion/styled";
-import ConfirmDialog from "./ConfirmDialog";
+import ConfirmDialog from "../../common/ConfirmDialog";
 
 const StyledFab = styled(Fab)(({ theme }) => ({
   color: theme.palette.primary.contrastText,

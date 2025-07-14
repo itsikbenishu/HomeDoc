@@ -7,7 +7,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import Link from "../componets/Link";
+import Link from "../components/common/Link";
 
 import BackgroundImage from "../images/Background_Gemini_Generated_Image.png";
 

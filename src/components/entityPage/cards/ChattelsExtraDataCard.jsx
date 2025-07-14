@@ -10,10 +10,10 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import ExtraDataList from "./ExtraDataList";
-import ExtraDataField from "./ExtraDataField";
-import ChipsList from "./ChipsList";
-import LabeledExtraDataFields from "./LabeledExtraDataFields";
+import ExtraDataList from "../forms/ExtraDataList";
+import ExtraDataField from "../forms/ExtraDataField";
+import ChipsList from "../forms/ChipsList";
+import LabeledExtraDataFields from "../forms/LabeledExtraDataFields";
 
 const useStyles = makeStyles(() => ({
   gridItem: {

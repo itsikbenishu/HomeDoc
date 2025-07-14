@@ -1,10 +1,10 @@
 import React from "react";
-import i18next from "../../i18nConfig";
+import i18next from "../../../../i18nConfig";
 import SaveIcon from "@mui/icons-material/Save";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { toast } from "../utils/toast";
+import { toast } from "../../../utils/toast";
 
 const getButtonsLineComps = (navigate, location, formik, otherHandlers) => {
   const { resetForm, submitForm, isValid } = formik;

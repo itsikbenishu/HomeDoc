@@ -12,17 +12,17 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { SUB_HOME_DOC_TYPE } from "../../Constants";
-import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
+import { SUB_HOME_DOC_TYPE } from "../../../../Constants";
+import { useTranslatedConstants } from "../../../hooks/useTranslatedConstants";
 import {
   deleteHomeDoc,
   selectHomeDocEntityCategory,
-} from "../slices/HomeDocSlice";
-import ResidenceSubEntitiesList from "./ResidenceSubEntitiesList";
-import ButtonsLine from "./ButtonsLine";
-import getButtonsLineComps from "./getButtonsLineComps";
-import DirectionalTextSpan from "./DirectionalTextSpan";
-import Link from "../componets/Link";
+} from "../../../slices/HomeDocSlice";
+import ResidenceSubEntitiesList from "../subentitiesList/ResidenceSubEntitiesList";
+import ButtonsLine from "../buttonsLine/ButtonsLine";
+import getButtonsLineComps from "../buttonsLine/getButtonsLineComps";
+import DirectionalTextSpan from "../../common/DirectionalTextSpan";
+import Link from "../../common/Link";
 
 const useStyles = makeStyles(() => ({
   Box: {

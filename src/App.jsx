@@ -11,8 +11,8 @@ import HomePage from "./pages/HomePage";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import ResidencePage from "./pages/ResidencePage";
 import ChattelsPage from "./pages/ChattelsPage";
-import Navbar from "./componets/NavBar";
-import NetworkStatusDialog from "./componets/NetworkStatusDialog";
+import Navbar from "./components/app/NavBar";
+import NetworkStatusDialog from "./components/app/NetworkStatusDialog";
 
 const createEmotionCache = (isRTL) =>
   createCache({

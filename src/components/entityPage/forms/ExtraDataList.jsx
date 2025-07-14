@@ -11,12 +11,12 @@ import {
 import { makeStyles } from "@mui/styles";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
-import { toItemsWithIds, toItemWithId } from "../utils/appTools";
+import { toItemsWithIds, toItemWithId } from "../../../utils/appTools";
 import { useFormikContext } from "formik";
-import { useIsEditMode } from "../hooks/useIsEditMode";
+import { useIsEditMode } from "../../../hooks/useIsEditMode";
 import ExtraDataListDialog from "./ExtraDataListDialog";
 import { useTranslation } from "react-i18next";
-import { useInputDirection } from "../hooks/useInputDirection";
+import { useInputDirection } from "../../../hooks/useInputDirection";
 
 const useStyles = makeStyles(() => ({
   typographyText: {

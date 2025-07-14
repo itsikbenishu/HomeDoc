@@ -15,9 +15,9 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
-import { createHomeDoc } from "../slices/HomeDocSlice";
-import DialogButton from "./DialogButton";
-import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
+import { createHomeDoc } from "../../../slices/HomeDocSlice";
+import DialogButton from "../../common/DialogButton";
+import { useTranslatedConstants } from "../../../hooks/useTranslatedConstants";
 
 const useStyles = makeStyles(() => ({
   iconButton: {

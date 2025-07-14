@@ -9,7 +9,7 @@ import {
   Tooltip,
   debounce,
 } from "@mui/material";
-import { useIsEditMode } from "../hooks/useIsEditMode";
+import { useIsEditMode } from "../../../hooks/useIsEditMode";
 
 const ChipsList = ({
   className,

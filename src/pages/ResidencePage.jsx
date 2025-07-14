@@ -14,14 +14,17 @@ import {
 import { HOME_DOC_PAGES_TYPES, STATUSES } from "../../Constants";
 import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
 import { useExtraHomeDocFormik } from "../hooks/useExtraHomeDocFormik";
-import { ParentGrid, PageDivision } from "../componets/HomeDocPageGrid";
-import ResidenceBasicDataCard from "../componets/ResidenceBasicDataCard";
-import ResidenceExtraDataCard from "../componets/ResidenceExtraDataCard";
-import LabeledContainer from "../componets/LabeledContainer";
-import Loader from "../componets/Loader";
+import {
+  ParentGrid,
+  PageDivision,
+} from "../components/entityPage/layout/HomeDocPageGrid";
+import ResidenceBasicDataCard from "../components/entityPage/cards/ResidenceBasicDataCard";
+import ResidenceExtraDataCard from "../components/entityPage/cards/ResidenceExtraDataCard";
+import LabeledContainer from "../components/entityPage/layout/LabeledContainer";
+import Loader from "../components/common/Loader";
 import { EditModeContext } from "../hooks/useIsEditMode";
 import ErrorPage from "./ErrorPage";
-import DirectionalTextSpan from "../componets/DirectionalTextSpan";
+import DirectionalTextSpan from "../components/common/DirectionalTextSpan";
 
 import BackgroundImage from "../images/Background_Gemini_Generated_Image.png";
 const useStyles = makeStyles(() => ({

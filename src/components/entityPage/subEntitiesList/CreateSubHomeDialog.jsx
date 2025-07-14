@@ -25,12 +25,12 @@ import {
   selectHomeDocEntityCategory,
   selectHomeDocsubEntities,
   selectHomeDocInteriorEntityKey,
-} from "../slices/HomeDocSlice";
-import { useIsEditMode } from "../hooks/useIsEditMode";
-import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
-import { useInputDirection } from "../hooks/useInputDirection";
-import { SUB_HOME_DOC_TYPE } from "../../Constants";
-import DialogButton from "./DialogButton";
+} from "../../../slices/HomeDocSlice";
+import { useIsEditMode } from "../../../hooks/useIsEditMode";
+import { useTranslatedConstants } from "../../../hooks/useTranslatedConstants";
+import { useInputDirection } from "../../../hooks/useInputDirection";
+import { SUB_HOME_DOC_TYPE } from "../../../../Constants";
+import DialogButton from "../../common/DialogButton";
 
 const useStyles = makeStyles(() => ({
   input: {

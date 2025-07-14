@@ -18,8 +18,8 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useIsEditMode } from "../hooks/useIsEditMode";
-import { useInputDirection } from "../hooks/useInputDirection";
+import { useIsEditMode } from "../../../hooks/useIsEditMode";
+import { useInputDirection } from "../../../hooks/useInputDirection";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

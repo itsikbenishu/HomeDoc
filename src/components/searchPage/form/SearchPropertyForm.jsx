@@ -13,10 +13,10 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { BASIC_PAGINATION } from "../../Constants";
+import { BASIC_PAGINATION } from "../../../../Constants";
 import CreateHomeDialog from "./CreateHomeDialog";
 import MobileNativeSelect from "./MobileNativeSelect";
-import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
+import { useTranslatedConstants } from "../../../hooks/useTranslatedConstants";
 
 const useStyles = makeStyles(() => ({
   container: { display: "flex", alignItems: "center" },

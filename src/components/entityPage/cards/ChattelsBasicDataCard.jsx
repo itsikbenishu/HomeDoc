@@ -1,20 +1,19 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
-import Link from "../componets/Link";
-
 import { useDispatch, useSelector } from "react-redux";
 import { useFormikContext } from "formik";
 import { Box, Grid, Typography, Card } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { useTranslatedConstants } from "../hooks/useTranslatedConstants";
-import { SUB_HOME_DOC_TYPE } from "../../Constants";
+import { useTranslatedConstants } from "../../../hooks/useTranslatedConstants";
+import { SUB_HOME_DOC_TYPE } from "../../../../Constants";
 import {
   deleteHomeDoc,
   selectHomeDocEntityCategory,
-} from "../slices/HomeDocSlice";
-import ButtonsLine from "./ButtonsLine";
-import getButtonsLineComps from "./getButtonsLineComps";
+} from "../../../slices/HomeDocSlice";
+import ButtonsLine from "../buttonsLine/ButtonsLine";
+import getButtonsLineComps from "../buttonsLine/getButtonsLineComps";
+import Link from "../../common/Link";
 
 const useStyles = makeStyles(() => ({
   Box: {

@@ -1,4 +1,4 @@
-import { useInputDirection } from "../hooks/useInputDirection";
+import { useInputDirection } from "../../hooks/useInputDirection";
 
 const DirectionalTextSpan = ({ value, prefix = "", suffix = "", ...props }) => {
   const inputDirection = useInputDirection();

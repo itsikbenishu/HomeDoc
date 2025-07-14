@@ -17,9 +17,9 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import { HOME_DOC_PAGE_TYPE } from "../../Constants";
+import { HOME_DOC_PAGE_TYPE } from "../../../../Constants";
 import CreateSubHomeDialog from "./CreateSubHomeDialog";
-import DirectionalTextSpan from "./DirectionalTextSpan";
+import DirectionalTextSpan from "../../common/DirectionalTextSpan";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

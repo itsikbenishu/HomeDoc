@@ -13,8 +13,8 @@ import {
   TablePagination,
   Box,
 } from "@mui/material";
-import { STATUSES } from "../../Constants";
-import { selectHomeDocStatus } from "../slices/HomeDocSlice";
+import { STATUSES } from "../../../../Constants";
+import { selectHomeDocStatus } from "../../../slices/HomeDocSlice";
 import SearchResultsLine from "./SearchResultsLine";
 import SearchResultsLineSkeleton from "./SearchResultsLineSkeleton";
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Input, InputAdornment } from "@mui/material";
-import MobileNativeSelectOptions from "../componets/MobileNativeSelectOptions";
+import MobileNativeSelectOptions from "./MobileNativeSelectOptions";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const MobileNativeSelect = ({
