@@ -18,7 +18,7 @@ import {
   deleteHomeDoc,
   selectHomeDocEntityCategory,
 } from "../../../slices/HomeDocSlice";
-import ResidenceSubEntitiesList from "../subentitiesList/ResidenceSubEntitiesList";
+import ResidenceSubEntitiesList from "../subEntitiesList/ResidenceSubEntitiesList";
 import ButtonsLine from "../buttonsLine/ButtonsLine";
 import getButtonsLineComps from "../buttonsLine/getButtonsLineComps";
 import DirectionalTextSpan from "../../common/DirectionalTextSpan";
